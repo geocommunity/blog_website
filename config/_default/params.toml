@@ -55,7 +55,7 @@ url = "https://github.com/geocommunity/"
 #title = "instagram"
 #url = "https://www.instagram.com/"
 
-[[socialIcons]]
-icon = "fas fa-envelope"
-title = "e-mail"
-url = "mitchel.rudge@uq.edu.au"
+#[[socialIcons]]
+#icon = "fas fa-envelope"
+#title = "e-mail"
+#url = "mitchel.rudge@uq.edu.au"
