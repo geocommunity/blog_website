@@ -1,0 +1,53 @@
+---
+title: Creating a Geospatial blog with blogdown Part 3. A Raster map.
+author: UQGSAC
+date: '2021-10-28'
+slug: a-raster-map
+categories:
+  - spatial
+  - visualisation
+series:
+  - series-setup  
+tags:
+  - RStats
+  - raster
+---
+
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>An example raster visualisation.</p>
+<div id="load-the-packages" class="section level2">
+<h2>Load the packages</h2>
+<pre class="r"><code>library(terra)</code></pre>
+<pre><code>## terra version 1.3.4</code></pre>
+</div>
+<div id="import-the-data" class="section level2">
+<h2>Import the data</h2>
+<p>The data comes from the Bureau of Meteorology website, it is a raster file of average annual rainfall. We’ve put the file into a <code>data</code> directory, inside the blog post’s directory.</p>
+<pre class="r"><code>rain &lt;- rast(&quot;data/rainan.txt&quot;)</code></pre>
+</div>
+<div id="inspect" class="section level2">
+<h2>Inspect</h2>
+<pre class="r"><code>rain</code></pre>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 691, 886, 1  (nrow, ncol, nlyr)
+## resolution  : 0.05, 0.05  (x, y)
+## extent      : 111.975, 156.275, -44.525, -9.975  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=longlat +datum=WGS84 +no_defs 
+## source      : rainan.txt 
+## name        : rainan</code></pre>
+<p>One single band, by default with the WGS 84 CRS.</p>
+<p>The average rainfall for the whole raster is 451.61 mm.</p>
+</div>
+<div id="visualise" class="section level2">
+<h2>Visualise</h2>
+<p>Make sure to add a caption to visualisations, and some alternative text if needed!</p>
+<pre class="r"><code>plot(rain)</code></pre>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" alt="Map of Australia and surrounds' average annual rainfall, ranging from 0 to about 4300 mm." width="672" />
+<p class="caption">
+Figure 1: Average annual rainfall in mm (1980 to 2010)
+</p>
+</div>
+</div>

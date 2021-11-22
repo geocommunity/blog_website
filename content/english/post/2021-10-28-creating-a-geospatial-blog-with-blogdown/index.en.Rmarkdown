@@ -1,9 +1,11 @@
 ---
-title: Creating a geospatial blog with Blogdown
+title: Creating a geospatial blog with Blogdown Part 1. Getting started. 
 author: Stephane Guillou and Mitchel Rudge
 date: '2021-10-28'
 slug: creating-a-geospatial-blog-with-blogdown
 categories: []
+series:
+  - series-setup
 tags:
   - r
   - rstudio

@@ -1,11 +1,13 @@
 ---
-title: A vector map
+title: Creating a Geospatial blog with blogdown Part 2. A vector map.
 author: UQGSAC
 date: '2021-10-28'
 slug: a-vector-map
 categories:
   - spatial
   - visualisation
+series:
+  - series-setup  
 tags:
   - RStats
   - vector
@@ -13,7 +15,7 @@ tags:
 
 ## Load necessary packages
 
-```{r}
+```{r warning=FALSE}
 library(sf)
 library(tmap)
 ```
