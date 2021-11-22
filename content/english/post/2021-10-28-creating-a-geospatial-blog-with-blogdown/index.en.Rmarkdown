@@ -30,10 +30,10 @@ tags:
 
 ### Steps
 
-# 1.	Create a new github repository
+## 1.	Create a new github repository
 Initialise with readme, but don't add the .gitignore file. Then copy link https link. 
 
-# 2.	Create a new project in R studio
+## 2.	Create a new project in R studio
 In R studio, go to File > new project > Version control > git, and Paste the URL from before. Save the project somewhere sensible. 
 
 Now install blogdown with Install.packages(“blogdown”), and load with library(blogdown). 
@@ -75,7 +75,8 @@ blogdown::serve_site() #to serve the site locally
 blogdown::stop_server() #to stop serving the site
 ```
 
-###Write a post
+## 3. Write a post
+
 Hopefully the local site is working. We can now add a new blog post using either
 
 ```{r eval = FALSE}
@@ -109,7 +110,7 @@ blogdown::check_site()
 and follow the instructions next to the [todo] items. 
 
 
-###load to github
+## 4. load to github
 In the files tab, navigate to the .gitignore file. 
 Add so it contains the following
 .Rproj.user
@@ -148,7 +149,7 @@ Then, when you push the repo it'll ask you for credential through the browser.
 
 
 
-###5.	Publish site!
+## 5.	Publish site!
 Log into netlify (using github account). Then click new site from git, continuous deployment: Github. you should be able to see the repo from within netlify. 
 Select deploy site. 
 
