@@ -65,52 +65,62 @@ So to build the site with your theme of choice, run
 new_site(theme = "lxndrblz/anatole")
 ```
 
-<<<<<<< HEAD
 Adding theme= "gighubusername/themerepo" of the theme you choose. 
+
 
 When prompted, select y to let blogdown start a server. This will let you preview the site in the viewer. To view in a browser, click the show in new window (next to the broom) to launch it locally. 
 
 
+Generally, you can serve the site, and stop serving the sites using 
 
 
-=======
-Replacing the gighub username/themerepo name that you choose. 
+```r
+blogdown::serve_site() #to serve the site locally
+blogdown::stop_server() #to stop serving the site
+```
+
+###Write a post
+Hopefully the local site is working. We can now add a new blog post using either
 
 
-.	choose a theme https://themes.gohugo.io/
-ii.	“knadh/hugo-ink”
-iii.	pacollins/hugo-future-imperfect-slim
-d.	select y to let blogdown start a server for us. 
-e.	blogdown::serve_site() #to serve site locally Click “show in new window” to properly preview
->>>>>>> 6fb62a956183ccb9efafec5aedc60b035984af38
-f.	There are two types of R markdown posts
-i.	.Rmd to .html 
-ii.	.Rmarkdown to .markdown (recommend .Rmarkdown)
-g.	blogdown::new_post(title = "First post", ext = '.Rmarkdown', subdir = "post") #usually post but sometimes posts
-h.	Can save a bunch of settings using
-options(
-  # to automatically serve the site on RStudio startup, set this option to TRUE
-  blogdown.serve_site.startup = FALSE,
-  # to disable knitting Rmd files on save, set this option to FALSE
-  blogdown.knit.on_save = FALSE     <- change
-  blogdown.author = "Alison Hill",  <- add
-  blogdown.ext = ".Rmarkdown",      <- add
-  blogdown.subdir = "post"          <- add
-)
-Restart R
-i.	click the knit button
-j.	Add R code chunk ‘’’{r}  
-Summry(Orange)
-‘’’
-Then knit. 
+```r
+blogdown::new_post() 
+```
 
-Add more code. 
+OR, a better method is to navigate through addins dropdown (under help, right of git icon), click new_post. This brings up a dialog to fill out.  
 
-<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-k.	If its not working, try blogdown::check_site() and get it fixed
-4.	Using GitHub
-a.	file.edit(“.gitignore”)
-b.	Add 
+Select file type, markdown for simple text, or .Rmd or .Rmarkdown for embedding code. 
+
+
+Now we can add code chunks! The easiest way to do this is to click the green +c just above the editor. 
+
+As an example
+
+
+```r
+library(ggplot2)
+ggplot(Orange, aes(x = age, 
+                   y = circumference, 
+                   color = Tree)) +
+  geom_point() +
+  theme_bw()
+```
+
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+If its not working, run 
+
+
+```r
+blogdown::check_site() 
+```
+
+and follow the instructions next to the [todo] items. 
+
+
+###load to github
+In the files tab, navigate to the .gitignore file. 
+Add so it contains the following
 .Rproj.user
 .Rhistory
 .RData
@@ -120,27 +130,48 @@ Thumbs.db
 /public/
 /resources/
 
+Now run	
+
+```r
+blogdown::check_gitignore() 
+
+#and 
+
+blogdown::check_content()
+```
 
 
-c.	Blogdown::check_gitignore()
-d.	Now check content
-i.	blogdown::check_content()
-ii.	
+Then commit the files and push to github. 
 
-e.	the initial stage might not work, so do it through the shell. 
-i.	Tools > shell 
-Can configure git if it didn’t do it with a token. 
-Git config –global user.name “username from github”
-Git config –global user.email “email from github”
-Then to stage all, git add -A
-d
-Commit > commit comment > push
-5.	Publish site
-a.	Sign up to Netlify using your GitHub account
-b.	New Site from Git > Continuous Deployment: GitHub
-c.	Select deploy site. Now it will automatically update every time you push changes to github
-d.	Change site name general > site details > change site name
-e.	Rstudioapi::navigateToFile(“config.yaml”, line = 3) make sure correct site name
-f.	Blogdown::check_netlify()
-i.	Select option 1
--	
+Due to the massive number of files associated with the themes, we found it better to do the first commit through the shell
+
+Tools>shell>git add -A
+
+
+To authorise github, we found the best option to be to
+
+Control Panel > User Account > Credential Manager > Windows Credential > Generic Credential
+
+Then remove git credential
+
+Then, when you push the repo it'll ask you for credential through the browser. 
+
+
+
+###5.	Publish site!
+Log into netlify (using github account). Then click new site from git, continuous deployment: Github. you should be able to see the repo from within netlify. 
+Select deploy site. 
+
+It will give you a temporary URL which is live! Now it will automatically update every time you push changes to github. 
+
+To change the site name, general > site details > change site name
+
+Now go back to R studio, and navigate to teh config (yaml or toml) and add in the correct url (probably around line 3)
+
+Run Blogdown::check_netlify() to find any issues. 
+
+
+
+
+
+
