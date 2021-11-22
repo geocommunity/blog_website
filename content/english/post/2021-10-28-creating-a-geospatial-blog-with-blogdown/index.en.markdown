@@ -65,6 +65,7 @@ So to build the site with your theme of choice, run
 new_site(theme = "lxndrblz/anatole")
 ```
 
+<<<<<<< HEAD
 Adding theme= "gighubusername/themerepo" of the theme you choose. 
 
 When prompted, select y to let blogdown start a server. This will let you preview the site in the viewer. To view in a browser, click the show in new window (next to the broom) to launch it locally. 
@@ -72,6 +73,16 @@ When prompted, select y to let blogdown start a server. This will let you previe
 
 
 
+=======
+Replacing the gighub username/themerepo name that you choose. 
+
+
+.	choose a theme https://themes.gohugo.io/
+ii.	“knadh/hugo-ink”
+iii.	pacollins/hugo-future-imperfect-slim
+d.	select y to let blogdown start a server for us. 
+e.	blogdown::serve_site() #to serve site locally Click “show in new window” to properly preview
+>>>>>>> 6fb62a956183ccb9efafec5aedc60b035984af38
 f.	There are two types of R markdown posts
 i.	.Rmd to .html 
 ii.	.Rmarkdown to .markdown (recommend .Rmarkdown)
