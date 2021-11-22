@@ -1,0 +1,48 @@
+---
+date: "2018-12-27T20:46:49-06:00"
+
+title: How it works
+---
+
+`r emo::ji("woman_technologist")` We run monthly skill sharing tutorial sessions where a member of the community teaches us something they have learned along the way. 
+This is usually on the last thursday of each month. 
+
+Check out our **blog** for previous tutorials.  
+
+
+
+
+## Upcoming events
+
+The next workshop will form part of the [ResBaz](https://resbaz.github.io/resbaz2021qld/schedule/#session-42) festival.  `r emo::ji("point_down")`
+
+
+![](/images/ResBazlogo.PNG) 
+
+A low cost skill- and community-building festival where researchers come together to upskill in digital research tools and scholarship.
+Only $25 for three days of talks, workshops and meetups. 
+
+Purchase [here](https://www.eventbrite.com.au/e/resbaz-queensland-2021-tickets-185377598387) 
+Or 
+
+[volunteer to help out](https://docs.google.com/forms/d/e/1FAIpQLSfTwkZaRlKULFQrnY66P2MJSpYeUyS2eJ3RPcqMDNHy1QxmyA/viewform) for a free ticket
+
+It will be presented by Dr Catherine Kim.
+
+![](/images/CKim_sq.jpg){width=30% height=30%}
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40fishiinthec)](https://twitter.com/fishiinthec)
+
+**Bio** Catherine completed her PhD in Biological Sciences at UQ earlier this year and now splits her time between research and teaching R at the Library. Her research is focuses on coral reef ecology and conservation and is continually developing her R and data science skills. 
+
+**Workshop description** For this session, Catherine will show us how the new UQ geospatial community of practice blog will operate. She will introduce a workflow using Git and R to run the blog by forking a GitHub repository, creating a blogpost in R, and pushing the post back to GitHub. Basic understanding of Git + GitHub and R + RStudio is helpful but the workshop will be aimed for beginners with no prior knowledge. 
+
+**When** Thursday 25th November 2021, 2:30 - 4:30pm
+
+**Where** *In person* (ResBaz ticket holders only) Advanced Engineering Building (49), Room 502, UQ St Lucia.  
+
+or 
+
+*online* [Free on zoom](https://uqz.zoom.us/s/87436914908)
+
+
+
