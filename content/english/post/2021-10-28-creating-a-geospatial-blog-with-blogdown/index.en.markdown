@@ -80,6 +80,7 @@ blogdown::stop_server() #to stop serving the site
 ```
 
 ## 3. Write a post
+
 Hopefully the local site is working. We can now add a new blog post using either
 
 
