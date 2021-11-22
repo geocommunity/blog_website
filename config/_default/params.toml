@@ -3,7 +3,7 @@ title = "I'm Jane Doe"
 author = "Jane Doe"
 #copyright = "2020-2021"
 description = "Call me Jane"
-profilePicture = "images/profile.jpg"
+profilePicture = "images/turkeypin.svg"
 keywords = ""
 favicon = "favicons/"
 # example ["css/custom.css"]
