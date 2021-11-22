@@ -1,0 +1,5 @@
+**/themes/
+demo/
+.hugo/*
+!.hugo/version
+/node_modules
