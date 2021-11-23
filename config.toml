@@ -1,4 +1,4 @@
-baseURL = "https://example.com"
+baseURL = "/"
 languageCode = "en"
 DefaultContentLanguage = "en"
 title = "Website of Jane Doe"
@@ -13,7 +13,7 @@ enableRobotsTXT = true
 # Google Analytics
 #googleAnalytics = "UA-123-45"
 
-# Syntax highlighting
+# Syntax highlightisdng
 pygmentsUseClasses = true   
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true

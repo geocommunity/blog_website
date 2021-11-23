@@ -372,3 +372,4 @@ Let's face it, the likelihood of something going awry following this tutorial is
 - Sometimes it is difficult to tell when the 'LiveReload' has finished or if you are used to saving regularly every few minutes that constant updating of 'LiveReload' can freeze RStudio.
     - **Solution**: The good 'ole Restart R (Session > Restart R) or close and re-open.
 - OTHERS??
+
