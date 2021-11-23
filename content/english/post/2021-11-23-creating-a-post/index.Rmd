@@ -14,15 +14,16 @@ Description: ''
 DisableComments: no
 ---
 
-We will be covering some basics of multiple programming skills (Git/GitHub, R, html, etc...) with the aim of empowering people to contribute to blogdown websites such as the **University of Queensland GeoSpatial Analysis Community of practice (UQGSAC)** blog. The idea is to encourage community members to contribute material directly instead of funneling everything through a website administrator.
+We will be covering some basics of multiple programming skills (Git/GitHub, R, html, etc...) with the aim of empowering people to contribute to blogdown websites such as the **University of Queensland Geospatial Analysis Community of practice (UQGAC)** blog. The idea is to encourage community members to contribute material directly instead of funneling everything through a website administrator.
 
-## Geospatial Analysis Community of Practice - The University of Queensland (UGSAC)
+## Geospatial Analysis Community of Practice - The University of Queensland (UQGAC)
 
 Unveil the new **website**!
 
 Point of contact - Mitchel Rudge
+mitchel.rudge@uq.edu.au
 
-## Creating a post on the UQGSAC website
+## Creating a post on the UQGAC website
 
 **Catherine Kim, PhD**  
 Postdoctoral Associate, School of Biological Sciences  
@@ -50,9 +51,9 @@ What you will need:
 ![blogdown hex sticker](https://bookdown.org/yihui/blogdown/images/logo.png)
 
 -There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others, and a nice, recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
-- See [Stéphane's tutorial](/post/creating-a-geospatial-blog-with-blogdown/) for UQGSAC on creating a blogdown website.
+- See [Mitch and Stéphane's tutorial](/post/creating-a-geospatial-blog-with-blogdown/) for UQGSAC on creating a blogdown website.
 
-**This session focuses on how to go about *contributing* a website.**
+**This session focuses on how to go about *contributing* a post to an existing website.**
 
 The UQGSAC website is built using the anatole theme. There are many themes to choose from and if you know html/CSS you can even build your own theme.
 
@@ -60,13 +61,13 @@ So, how do we go about contributing to a blogdown website?
 
 ![](https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif)
 
-Good place to start is making sure you have installed the `blogdown` package:
+A good place to start is making sure you have installed the `blogdown` package:
 
 ```{r eval = FALSE}
 install.packages("blogdown")
 ```
 
-In order for multiple people to contribute to the same website, the website is hosted on **GitHub** and **Netlify**.
+To allow multiple people to contribute to the same website, the website is hosted on **GitHub** and **Netlify**.
 
 As the website is already set-up, we will be dealing with Git + GitHub and R + RStudio + R Markdown.
 
@@ -87,7 +88,7 @@ We will focus on contributing a post to an existing website repository on GitHub
 
 ### Git Terminology
 
-**Repository/repo** - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can verson control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.
+**Repository/repo** - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can version control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.
 
 **Commit** - is one or more changes to a file or set of files that you are asking GitHub to keep track of.
 
@@ -139,7 +140,7 @@ Now that we have *cloned* the repository, let's explore the file structure a lit
 
 The rest of the files are the 'backend' of the site using html, CSS, js, etc. to build the website. Have a look if you are curious but make changes at the risk of being 'that person' to break the site! But don't worry, since we are using Git version control all changes are tracked and reversible.
 
-Now that we are somewhat familiar with the project structure. Let's create a new post.
+Now that we are somewhat familiar with the project structure, let's create a new post.
 
 ### 3. Create a new post
 
@@ -230,7 +231,7 @@ Remember, *everytime* you **save** your .Rmd file will activate the *LiveReload*
 
 ### 7. Create your content 
 
-Once the website is set-up, forked, and cloned... you can get away with creating a new post with minimal coding. The main thing you will need to use is:
+Once the website is set-up, forked, and cloned... you can get on with creating a new post with minimal coding. The main thing you will need to use is:
 
 #### R Markdown
 
@@ -278,7 +279,7 @@ Like this.
 
 You can embed an R code chunk like this:
 
-```{r cars}
+```{r cars, echo=TRUE}
 summary(cars)
 ```
 

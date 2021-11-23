@@ -1,31 +1,35 @@
 ---
-title: How to contribute a post.
-author: ''
+title: How to contribute a post
+author: 'Catherine Kim'
 date: '2021-11-23'
 slug: []
 categories: []
-tags: []
+tags: 
+  - r
+  - rstudio
+  - git
+  - GitHub
+  - blogdown
 Description: ''
-Tags: []
-Categories: []
 DisableComments: no
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 
 
-<p>We will be covering some basics of multiple programming skills (Git/GitHub, R, html, etc…) with the aim of empowering people to contribute to blogdown websites such as the University of Queensland GeoSpatial Analysis Community of practice (UQGSAC) blog. The idea is to encourage community members to contribute material directly instead of funneling everything through a few website administrators.</p>
-<div id="geospatial-analysis-community-of-practice---the-university-of-queensland-ugsac" class="section level2">
-<h2>Geospatial Analysis Community of Practice - The University of Queensland (UGSAC)</h2>
+<p>We will be covering some basics of multiple programming skills (Git/GitHub, R, html, etc…) with the aim of empowering people to contribute to blogdown websites such as the <strong>University of Queensland Geospatial Analysis Community of practice (UQGAC)</strong> blog. The idea is to encourage community members to contribute material directly instead of funneling everything through a website administrator.</p>
+<div id="geospatial-analysis-community-of-practice---the-university-of-queensland-uqgac" class="section level2">
+<h2>Geospatial Analysis Community of Practice - The University of Queensland (UQGAC)</h2>
 <p>Unveil the new <strong>website</strong>!</p>
-<p>Point of contact - Mitchel Rudge</p>
+<p>Point of contact - Mitchel Rudge
+<a href="mailto:mitchel.rudge@uq.edu.au" class="email">mitchel.rudge@uq.edu.au</a></p>
 </div>
-<div id="creating-a-post-on-the-uqgsac-website" class="section level2">
-<h2>Creating a post on the UQGSAC website</h2>
+<div id="creating-a-post-on-the-uqgac-website" class="section level2">
+<h2>Creating a post on the UQGAC website</h2>
 <p><strong>Catherine Kim, PhD</strong><br />
 Postdoctoral Associate, School of Biological Sciences<br />
 Technology Trainer, UQ Library<br />
-<span class="citation">@fishiintheC</span></p>
+Twitter: <span class="citation">@fishiintheC</span></p>
 <p>What we will cover:</p>
 <ol style="list-style-type: decimal">
 <li>blogdown basics</li>
@@ -33,6 +37,7 @@ Technology Trainer, UQ Library<br />
 <li>How to create a post on the UQGSAC blogdown website</li>
 <li>R Markdown basics</li>
 </ol>
+<p>I have pieced this together using many other resources on the above which are mentioned throughout.</p>
 <p>What you will need:</p>
 <ol style="list-style-type: decimal">
 <li>Installations - R, RStudio, Git</li>
@@ -47,14 +52,14 @@ Technology Trainer, UQ Library<br />
 <p class="caption">blogdown hex sticker</p>
 </div>
 <p>-There is a <a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">short online book</a> on blogdown written by the developer, Yihui and others, and a nice, recent <a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">article by Allison Hill</a> on starting your own blogdown website from scratch.
-- See <a href="/post/creating-a-geospatial-blog-with-blogdown/">Stéphane’s tutorial</a> for UQGSAC on creating a blogdown website.</p>
-<p><strong>This session focuses on how to go about <em>contributing</em> a website.</strong></p>
+- See <a href="/post/creating-a-geospatial-blog-with-blogdown/">Mitch and Stéphane’s tutorial</a> for UQGSAC on creating a blogdown website.</p>
+<p><strong>This session focuses on how to go about <em>contributing</em> a post to an existing website.</strong></p>
 <p>The UQGSAC website is built using the anatole theme. There are many themes to choose from and if you know html/CSS you can even build your own theme.</p>
 <p>So, how do we go about contributing to a blogdown website?</p>
 <p><img src="https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif" /></p>
-<p>Good place to start is making sure you have installed the <code>blogdown</code> package:</p>
+<p>A good place to start is making sure you have installed the <code>blogdown</code> package:</p>
 <pre class="r"><code>install.packages(&quot;blogdown&quot;)</code></pre>
-<p>In order for multiple people to contribute to the same website, the website is hosted on <strong>GitHub</strong> and <strong>Netlify</strong>.</p>
+<p>To allow multiple people to contribute to the same website, the website is hosted on <strong>GitHub</strong> and <strong>Netlify</strong>.</p>
 <p>As the website is already set-up, we will be dealing with Git + GitHub and R + RStudio + R Markdown.</p>
 </div>
 <div id="git---what-is-it" class="section level2">
@@ -70,7 +75,7 @@ Technology Trainer, UQ Library<br />
 </ul>
 <div id="git-terminology" class="section level3">
 <h3>Git Terminology</h3>
-<p><strong>Repository</strong> - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can verson control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.</p>
+<p><strong>Repository/repo</strong> - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can version control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.</p>
 <p><strong>Commit</strong> - is one or more changes to a file or set of files that you are asking GitHub to keep track of.</p>
 <p><strong>Push</strong> - sending your committed changes to a remote repository on GitHub. Local changes updated on the GitHub website where other people can access.</p>
 <p><strong>Pull</strong> - incorporating and merging changes. An edit on the remote repository on GitHub can be pulled to a local repository.</p>
@@ -118,7 +123,7 @@ Technology Trainer, UQ Library<br />
 <img src="images/HGwR_fork-and-clone.png" alt="Figure borrowed from Jenny Bryan’s Happy Git with R." /></p>
 <p>Now that we have <em>cloned</em> the repository, let’s explore the file structure a little in the ‘Files’ tab in RStudio. It is NOT a very intuitively set-up even for intermediate users of R. For the purposes of creating a new post to add to the blog, we are mostly concerned with the <code>content/english/</code> directory that contains the <code>post/</code> sub-directory.</p>
 <p>The rest of the files are the ‘backend’ of the site using html, CSS, js, etc. to build the website. Have a look if you are curious but make changes at the risk of being ‘that person’ to break the site! But don’t worry, since we are using Git version control all changes are tracked and reversible.</p>
-<p>Now that we are somewhat familiar with the project structure. Let’s create a new post.</p>
+<p>Now that we are somewhat familiar with the project structure, let’s create a new post.</p>
 </div>
 <div id="create-a-new-post" class="section level3">
 <h3>3. Create a new post</h3>
@@ -161,7 +166,16 @@ Technology Trainer, UQ Library<br />
 <p class="caption">Celebrate!</p>
 </div>
 <p>Knowing when and how often to commit is a bit of an art that comes with experience. In general, you want to commit changes that are related to a single problem and a good commit message. There is also a <code>History</code> button on the top left corner that will list all the commits with messages you have made and you can view the diff by clicking on a commit. All commits have a unique code which you can use to return to a previous commit etc.</p>
+<p><strong>Important notes:</strong></p>
+<ul>
+<li>Once you have served the site (see Step 6) it will create additional files within your post bundle directory. Be sure to commit <strong>all files</strong> in the post bundle created when knitting (/index.html, /index_files, etc.) not just the <code>index.Rmd</code> file as they will be necessary to build the site from GitHub. - You can stage them all together as one commit.</li>
+<li>You will not be able to see diffs in the commit window until they have been <strong>saved</strong>.</li>
+</ul>
 <p>See more on committing and <a href="https://r-pkgs.org/git.html#commit-best-practices">best practices</a> from the R packages book.</p>
+<div class="figure">
+<img src="https://imgs.xkcd.com/comics/git_commit.png" alt="" />
+<p class="caption">How committing goes…</p>
+</div>
 </div>
 <div id="push-the-changes-to-github" class="section level3">
 <h3>5. <strong>Push</strong> the changes to GitHub</h3>
@@ -181,7 +195,7 @@ Technology Trainer, UQ Library<br />
 <p>In general, you should <strong>commit</strong> often and then <strong>push</strong>.</p>
 </div>
 <div id="serve-the-site" class="section level3">
-<h3>5. Serve the site</h3>
+<h3>6. Serve the site</h3>
 <p>In the console, run <code>blogdown::serve_site()</code>. Alternatively, can click on RStudio ‘Addins’ and select ‘Serve Site’. Be patient, but what happens?</p>
 <div class="figure">
 <img src="images/R-servesite.png" alt="" />
@@ -198,11 +212,11 @@ Technology Trainer, UQ Library<br />
 <blockquote>
 <p>Let’s introduce an important and helpful technology that you just used: LiveReload. Serving your site uses LiveReload, which means your website will be automatically rebuilt and reloaded in your web browser when you modify any source file of your website and save it. Basically, once you launch the website in a web browser, you do not need to rebuild it explicitly anymore. All you need to do is edit the source files, such as R Markdown documents, and save them. There is no need to click any buttons or run any commands. LiveReload is implemented via blogdown::serve_site() and Hugo, and you will only need to use it once per work session.</p>
 </blockquote>
-<p>To stop serving the site locally run <code>blogdown::stop_server()</code> in the console.</p>
+<p>Remember, <em>everytime</em> you <strong>save</strong> your .Rmd file will activate the <em>LiveReload</em>. To stop serving the site locally run <code>blogdown::stop_server()</code> in the console.</p>
 </div>
 <div id="create-your-content" class="section level3">
-<h3>6. Create your content</h3>
-<p>Once the website is set-up, forked, and cloned… you can get away with creating a new post with minimal coding. The main thing you will need to use is:</p>
+<h3>7. Create your content</h3>
+<p>Once the website is set-up, forked, and cloned… you can get on with creating a new post with minimal coding. The main thing you will need to use is:</p>
 <div id="r-markdown" class="section level4">
 <h4>R Markdown</h4>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML documents that we can incorporate into the website. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
@@ -311,10 +325,25 @@ E = mc^2
 <li>Click the green <code>Create pull request</code> button on the right. This will take you to a ‘Open a pull request’ window that will have your last commit and space to add a larger message with your pull request or <strong>PR</strong>.</li>
 <li>Once you are happy, click the green `` button at the end and wait for approval. You can have a bit of a conversation to hash out any issues as well.</li>
 </ul>
-<p><img src="images/GitHub-openPR.png" alt="GitHub open a pull request." />
-Congratulations - now you have submitted your blog post to a blogdown site!</p>
+<div class="figure">
+<img src="images/GitHub-openPR.png" alt="" />
+<p class="caption">GitHub open a pull request.</p>
+</div>
+<p>Congratulations - now you have submitted your blog post to a blogdown site!</p>
+<div class="figure">
+<img src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" alt="" />
+<p class="caption">Cheers</p>
+</div>
 </div>
 </div>
 <div id="troubleshooting" class="section level2">
 <h2>Troubleshooting…</h2>
+<p>Let’s face it, the likelihood of something going awry following this tutorial is not 0… Few things that might help along the way:</p>
+<ul>
+<li>Sometimes it is difficult to tell when the ‘LiveReload’ has finished or if you are used to saving regularly every few minutes that constant updating of ‘LiveReload’ can freeze RStudio.
+<ul>
+<li><strong>Solution</strong>: The good ’ole Restart R (Session &gt; Restart R) or close and re-open.</li>
+</ul></li>
+<li>OTHERS??</li>
+</ul>
 </div>
