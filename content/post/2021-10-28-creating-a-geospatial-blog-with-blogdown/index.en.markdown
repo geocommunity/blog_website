@@ -105,6 +105,13 @@ As an example
 
 ```r
 library(ggplot2)
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 4.0.5
+```
+
+```r
 ggplot(Orange, aes(x = age, 
                    y = circumference, 
                    color = Tree)) +
