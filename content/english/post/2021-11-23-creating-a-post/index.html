@@ -1,20 +1,24 @@
 ---
-title: How to contribute a post.
-author: ''
+title: How to contribute a post
+author: 'Catherine Kim'
 date: '2021-11-23'
 slug: []
 categories: []
-tags: []
+tags: 
+  - r
+  - rstudio
+  - git
+  - GitHub
+  - blogdown
 Description: ''
-Tags: []
-Categories: []
 DisableComments: no
+math: true
 ---
 
 <script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 
 
-<p>We will be covering some basics of multiple programming skills (Git/GitHub, R, html, etc…) with the aim of empowering people to contribute to blogdown websites such as the University of Queensland GeoSpatial Analysis Community of practice (UQGSAC) blog. The idea is to encourage community members to contribute material directly instead of funneling everything through a few website administrators.</p>
+<p>We will be covering some basics of multiple programming skills (Git/GitHub, R, html, etc…) with the aim of empowering people to contribute to blogdown websites such as the <strong>University of Queensland GeoSpatial Analysis Community of practice (UQGSAC)</strong> blog. The idea is to encourage community members to contribute material directly instead of funneling everything through a website administrator.</p>
 <div id="geospatial-analysis-community-of-practice---the-university-of-queensland-ugsac" class="section level2">
 <h2>Geospatial Analysis Community of Practice - The University of Queensland (UGSAC)</h2>
 <p>Unveil the new <strong>website</strong>!</p>
@@ -25,7 +29,7 @@ DisableComments: no
 <p><strong>Catherine Kim, PhD</strong><br />
 Postdoctoral Associate, School of Biological Sciences<br />
 Technology Trainer, UQ Library<br />
-<span class="citation">@fishiintheC</span></p>
+Twitter: <span class="citation">@fishiintheC</span></p>
 <p>What we will cover:</p>
 <ol style="list-style-type: decimal">
 <li>blogdown basics</li>
@@ -33,6 +37,7 @@ Technology Trainer, UQ Library<br />
 <li>How to create a post on the UQGSAC blogdown website</li>
 <li>R Markdown basics</li>
 </ol>
+<p>I have pieced this together using many other resources on the above which are mentioned throughout.</p>
 <p>What you will need:</p>
 <ol style="list-style-type: decimal">
 <li>Installations - R, RStudio, Git</li>
@@ -46,8 +51,10 @@ Technology Trainer, UQ Library<br />
 <img src="https://bookdown.org/yihui/blogdown/images/logo.png" alt="" />
 <p class="caption">blogdown hex sticker</p>
 </div>
-<p>-There is a <a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">short online book</a> on blogdown written by the developer, Yihui and others, and a nice, recent <a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">article by Allison Hill</a> on starting your own blogdown website from scratch.
-- See <a href="/post/creating-a-geospatial-blog-with-blogdown/">Stéphane’s tutorial</a> for UQGSAC on creating a blogdown website.</p>
+<ul>
+<li>There is a <a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">short online book</a> on blogdown written by the developer, Yihui and others, and a nice, recent <a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">article by Allison Hill</a> on starting your own blogdown website from scratch.</li>
+<li>See <a href="/post/creating-a-geospatial-blog-with-blogdown/">Stéphane’s tutorial</a> for UQGSAC on creating a blogdown website.</li>
+</ul>
 <p><strong>This session focuses on how to go about <em>contributing</em> a website.</strong></p>
 <p>The UQGSAC website is built using the anatole theme. There are many themes to choose from and if you know html/CSS you can even build your own theme.</p>
 <p>So, how do we go about contributing to a blogdown website?</p>
@@ -70,7 +77,7 @@ Technology Trainer, UQ Library<br />
 </ul>
 <div id="git-terminology" class="section level3">
 <h3>Git Terminology</h3>
-<p><strong>Repository</strong> - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can verson control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.</p>
+<p><strong>Repository/repo</strong> - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can verson control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.</p>
 <p><strong>Commit</strong> - is one or more changes to a file or set of files that you are asking GitHub to keep track of.</p>
 <p><strong>Push</strong> - sending your committed changes to a remote repository on GitHub. Local changes updated on the GitHub website where other people can access.</p>
 <p><strong>Pull</strong> - incorporating and merging changes. An edit on the remote repository on GitHub can be pulled to a local repository.</p>
@@ -161,13 +168,34 @@ Technology Trainer, UQ Library<br />
 <p class="caption">Celebrate!</p>
 </div>
 <p>Knowing when and how often to commit is a bit of an art that comes with experience. In general, you want to commit changes that are related to a single problem and a good commit message. There is also a <code>History</code> button on the top left corner that will list all the commits with messages you have made and you can view the diff by clicking on a commit. All commits have a unique code which you can use to return to a previous commit etc.</p>
+<p><strong>Important notes:</strong></p>
+<ul>
+<li>Once you have served the site (see Step 6) it will create additional files within your post bundle directory. Be sure to commit <strong>all files</strong> in the post bundle created when knitting (/index.html, /index_files, etc.) not just the <code>index.Rmd</code> file as they will be necessary to build the site from GitHub. - You can stage them all together as one commit.</li>
+<li>You will not be able to see diffs in the commit window until they have been <strong>saved</strong>.</li>
+</ul>
 <p>See more on committing and <a href="https://r-pkgs.org/git.html#commit-best-practices">best practices</a> from the R packages book.</p>
+<div class="figure">
+<img src="https://imgs.xkcd.com/comics/git_commit.png" alt="" />
+<p class="caption">How committing goes…</p>
+</div>
 </div>
 <div id="push-the-changes-to-github" class="section level3">
 <h3>5. <strong>Push</strong> the changes to GitHub</h3>
 <p>The changes and commits we have made are local, but we need to get them onto the GitHub repo and then the website. This is where we need to <strong>push</strong>.</p>
 <p>In the <code>Git</code> window, you will see a blue down arrow for <strong>pull</strong>ing and a green up arrow for <strong>push</strong>ing. You will also see a message along the lines of <code>Your branch is ahead of 'origin/main' by X commits</code> under those buttons.</p>
-<p>For the purposes of contributing a post to a blogdown website, we will not worry about pulls and <em>fetching upstream</em>. This basically means keeping your <code>origin/master</code> repo synced with the original upstream repo that you forked. If you stick to creating a new post bundle and <strong>only modifying files within the post bundles</strong> it should be okay. BUT know that if you are using GitHub to work collaboratively, staying current with the original repo is important and in general it is a good practice to always <strong>pull before</strong> you <strong>push</strong>. Recommend <a href="https://happygitwithr.com/fork-and-clone.html">Happy Git and GitHub for the useR R</a> as a trusty guide.</p>
+<p>For the purposes of contributing a post to a blogdown website, we will not worry about pulls and <em>fetching upstream</em>. This basically means keeping your <code>origin/master</code> repo synced with the original upstream repo that you forked.</p>
+<p>If you stick to creating a new post bundle and <strong>only modifying files within the post bundles</strong> it should be okay without fetching upstream. BUT know that if you are using GitHub to work collaboratively, staying current with the original repo is important and in general it is a good practice to always <strong>pull before</strong> you <strong>push</strong>. Recommend <a href="https://happygitwithr.com/fork-and-clone.html">Happy Git and GitHub for the useR R</a> as a trusty guide.</p>
+<p>If you want to try <strong>fetching upstream</strong> it is easiest to do via GitHub. Followed by a <strong>pull</strong> in RStudio.</p>
+<ul>
+<li>Log into your GitHub account online, and navigate to your <code>YOU/blog_website</code> repo.</li>
+<li>Under the green <code>Code</code> button, there should be a <code>Fetch upstream</code> button that will sync your forked repo with the original upstream repo.</li>
+<li>There is information about the status of your branch compared to the original upstream repo e.g., ‘up to date’ or ‘X commits ahead/behind’ to give you an idea if you need to fetch or not.</li>
+<li></li>
+</ul>
+<div class="figure">
+<img src="images/HGwR_fork-and-clone.png" alt="" />
+<p class="caption">Figure borrowed from Jenny Bryan’s Happy Git with R.</p>
+</div>
 <p>Now we will <em>push</em> our commits from or local repo to our remote <code>origin/master</code> repo on GitHub. If you see <code>HEAD -&gt; main</code> then all good.</p>
 <div class="figure">
 <img src="images/R-push.png" alt="" />
@@ -181,7 +209,7 @@ Technology Trainer, UQ Library<br />
 <p>In general, you should <strong>commit</strong> often and then <strong>push</strong>.</p>
 </div>
 <div id="serve-the-site" class="section level3">
-<h3>5. Serve the site</h3>
+<h3>6. Serve the site</h3>
 <p>In the console, run <code>blogdown::serve_site()</code>. Alternatively, can click on RStudio ‘Addins’ and select ‘Serve Site’. Be patient, but what happens?</p>
 <div class="figure">
 <img src="images/R-servesite.png" alt="" />
@@ -198,10 +226,10 @@ Technology Trainer, UQ Library<br />
 <blockquote>
 <p>Let’s introduce an important and helpful technology that you just used: LiveReload. Serving your site uses LiveReload, which means your website will be automatically rebuilt and reloaded in your web browser when you modify any source file of your website and save it. Basically, once you launch the website in a web browser, you do not need to rebuild it explicitly anymore. All you need to do is edit the source files, such as R Markdown documents, and save them. There is no need to click any buttons or run any commands. LiveReload is implemented via blogdown::serve_site() and Hugo, and you will only need to use it once per work session.</p>
 </blockquote>
-<p>To stop serving the site locally run <code>blogdown::stop_server()</code> in the console.</p>
+<p>Remember, <em>everytime</em> you <strong>save</strong> your .Rmd file will activate the <em>LiveReload</em>. To stop serving the site locally run <code>blogdown::stop_server()</code> in the console.</p>
 </div>
 <div id="create-your-content" class="section level3">
-<h3>6. Create your content</h3>
+<h3>7. Create your content</h3>
 <p>Once the website is set-up, forked, and cloned… you can get away with creating a new post with minimal coding. The main thing you will need to use is:</p>
 <div id="r-markdown" class="section level4">
 <h4>R Markdown</h4>
@@ -264,6 +292,10 @@ E = mc^2
 \]</span></p>
 <p>You can also use inline math notation by sandwiching it between <code>$</code> <strong>without spaces</strong>. Like so <span class="math inline">\(\mu = 0.2566\)</span>.</p>
 <p><strong>NOT working?? not sure why… maybe the theme</strong></p>
+<p>Mathematical notation can be enabled using third party JavaScript libraries like KaTeX. See resource of <a href="https://katex.org/docs/supported.html">supported TeX functions</a>.</p>
+<p>Inline math: <span class="math inline">\(\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…\)</span></p>
+<p>Block math:</p>
+<p><span class="math display">\[ \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } } \]</span></p>
 </div>
 <div id="including-plots" class="section level5">
 <h5>Including Plots</h5>
@@ -309,12 +341,27 @@ E = mc^2
 <li>On your <code>YOU/blog_website</code> repo in your GitHub account, click on <code>Pull requests</code>.</li>
 <li>On the right of the screen, there should be a green <code>New pull request</code> button. This will take to you a ‘Comparing changes’ window outlining the files and changes you have made. This will alert you to any merge conflicts with the original upstream repo. Again, sticking to creating a new post bundle/content should avoid any merge conflicts.</li>
 <li>Click the green <code>Create pull request</code> button on the right. This will take you to a ‘Open a pull request’ window that will have your last commit and space to add a larger message with your pull request or <strong>PR</strong>.</li>
-<li>Once you are happy, click the green `` button at the end and wait for approval. You can have a bit of a conversation to hash out any issues as well.</li>
+<li>Once you are happy, click the green button at the end and wait for approval. You can have a bit of a conversation to hash out any issues as well over the approval process.</li>
 </ul>
-<p><img src="images/GitHub-openPR.png" alt="GitHub open a pull request." />
-Congratulations - now you have submitted your blog post to a blogdown site!</p>
+<div class="figure">
+<img src="images/GitHub-openPR.png" alt="" />
+<p class="caption">GitHub open a pull request.</p>
+</div>
+<p>Congratulations - now you have submitted your blog post to a blogdown site!</p>
+<div class="figure">
+<img src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" alt="" />
+<p class="caption">Cheers</p>
+</div>
 </div>
 </div>
 <div id="troubleshooting" class="section level2">
 <h2>Troubleshooting…</h2>
+<p>Let’s face it, the likelihood of something going awry following this tutorial is not 0… Few things that might help along the way:</p>
+<ul>
+<li>Sometimes it is difficult to tell when the ‘LiveReload’ has finished or if you are used to saving regularly every few minutes that constant updating of ‘LiveReload’ can freeze RStudio.
+<ul>
+<li><strong>Solution</strong>: The good ’ole Restart R (Session &gt; Restart R) or close and re-open.</li>
+</ul></li>
+<li>OTHERS???</li>
+</ul>
 </div>
