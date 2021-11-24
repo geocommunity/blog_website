@@ -190,7 +190,8 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <li>Log into your GitHub account online, and navigate to your <code>YOU/blog_website</code> repo.</li>
 <li>Under the green <code>Code</code> button, there should be a <code>Fetch upstream</code> button that will sync your forked repo with the original upstream repo.</li>
 <li>There is information about the status of your branch compared to the original upstream repo e.g., ‘up to date’ or ‘X commits ahead/behind’ to give you an idea if you need to fetch or not.</li>
-<li></li>
+<li>Now in RStuiod, you should be good to <strong>pull</strong>.</li>
+<li>Revisiting this diagram, the <em>fetch upstream</em> is updating your forked repo from the origional orange repo and then the pull is updating your local repo from your forked repo.</li>
 </ul>
 <div class="figure">
 <img src="images/HGwR_fork-and-clone.png" alt="" />
@@ -239,7 +240,8 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <div id="yaml-header" class="section level5">
 <h5>YAML header</h5>
 <p>The YAML, or Yet Another Markdown Language, header at the top of the .Rmd is set between <code>---</code> tags. Here is where information like the Title, Date, Author of the document go and will appear in the post.</p>
-<p><strong>don’t worry about tags and categories??</strong></p>
+<p>Have a look at previous posts and add any relevant tags or categories as you like.</p>
+<p>The default .Rmd has some redundant settings (tags vs Tags) so if you use them stick with the lower case settings.</p>
 </div>
 <div id="formatting" class="section level5">
 <h5>Formatting</h5>
@@ -284,18 +286,16 @@ Like this.</p>
 </div>
 <div id="include-mathematical-notation" class="section level5">
 <h5>Include mathematical notation</h5>
-<p>To enter equations like a code chunk, use two <code>$</code> on separate lines surrounding your equations.</p>
+<p>Mathematical notation can be enabled using third party JavaScript libraries like KaTeX. See resource of <a href="https://katex.org/docs/supported.html">supported TeX functions</a>. For these to render correctly you <strong>must add <code>math: true</code> to the YAML header at the top of the .Rmd</strong>.</p>
+<p>To enter equations like a code chunk or block math, use two <code>$</code> on separate lines surrounding your equations.</p>
 <p>Put two <code>\</code> after a line for a full return.</p>
 <p><span class="math display">\[
 y = mx + \beta\\
 E = mc^2
 \]</span></p>
-<p>You can also use inline math notation by sandwiching it between <code>$</code> <strong>without spaces</strong>. Like so <span class="math inline">\(\mu = 0.2566\)</span>.</p>
-<p><strong>NOT working?? not sure why… maybe the theme</strong></p>
-<p>Mathematical notation can be enabled using third party JavaScript libraries like KaTeX. See resource of <a href="https://katex.org/docs/supported.html">supported TeX functions</a>.</p>
-<p>Inline math: <span class="math inline">\(\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…\)</span></p>
-<p>Block math:</p>
-<p><span class="math display">\[ \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } } \]</span></p>
+<p><span class="math display">\[ \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } } \]</span>
+You can also use inline math notation by sandwiching it between <code>$</code> <strong>without spaces</strong>. Like so <span class="math inline">\(\mu = 0.2566\)</span>.</p>
+<p>Another inline way: <span class="math inline">\(\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…\)</span></p>
 </div>
 <div id="including-plots" class="section level5">
 <h5>Including Plots</h5>
@@ -362,6 +362,6 @@ E = mc^2
 <ul>
 <li><strong>Solution</strong>: The good ’ole Restart R (Session &gt; Restart R) or close and re-open.</li>
 </ul></li>
-<li>OTHERS???</li>
+<li>OTHERS??</li>
 </ul>
 </div>

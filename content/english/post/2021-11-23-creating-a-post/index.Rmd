@@ -207,7 +207,8 @@ If you want to try **fetching upstream** it is easiest to do via GitHub. Followe
 - Log into your GitHub account online, and navigate to your `YOU/blog_website` repo.
 - Under the green `Code` button, there should be a `Fetch upstream` button that will sync your forked repo with the original upstream repo.
 - There is information about the status of your branch compared to the original upstream repo e.g., 'up to date' or 'X commits ahead/behind' to give you an idea if you need to fetch or not.
-- 
+- Now in RStuiod, you should be good to **pull**.
+- Revisiting this diagram, the *fetch upstream* is updating your forked repo from the origional orange repo and then the pull is updating your local repo from your forked repo.
 
 ![Figure borrowed from Jenny Bryan's Happy Git with R.](images/HGwR_fork-and-clone.png)
 
@@ -257,7 +258,9 @@ Now let's add some information about R Markdown:
 
 The YAML, or Yet Another Markdown Language, header at the top of the .Rmd is set between `---` tags. Here is where information like the Title, Date, Author of the document go and will appear in the post.
 
-**don't worry about tags and categories??**
+Have a look at previous posts and add any relevant tags or categories as you like. 
+
+The default .Rmd has some redundant settings (tags vs Tags) so if you use them stick with the lower case settings.
 
 ##### Formatting
 
@@ -299,7 +302,9 @@ There is also inline code: The mean of speed in the cars data set is `r mean(car
 
 ##### Include mathematical notation
 
-To enter equations like a code chunk, use two `$` on separate lines surrounding your equations.
+Mathematical notation can be enabled using third party JavaScript libraries like KaTeX. See resource of [supported TeX functions](https://katex.org/docs/supported.html). For these to render correctly you **must add `math: true` to the YAML header at the top of the .Rmd**.
+
+To enter equations like a code chunk or block math, use two `$` on separate lines surrounding your equations.
 
 Put two `\` after a line for a full return.
 
@@ -308,17 +313,10 @@ y = mx + \beta\\
 E = mc^2
 $$
 
+$$ \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } } $$
 You can also use inline math notation by sandwiching it between `$` **without spaces**. Like so $\mu = 0.2566$.
 
-**NOT working?? not sure why... maybe the theme**
-
-Mathematical notation can be enabled using third party JavaScript libraries like KaTeX. See resource of [supported TeX functions](https://katex.org/docs/supported.html).
-
-Inline math: \(\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…\)
-
-Block math:
-
-$$ \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } } $$
+Another inline way: \(\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…\)
 
 ##### Including Plots
 
@@ -392,9 +390,6 @@ Let's face it, the likelihood of something going awry following this tutorial is
 
 - Sometimes it is difficult to tell when the 'LiveReload' has finished or if you are used to saving regularly every few minutes that constant updating of 'LiveReload' can freeze RStudio.
     - **Solution**: The good 'ole Restart R (Session > Restart R) or close and re-open.
-<<<<<<< HEAD
-- OTHERS???
-=======
 - OTHERS??
 
->>>>>>> 33ae22ab983a82ef23766a1db65d9cfb65c1104d
+
