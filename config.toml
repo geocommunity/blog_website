@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://geospatial-community.netlify.app/"
 languageCode = "en"
 DefaultContentLanguage = "en"
 title = "Website of Jane Doe"
