@@ -1,48 +1,27 @@
 ---
 date: "2018-12-27T20:46:49-06:00"
 
-title: How it works
+title: About us
 ---
 
+Whether its making a simple map or running complex analyses on satellite data,  students and researchers are often called upon to do some sort of geospatial analysis. `r emo::ji("world_map")`  
+
+Fortunately, there are a wealth of tools available to do this, think R, Python and QGIS.`r emo::ji("hammer")`    
+
+Unfortunately, and it can be a steep learning curve to start with, particularly as we don't all have a strong background in coding, GIS or remote sensing.  
+
+The UQ Geospatial Analysis Community of Practice (sometimes UQGAC) tries to make this process a bit less painful, by sharing  experiences, skills and tricks in a friendly and inclusive environment.    
+
 `r emo::ji("woman_technologist")` We run monthly skill sharing tutorial sessions where a member of the community teaches us something they have learned along the way. 
-This is usually on the last thursday of each month. 
 
-Check out our **blog** for previous tutorials.  
+This is usually on the last thursday of each month.  
+See [upcoming events](/upcoming-events/) for the next session. 
 
-
-
-
-## Upcoming events
-
-The next workshop will form part of the [ResBaz](https://resbaz.github.io/resbaz2021qld/schedule/#session-42) festival.  `r emo::ji("point_down")`
+And check out our [blog](/post/) for previous tutorials.  
 
 
-![](/images/ResBazlogo.PNG) 
+If you want to get involved, simply email Mitch at mitchel.rudge@uq.edu.au
 
-A low cost skill- and community-building festival where researchers come together to upskill in digital research tools and scholarship.
-Only $25 for three days of talks, workshops and meetups. 
-
-Purchase [here](https://www.eventbrite.com.au/e/resbaz-queensland-2021-tickets-185377598387) 
-Or 
-
-[volunteer to help out](https://docs.google.com/forms/d/e/1FAIpQLSfTwkZaRlKULFQrnY66P2MJSpYeUyS2eJ3RPcqMDNHy1QxmyA/viewform) for a free ticket
-
-It will be presented by Dr Catherine Kim.
-
-![](/images/CKim_sq.jpg){width=30% height=30%}
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40fishiinthec)](https://twitter.com/fishiinthec)
-
-**Bio** Catherine completed her PhD in Biological Sciences at UQ earlier this year and now splits her time between research and teaching R at the Library. Her research is focuses on coral reef ecology and conservation and is continually developing her R and data science skills. 
-
-**Workshop description** For this session, Catherine will show us how the new UQ geospatial community of practice blog will operate. She will introduce a workflow using Git and R to run the blog by forking a GitHub repository, creating a blogpost in R, and pushing the post back to GitHub. Basic understanding of Git + GitHub and R + RStudio is helpful but the workshop will be aimed for beginners with no prior knowledge. 
-
-**When** Thursday 25th November 2021, 2:30 - 4:30pm
-
-**Where** *In person* (ResBaz ticket holders only) Advanced Engineering Building (49), Room 502, UQ St Lucia.  
-
-or 
-
-*online* [Free on zoom](https://uqz.zoom.us/s/87436914908)
 
 
 

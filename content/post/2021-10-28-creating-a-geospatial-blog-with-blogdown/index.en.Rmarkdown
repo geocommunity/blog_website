@@ -166,3 +166,76 @@ Now go back to R studio, and navigate to teh config (yaml or toml) and add in th
 Run Blogdown::check_netlify() to find any issues. 
 
 
+# Part 2. publish vector data
+
+
+## Load necessary packages
+
+```{r warning=FALSE}
+library(sf)
+library(tmap)
+```
+
+## Get the data
+
+The process to get the data is stored in a script (`scripts/get_osm_data.R`), instead of integrating it into this R Markdown file. This allows us to not overload the data provider but always querying the API, every single time the article is rendered! (And we don't need to process the data every time either.)
+
+Here, we only need to read the data from a file that was previously created:
+
+```{r}
+green_space <- st_read("data/green_spaces.geojson")
+```
+
+## Visualise on a slippy map
+
+The tmap package is useful to visualise vector data on a slippy map.
+
+```{r}
+tmap_mode("view")
+tm_shape(green_space) +
+  tm_polygons(col = c("#43C467"), alpha = 0.5)
+```
+
+> Data is [copyright OSM contributors but release under an ODBL licence](https://www.openstreetmap.org/copyright).
+
+
+# Part 3. Publish Raster data
+
+
+An example raster visualisation.
+
+## Load the packages
+
+```{r}
+library(terra)
+```
+
+## Import the data
+
+The data comes from the Bureau of Meteorology website, it is a raster file of average annual rainfall. We've put the file into a `data` directory, inside the blog post's directory.
+
+```{r}
+rain <- rast("data/rainan.txt")
+```
+
+## Inspect
+
+```{r}
+rain
+```
+
+One single band, by default with the WGS 84 CRS.
+
+The average rainfall for the whole raster is `r rain |> values() |> mean() |> round(2)` mm.
+
+## Visualise
+
+Make sure to add a caption to visualisations, and some alternative text if needed!
+
+```{r warning=FALSE}
+#| fig.cap = "Average annual rainfall in mm (1980 to 2010)",
+#| fig.alt = "Map of Australia and surrounds' average annual rainfall, ranging from 0 
+#|  to about 4300 mm."
+plot(rain)
+```
+
