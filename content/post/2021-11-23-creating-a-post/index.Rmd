@@ -51,7 +51,7 @@ What you will need:
 
 ![blogdown hex sticker](https://bookdown.org/yihui/blogdown/images/logo.png)
 
--There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others, and a nice, recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
+- There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others, and a nice, recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
 - See [Mitch and Stéphane's tutorial](/post/creating-a-geospatial-blog-with-blogdown/) for UQGSAC on creating a blogdown website.
 
 **This session focuses on how to go about *contributing* a post to an existing website.**
