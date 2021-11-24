@@ -51,13 +51,8 @@ What you will need:
 
 ![blogdown hex sticker](https://bookdown.org/yihui/blogdown/images/logo.png)
 
-<<<<<<< HEAD:content/english/post/2021-11-23-creating-a-post/index.Rmd
-- There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others, and a nice, recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
-- See [Stéphane's tutorial](/post/creating-a-geospatial-blog-with-blogdown/) for UQGSAC on creating a blogdown website.
-=======
 -There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others, and a nice, recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
 - See [Mitch and Stéphane's tutorial](/post/creating-a-geospatial-blog-with-blogdown/) for UQGSAC on creating a blogdown website.
->>>>>>> c3d7e687ef72ac4c91dfdea9772d3ff6adf5f22d:content/post/2021-11-23-creating-a-post/index.Rmd
 
 **This session focuses on how to go about *contributing* a post to an existing website.**
 
@@ -397,5 +392,3 @@ Let's face it, the likelihood of something going awry following this tutorial is
 - Sometimes it is difficult to tell when the 'LiveReload' has finished or if you are used to saving regularly every few minutes that constant updating of 'LiveReload' can freeze RStudio.
     - **Solution**: The good 'ole Restart R (Session > Restart R) or close and re-open.
 - OTHERS??
-
-
