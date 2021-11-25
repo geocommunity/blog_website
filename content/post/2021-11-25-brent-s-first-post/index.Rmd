@@ -13,4 +13,4 @@ knitr::opts_chunk$set(echo = TRUE)
 You've made it to my very first post! 
 This was made possible by the very lovely people at UQGAC - thank you!
 
-![image](https://media.giphy.com/media/g9582DNuQppxC/giphy-downsized-large.gif)
+![Leo says cheers!](https://media.giphy.com/media/g9582DNuQppxC/giphy-downsized-large.gif)
