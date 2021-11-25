@@ -52,14 +52,18 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <img src="https://bookdown.org/yihui/blogdown/images/logo.png" alt="" />
 <p class="caption">blogdown hex sticker</p>
 </div>
-<p>- There is a <a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">short online book</a> on blogdown written by the developer, Yihui and others, and a nice, recent <a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">article by Allison Hill</a> on starting your own blogdown website from scratch.
-- See <a href="/post/creating-a-geospatial-blog-with-blogdown/">Mitch and Stéphane’s tutorial</a> for UQGSAC on creating a blogdown website.</p>
+<ul>
+<li>There is a <a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">short online book</a> on blogdown written by the developer, Yihui and others.</li>
+<li>A recent <a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">article by Allison Hill</a> on starting your own blogdown website from scratch.</li>
+<li>See <a href="/post/creating-a-geospatial-blog-with-blogdown/">Mitch and Stéphane’s tutorial</a> for UQGSAC on creating a blogdown website.</li>
+</ul>
 <p><strong>This session focuses on how to go about <em>contributing</em> a post to an existing website.</strong></p>
 <p>The UQGSAC website is built using the anatole theme. There are many themes to choose from and if you know html/CSS you can even build your own theme.</p>
 <p>So, how do we go about contributing to a blogdown website?</p>
 <p><img src="https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif" /></p>
 <p>A good place to start is making sure you have installed the <code>blogdown</code> package:</p>
 <pre class="r"><code>install.packages(&quot;blogdown&quot;)</code></pre>
+<p><a href="https://bookdown.org/yihui/blogdown/global-options.html">Article</a> about setting global options in <code>blogdown</code> if you need to set the Hugo version in your <code>.Rprofile</code> (<code>blogdown::config_Rprofile()</code>).</p>
 <p>To allow multiple people to contribute to the same website, the website is hosted on <strong>GitHub</strong> and <strong>Netlify</strong>.</p>
 <p>As the website is already set-up, we will be dealing with Git + GitHub and R + RStudio + R Markdown.</p>
 </div>
@@ -71,7 +75,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>In this case, we will be using <strong>GitHub</strong> to access the website files, make some changes (i.e., add a post), and then incorporate those changes back to the website repository on GitHub which will automatically update the website itself. 🙌</p>
 <p>We will focus on contributing a post to an existing website repository on GitHub, but there are lots of fabulous and free resources online that go more into depth on Git:</p>
 <ul>
-<li>If you need to be convinced to use Git for version control see this <a href="https://peerj.com/preprints/3159v2/">article</a> and <a href="https://happygitwithr.com/index.html">Happy Git and GitHub for the useR</a> to git started both by Git/R guru Jenny Bryant.</li>
+<li>If you need to be convinced to use Git for version control see this <a href="https://peerj.com/preprints/3159v2/">article</a> and <a href="https://happygitwithr.com/index.html">Happy Git and GitHub for the useR</a> to git started both by Git/R guru Jenny Bryan.</li>
 <li>See Dr Caitie Kuempel’s R Ladies Brisbane <a href="https://github.com/cdkuempel/getting_started_github">presentation</a> on getting started with GitHub in RStudio.</li>
 </ul>
 <div id="git-terminology" class="section level3">

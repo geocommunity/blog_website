@@ -51,7 +51,8 @@ What you will need:
 
 ![blogdown hex sticker](https://bookdown.org/yihui/blogdown/images/logo.png)
 
-- There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others, and a nice, recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
+- There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others.
+- A recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
 - See [Mitch and Stéphane's tutorial](/post/creating-a-geospatial-blog-with-blogdown/) for UQGSAC on creating a blogdown website.
 
 **This session focuses on how to go about *contributing* a post to an existing website.**
@@ -67,6 +68,8 @@ A good place to start is making sure you have installed the `blogdown` package:
 ```{r eval = FALSE}
 install.packages("blogdown")
 ```
+
+[Article](https://bookdown.org/yihui/blogdown/global-options.html) about setting global options in `blogdown` if you need to set the Hugo version in your `.Rprofile` (`blogdown::config_Rprofile()`). 
 
 To allow multiple people to contribute to the same website, the website is hosted on **GitHub** and **Netlify**.
 
@@ -84,7 +87,7 @@ In this case, we will be using **GitHub** to access the website files, make some
 
 We will focus on contributing a post to an existing website repository on GitHub, but there are lots of fabulous and free resources online that go more into depth on Git:
 
-- If you need to be convinced to use Git for version control see this [article](https://peerj.com/preprints/3159v2/) and [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) to git started both by Git/R guru Jenny Bryant.
+- If you need to be convinced to use Git for version control see this [article](https://peerj.com/preprints/3159v2/) and [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) to git started both by Git/R guru Jenny Bryan.
 - See Dr Caitie Kuempel's R Ladies Brisbane [presentation](https://github.com/cdkuempel/getting_started_github) on getting started with GitHub in RStudio.
 
 ### Git Terminology
