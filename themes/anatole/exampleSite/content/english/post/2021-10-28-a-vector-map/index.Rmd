@@ -1,0 +1,41 @@
+---
+title: A vector map
+author: UQGSAC
+date: '2021-10-28'
+slug: a-vector-map
+categories:
+  - spatial
+  - visualisation
+tags:
+  - RStats
+  - vector
+---
+
+## Load necessary packages
+
+```{r}
+library(sf)
+library(tmap)
+```
+
+## Get the data
+
+The process to get the data is stored in a script (`scripts/get_osm_data.R`), instead of integrating it into this R Markdown file. This allows us to not overload the data provider but always querying the API, every single time the article is rendered! (And we don't need to process the data every time either.)
+
+Here, we only need to read the data from a file that was previously created:
+
+```{r}
+green_space <- st_read("data/green_spaces.geojson")
+```
+
+## Visualise on a slippy map
+
+The tmap package is useful to visualise vector data on a slippy map.
+
+```{r}
+tmap_mode("view")
+tm_shape(green_space) +
+  tm_polygons(col = c("#43C467"), alpha = 0.5)
+```
+
+> Data is [copyright OSM contributors but release under an ODBL licence](https://www.openstreetmap.org/copyright).

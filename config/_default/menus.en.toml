@@ -16,11 +16,11 @@
   identifier = "about"
   url = "/about/"
 
-#  [[main]]
-#  name = "Contact"
-#  weight = 400
-#  identifier = "contact"
-#  url = "/contact/"
+  [[main]]
+  name = "Upcoming events"
+  weight = 400
+  identifier = "Upcoming events"
+  url = "/Upcoming events/"
 
   [[footer]]
   name = "imprint"
