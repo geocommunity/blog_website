@@ -83,7 +83,7 @@ In this case, we will be using **GitHub** to access the website files, make some
 
 We will focus on contributing a post to an existing website repository on GitHub, but there are lots of fabulous and free resources online that go more into depth on Git:
 
-- If you need to be convinced to use Git for version control see this [article](https://peerj.com/preprints/3159v2/) and [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) to git started both by Git/R guru Jenny Bryant.
+- If you need to be convinced to use Git for version control see this [article](https://peerj.com/preprints/3159v2/) and [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) to git started both by Git/R guru Jenny Bryan.
 - See Dr Caitie Kuempel's R Ladies Brisbane [presentation](https://github.com/cdkuempel/getting_started_github) on getting started with GitHub in RStudio.
 
 ### Git Terminology
