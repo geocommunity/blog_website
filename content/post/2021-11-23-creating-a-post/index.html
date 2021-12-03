@@ -3,7 +3,8 @@ title: How to contribute a post
 author: 'Catherine Kim'
 date: '2021-11-23'
 slug: []
-categories: []
+categories: 
+  - website
 tags: 
   - r
   - rstudio
@@ -22,8 +23,8 @@ math: true
 <div id="geospatial-analysis-community-of-practice---the-university-of-queensland-uqgac" class="section level2">
 <h2>Geospatial Analysis Community of Practice - The University of Queensland (UQGAC)</h2>
 <p>Unveil the new <strong>website</strong>!</p>
-<p>Point of contact - Mitchel Rudge
-<a href="mailto:mitchel.rudge@uq.edu.au" class="email">mitchel.rudge@uq.edu.au</a></p>
+<p>Point of contact - Mitchel Rudge: <a href="mailto:mitchel.rudge@uq.edu.au" class="email">mitchel.rudge@uq.edu.au</a></p>
+<p>See the <a href="/about.html">About Us</a> page for more info.</p>
 </div>
 <div id="creating-a-post-on-the-uqgac-website" class="section level2">
 <h2>Creating a post on the UQGAC website</h2>
@@ -42,7 +43,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>What you will need:</p>
 <ol style="list-style-type: decimal">
 <li>Installations - R, RStudio, Git</li>
-<li>A GitHub account (free) with your login details handy</li>
+<li>A GitHub account (free) with your login and personal access token (PAT) details handy</li>
 </ol>
 </div>
 <div id="blogdown-basics" class="section level2">
@@ -50,7 +51,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p><code>blogdown</code> is an R package that allows the creation of websites using R Markdown and Hugo, a static site generator. <code>blogdown</code> websites in R have been all the rage the last few years and you have probably seen many ‘Hugo-Academic theme’ personal websites - all built in R!</p>
 <div class="figure">
 <img src="https://bookdown.org/yihui/blogdown/images/logo.png" alt="" />
-<p class="caption">blogdown hex sticker</p>
+<p class="caption">blogdown hex sticker Credit: Creating Website with R Markdown</p>
 </div>
 <ul>
 <li>There is a <a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">short online book</a> on blogdown written by the developer, Yihui and others.</li>
@@ -60,7 +61,10 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p><strong>This session focuses on how to go about <em>contributing</em> a post to an existing website.</strong></p>
 <p>The UQGSAC website is built using the anatole theme. There are many themes to choose from and if you know html/CSS you can even build your own theme.</p>
 <p>So, how do we go about contributing to a blogdown website?</p>
-<p><img src="https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif" /></p>
+<div class="figure">
+<img src="https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif" alt="" />
+<p class="caption">Programmer GIF Credit: Capgemini India on GIPHY</p>
+</div>
 <p>A good place to start is making sure you have installed the <code>blogdown</code> package:</p>
 <pre class="r"><code>install.packages(&quot;blogdown&quot;)</code></pre>
 <p><a href="https://bookdown.org/yihui/blogdown/global-options.html">Article</a> about setting global options in <code>blogdown</code> if you need to set the Hugo version in your <code>.Rprofile</code> (<code>blogdown::config_Rprofile()</code>).</p>
@@ -76,16 +80,16 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>We will focus on contributing a post to an existing website repository on GitHub, but there are lots of fabulous and free resources online that go more into depth on Git:</p>
 <ul>
 <li>If you need to be convinced to use Git for version control see this <a href="https://peerj.com/preprints/3159v2/">article</a> and <a href="https://happygitwithr.com/index.html">Happy Git and GitHub for the useR</a> to git started both by Git/R guru Jenny Bryan.</li>
-<li>See Dr Caitie Kuempel’s R Ladies Brisbane <a href="https://github.com/cdkuempel/getting_started_github">presentation</a> on getting started with GitHub in RStudio.</li>
+<li>See Caitie Kuempel’s R Ladies Brisbane <a href="https://github.com/cdkuempel/getting_started_github">presentation</a> on getting started with GitHub in RStudio.</li>
 </ul>
 <div id="git-terminology" class="section level3">
 <h3>Git Terminology</h3>
 <p><strong>Repository/repo</strong> - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can version control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.</p>
+<p><strong>Fork</strong> - A copy of another user’s repo on your account. This allows you to freely change a project without affecting the original upstream repo. You can keep your fork synced with changes in the original repo. - this is <em>fetching upstream</em>.</p>
+<p><strong>Clone</strong> - a copy of a repository that lives on your computer instead of a website server like GitHub. Is still connected to the remote repo online and you can push/pull edits.</p>
 <p><strong>Commit</strong> - is one or more changes to a file or set of files that you are asking GitHub to keep track of.</p>
 <p><strong>Push</strong> - sending your committed changes to a remote repository on GitHub. Local changes updated on the GitHub website where other people can access.</p>
 <p><strong>Pull</strong> - incorporating and merging changes. An edit on the remote repository on GitHub can be pulled to a local repository.</p>
-<p><strong>Fork</strong> - A copy of another user’s repo on your account. This allows you to freely change a project without affecting the original upstream repo. You can keep your fork synced with changes in the original repo. - this is <em>fetching upstream</em>.</p>
-<p><strong>Clone</strong> - a copy of a repository that lives on your computer instead of a website server like GitHub. Is still connected to the remote repo online and you can push/pull edits.</p>
 <p><strong>Diff</strong> - difference, or changes made that are visible as insertions/deletions for a commit.</p>
 <p><strong>Main/Master</strong> - the default branch you are on. Master has recently updated to main, but they are the same thing. You are more likely to come across master on older resources. <a href="https://happygitwithr.com/git-branches.html">Jenny Bryan</a> strongly urges you to create a new <strong>branch</strong> to work off of which requires using command line. For the purpose of contributing to a blogdown website, I will forgo covering this as it is unlikely more than one person will be contributing at the same time.</p>
 <p><strong>Origin</strong> - the remote repo online from which you have cloned your local copy from.</p>
@@ -125,7 +129,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p class="caption">Pop-up windows of cloning a GitHub repo in RStudio</p>
 </div>
 <p>Conceptually, what we have done is:
-<img src="images/HGwR_fork-and-clone.png" alt="Figure borrowed from Jenny Bryan’s Happy Git with R." /></p>
+<img src="images/HGwR_fork-and-clone.png" alt="Figure borrowed from Jenny Bryan’s Happy Git for the useR." /></p>
 <p>Now that we have <em>cloned</em> the repository, let’s explore the file structure a little in the ‘Files’ tab in RStudio. It is NOT a very intuitively set-up even for intermediate users of R. For the purposes of creating a new post to add to the blog, we are mostly concerned with the <code>content/english/</code> directory that contains the <code>post/</code> sub-directory.</p>
 <p>The rest of the files are the ‘backend’ of the site using html, CSS, js, etc. to build the website. Have a look if you are curious but make changes at the risk of being ‘that person’ to break the site! But don’t worry, since we are using Git version control all changes are tracked and reversible.</p>
 <p>Now that we are somewhat familiar with the project structure, let’s create a new post.</p>
@@ -168,7 +172,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>Some stuff will happen and as long as you do not see any obvious errors then it has probably all gone well and you’ve made your first commit!</p>
 <div class="figure">
 <img src="https://i1.wp.com/justmaths.co.uk/wp-content/uploads/2016/10/celebration-gif.gif" alt="" />
-<p class="caption">Celebrate!</p>
+<p class="caption">Celebrate! Credit: <a href="http://www.reactiongifs.com/cheering-minions/" class="uri">http://www.reactiongifs.com/cheering-minions/</a></p>
 </div>
 <p>Knowing when and how often to commit is a bit of an art that comes with experience. In general, you want to commit changes that are related to a single problem and a good commit message. There is also a <code>History</code> button on the top left corner that will list all the commits with messages you have made and you can view the diff by clicking on a commit. All commits have a unique code which you can use to return to a previous commit etc.</p>
 <p><strong>Important notes:</strong></p>
@@ -179,7 +183,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>See more on committing and <a href="https://r-pkgs.org/git.html#commit-best-practices">best practices</a> from the R packages book.</p>
 <div class="figure">
 <img src="https://imgs.xkcd.com/comics/git_commit.png" alt="" />
-<p class="caption">How committing goes…</p>
+<p class="caption">How committing goes… Credit: xkcd comics</p>
 </div>
 </div>
 <div id="push-the-changes-to-github" class="section level3">
@@ -193,22 +197,31 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <li>Log into your GitHub account online, and navigate to your <code>YOU/blog_website</code> repo.</li>
 <li>Under the green <code>Code</code> button, there should be a <code>Fetch upstream</code> button that will sync your forked repo with the original upstream repo.</li>
 <li>There is information about the status of your branch compared to the original upstream repo e.g., ‘up to date’ or ‘X commits ahead/behind’ to give you an idea if you need to fetch or not.</li>
-<li>Now in RStuiod, you should be good to <strong>pull</strong>.</li>
-<li>Revisiting this diagram, the <em>fetch upstream</em> is updating your forked repo from the origional orange repo and then the pull is updating your local repo from your forked repo.</li>
+<li>Now in RStudio, you should be good to <strong>pull</strong>.</li>
+<li>Revisiting this diagram, the <em>fetch upstream</em> is updating your forked repo from the original yellow repo and then the pull is updating your local repo from your forked repo.</li>
 </ul>
 <div class="figure">
-<img src="images/HGwR_fork-and-clone.png" alt="" />
-<p class="caption">Figure borrowed from Jenny Bryan’s Happy Git with R.</p>
+<img src="images/HGwR_fork-and-clone_modified.png" alt="" />
+<p class="caption">Figure modified from Jenny Bryan’s Happy Git for the useR.</p>
 </div>
-<p>Now we will <em>push</em> our commits from or local repo to our remote <code>origin/master</code> repo on GitHub. If you see <code>HEAD -&gt; main</code> then all good.</p>
+<p>Now we will <em>push</em> our commits from or local repo to our remote <code>origin/master</code> repo on GitHub.</p>
+<p>If this is your first time using Git with RStudio, you will have to set-up a <strong>personal access token</strong> or <strong>PAT</strong> in GitHub. For detailed directions, go to the <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">GitHub page</a>.</p>
+<ul>
+<li>Go to your GitHub account online and click on your profile photo in the upper-right and go to <code>Settings</code>.</li>
+<li>In the left sidebar, click on <code>Developer settings</code> then <code>Personal Access Tokens</code>.</li>
+<li>Click the <code>Generate a new token</code> button and give a descriptive name and expiration.</li>
+<li>Select scopes or privacy settings (defaults are generally fine) and the generate the token.</li>
+<li>Copy your PAT and put it in the <code>password</code> field for any pop-ups asking for your GitHub credentials when you <em>push</em>.</li>
+</ul>
+<p>If you see <code>HEAD -&gt; main</code> then all good.</p>
 <div class="figure">
 <img src="images/R-push.png" alt="" />
-<p class="caption">Push window in RStudio.</p>
+<p class="caption">Screenshot of push window in RStudio.</p>
 </div>
 <p>Now if you go back to your GitHub account and forked repo online, you should see the changes you made locally are now in the remote online repo and your commit message.</p>
 <div class="figure">
 <img src="images/R-push-github.png" alt="" />
-<p class="caption">See pushed changes on forked GitHub repo.</p>
+<p class="caption">Screenshot of pushed changes on forked GitHub repo.</p>
 </div>
 <p>In general, you should <strong>commit</strong> often and then <strong>push</strong>.</p>
 </div>
@@ -217,7 +230,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>In the console, run <code>blogdown::serve_site()</code>. Alternatively, can click on RStudio ‘Addins’ and select ‘Serve Site’. Be patient, but what happens?</p>
 <div class="figure">
 <img src="images/R-servesite.png" alt="" />
-<p class="caption">Served site in RStudio.</p>
+<p class="caption">Screenshot of served site in RStudio.</p>
 </div>
 <p>Some important information on what is going on from <a href="https://bookdown.org/yihui/blogdown/a-quick-example.html#serve-site">blogdown: Creating Websites with R Markdown</a>:</p>
 <blockquote>
@@ -230,7 +243,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <blockquote>
 <p>Let’s introduce an important and helpful technology that you just used: LiveReload. Serving your site uses LiveReload, which means your website will be automatically rebuilt and reloaded in your web browser when you modify any source file of your website and save it. Basically, once you launch the website in a web browser, you do not need to rebuild it explicitly anymore. All you need to do is edit the source files, such as R Markdown documents, and save them. There is no need to click any buttons or run any commands. LiveReload is implemented via blogdown::serve_site() and Hugo, and you will only need to use it once per work session.</p>
 </blockquote>
-<p>Remember, <em>everytime</em> you <strong>save</strong> your .Rmd file will activate the <em>LiveReload</em>. To stop serving the site locally run <code>blogdown::stop_server()</code> in the console.</p>
+<p>Remember, <em>every time</em> you <strong>save</strong> your .Rmd file will activate the <em>LiveReload</em>. To stop serving the site locally run <code>blogdown::stop_server()</code> in the console.</p>
 </div>
 <div id="create-your-content" class="section level3">
 <h3>7. Create your content</h3>
@@ -254,7 +267,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <p>This will also create a structure outline of your document you can navigate either by using the ‘Formatting’ button at the bottom of the .Rmd or the right most button in the top right of the .Rmd.</p>
 <div class="figure">
 <img src="images/R-formatoutline.png" alt="" />
-<p class="caption">Buttons to view document outline</p>
+<p class="caption">Screenshot of buttons to view document outline</p>
 </div>
 <p><strong>Make lists:</strong></p>
 <ul>
@@ -307,7 +320,7 @@ You can also use inline math notation by sandwiching it between <code>$</code> <
 </div>
 <div id="chunk-options" class="section level5">
 <h5>Chunk options</h5>
-<p>Chunks are the gray areas in the .Rmd file where you can add code that will be run. These are defined by three backticks (not a single quote, the key to the left of the 1). You can insert R code chunks but also in other languages! See the green ‘Insert’ code chunk button to see different options. An R code chunk will have the an <code>{r  }</code> after the opening backticks.</p>
+<p>Chunks are the gray areas in the .Rmd file where you can add code that will be run. These are defined by three back ticks (not a single quote, the key to the left of the 1). You can insert R code chunks but also in other languages! See the green ‘Insert’ code chunk button to see different options. An R code chunk will have the an <code>{r  }</code> after the opening back ticks.</p>
 <p>The keyboard short cut to add an R code chunk is <code>Ctrl</code> + <code>Alt</code> + <code>I</code></p>
 <p>You can also set options in the {} of a chunk like hide the code chunk (echo = FALSE), suppress warnings (warnings = FALSE), and cache the chunk (cache = TRUE) if you have something that takes a while to run.</p>
 <p>Let’s set <code>echo = FALSE</code> for our plot chunk above. We are only interested in seeing the plot, not the code that produces the plot.</p>
@@ -327,7 +340,7 @@ You can also use inline math notation by sandwiching it between <code>$</code> <
 <p>To insert an image or gif from a website you add a <code>!</code> before the square brackets like so: <code>![description](https://media.giphy.com/media/sJWNLTclcvVmw/giphy.gif)</code>. The description in the <code>[]</code> will appear as a caption and the link must end in the appropriate file extension (.gif, .jpg, .png, etc) to work.</p>
 <div class="figure">
 <img src="https://media.giphy.com/media/sJWNLTclcvVmw/giphy.gif" alt="" />
-<p class="caption">Funny Yawn</p>
+<p class="caption">Funny Yawn Credit: <a href="https://www.reddit.com/r/gifs/comments/54q75s/goodnight_tongue/" class="uri">https://www.reddit.com/r/gifs/comments/54q75s/goodnight_tongue/</a></p>
 </div>
 <p>You can also insert pictures using the RStudio ‘Addins’ &gt; ‘Insert Image’ and uploading an image saved on your computer with a few other options like alt text. This will result in the same hyperlink code as inserting an image, but with a <em>relative path</em> instead of the url.</p>
 <p><strong>Example use Addin to insert image</strong></p>
@@ -348,12 +361,12 @@ You can also use inline math notation by sandwiching it between <code>$</code> <
 </ul>
 <div class="figure">
 <img src="images/GitHub-openPR.png" alt="" />
-<p class="caption">GitHub open a pull request.</p>
+<p class="caption">Screenshot of GitHub open a pull request.</p>
 </div>
 <p>Congratulations - now you have submitted your blog post to a blogdown site!</p>
 <div class="figure">
 <img src="https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif" alt="" />
-<p class="caption">Cheers</p>
+<p class="caption">Cheers Credit: Sony</p>
 </div>
 </div>
 </div>
@@ -366,5 +379,25 @@ You can also use inline math notation by sandwiching it between <code>$</code> <
 <li><strong>Solution</strong>: The good ’ole Restart R (Session &gt; Restart R) or close and re-open.</li>
 </ul></li>
 <li>OTHERS??</li>
+</ul>
+</div>
+<div id="acknowledgments" class="section level2">
+<h2>Acknowledgments</h2>
+</div>
+<div id="resources-mentioned" class="section level2">
+<h2>Resources mentioned</h2>
+<ul>
+<li><a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">Creating Websites with R Markdown</a> by Yihui Xi, Amber Thomas, and Alison Presmanes Hill.</li>
+<li><a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">“Up &amp; running with blogdown in 2021”</a> Alison Hill.</li>
+<li><a href="https://geospatial-community.netlify.app/post/create-a-geospatial-blog/">“Creating a Geospatial Blog with blogdown” on the UQGSAC blog</a> by Mitch Rudge and Stéphane Guillou.</li>
+<li><a href="https://peerj.com/preprints/3159v2/">Excuse me, do you have a moment to talk about version control?</a> by Jenny Bryan</li>
+<li><a href="https://happygitwithr.com/index.html">Happy Git and GitHub for the useR</a> by Jenny Bryan.</li>
+<li><a href="https://github.com/cdkuempel/getting_started_github">Getting Started with GitHub</a> R Ladies Brisbane presentation by Caitie Kuemple.</li>
+<li><a href="https://github.com/geocommunity/website">geocommunity/website GitHub repo</a></li>
+<li><a href="https://r-pkgs.org/git.html#commit-best-practices">18.6 Commit best practices</a> from the R packages book by Hadley Wickham and Jenny Bryan.</li>
+<li><a href="http://rmarkdown.rstudio.com">R Markdown</a></li>
+<li><a href="https://katex.org/docs/supported.html">KaTeX - Supported Functions</a></li>
+<li><a href="https://rmarkdown.rstudio.com/lesson-3.html">Code Chuncks</a></li>
+<li><a href="https://bookdown.org/yihui/rmarkdown-cookbook/">R Markdown Cookbook</a></li>
 </ul>
 </div>

@@ -3,7 +3,8 @@ title: How to contribute a post
 author: 'Catherine Kim'
 date: '2021-11-23'
 slug: []
-categories: []
+categories: 
+  - website
 tags: 
   - r
   - rstudio
@@ -21,8 +22,9 @@ We will be covering some basics of multiple programming skills (Git/GitHub, R, h
 
 Unveil the new **website**!
 
-Point of contact - Mitchel Rudge
-mitchel.rudge@uq.edu.au
+Point of contact - Mitchel Rudge: mitchel.rudge@uq.edu.au
+
+See the [About Us](/about.html) page for more info.
 
 ## Creating a post on the UQGAC website
 
@@ -43,13 +45,13 @@ I have pieced this together using many other resources on the above which are me
 What you will need:
 
 1. Installations - R, RStudio, Git
-2. A GitHub account (free) with your login details handy
+2. A GitHub account (free) with your login and personal access token (PAT) details handy
 
 ## blogdown basics
 
 `blogdown` is an  R package that allows the creation of websites using R Markdown and Hugo, a static site generator. `blogdown` websites in R have been all the rage the last few years and you have probably seen many 'Hugo-Academic theme' personal websites - all built in R!
 
-![blogdown hex sticker](https://bookdown.org/yihui/blogdown/images/logo.png)
+![blogdown hex sticker Credit: Creating Website with R Markdown](https://bookdown.org/yihui/blogdown/images/logo.png)
 
 - There is a [short online book](https://bookdown.org/yihui/blogdown/yihui-xie.html) on blogdown written by the developer, Yihui and others.
 - A recent [article by Allison Hill](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) on starting your own blogdown website from scratch. 
@@ -61,7 +63,7 @@ The UQGSAC website is built using the anatole theme. There are many themes to ch
 
 So, how do we go about contributing to a blogdown website?
 
-![](https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif)
+![Programmer GIF Credit: Capgemini India on GIPHY](https://media.giphy.com/media/u2pmTWUi0MXjyrMaVj/giphy.gif)
 
 A good place to start is making sure you have installed the `blogdown` package:
 
@@ -138,7 +140,7 @@ Next, in RStudio, go to `File > New Project`. In the pop-up window, click the la
 ![Pop-up windows of cloning a GitHub repo in RStudio](images/R-newproj-git-clone-ALL.png)
 
 Conceptually, what we have done is:
-![Figure borrowed from Jenny Bryan's Happy Git with R.](images/HGwR_fork-and-clone.png)
+![Figure borrowed from Jenny Bryan's Happy Git for the useR.](images/HGwR_fork-and-clone.png)
     
 Now that we have *cloned* the repository, let's explore the file structure a little in the 'Files' tab in RStudio. It is NOT a very intuitively set-up even for intermediate users of R. For the purposes of creating a new post to add to the blog, we are mostly concerned with the `content/english/` directory that contains the `post/` sub-directory.
 
@@ -182,7 +184,7 @@ Let's commit our new post. You can add something like a line of text, or not.
 
 Some stuff will happen and as long as you do not see any obvious errors then it has probably all gone well and you've made your first commit!
 
-![Celebrate!](https://i1.wp.com/justmaths.co.uk/wp-content/uploads/2016/10/celebration-gif.gif)
+![Celebrate! Credit: http://www.reactiongifs.com/cheering-minions/](https://i1.wp.com/justmaths.co.uk/wp-content/uploads/2016/10/celebration-gif.gif)
 
 Knowing when and how often to commit is a bit of an art that comes with experience. In general, you want to commit changes that are related to a single problem and a good commit message. There is also a `History` button on the top left corner that will list all the commits with messages you have made and you can view the diff by clicking on a commit. All commits have a unique code which you can use to return to a previous commit etc.
 
@@ -193,7 +195,7 @@ Knowing when and how often to commit is a bit of an art that comes with experien
 
 See more on committing and [best practices](https://r-pkgs.org/git.html#commit-best-practices) from the R packages book.
 
-![How committing goes...](https://imgs.xkcd.com/comics/git_commit.png)
+![How committing goes... Credit: xkcd comics](https://imgs.xkcd.com/comics/git_commit.png)
 
 ### 5. **Push** the changes to GitHub
 
@@ -211,18 +213,28 @@ If you want to try **fetching upstream** it is easiest to do via GitHub. Followe
 - Log into your GitHub account online, and navigate to your `YOU/blog_website` repo.
 - Under the green `Code` button, there should be a `Fetch upstream` button that will sync your forked repo with the original upstream repo.
 - There is information about the status of your branch compared to the original upstream repo e.g., 'up to date' or 'X commits ahead/behind' to give you an idea if you need to fetch or not.
-- Now in RStuiod, you should be good to **pull**.
-- Revisiting this diagram, the *fetch upstream* is updating your forked repo from the origional orange repo and then the pull is updating your local repo from your forked repo.
+- Now in RStudio, you should be good to **pull**.
+- Revisiting this diagram, the *fetch upstream* is updating your forked repo from the original yellow repo and then the pull is updating your local repo from your forked repo.
 
-![Figure borrowed from Jenny Bryan's Happy Git with R.](images/HGwR_fork-and-clone.png)
+![Figure modified from Jenny Bryan's Happy Git for the useR.](images/HGwR_fork-and-clone_modified.png)
 
-Now we will *push* our commits from or local repo to our remote `origin/master` repo on GitHub. If you see `HEAD -> main` then all good.
+Now we will *push* our commits from or local repo to our remote `origin/master` repo on GitHub. 
 
-![Push window in RStudio.](images/R-push.png)
+If this is your first time using Git with RStudio, you will have to set-up a **personal access token** or **PAT** in GitHub. For detailed directions, go to the [GitHub page](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+
+- Go to your GitHub account online and click on your profile photo in the upper-right and go to `Settings`.
+- In the left sidebar, click on `Developer settings` then `Personal Access Tokens`.
+- Click the `Generate a new token` button and give a descriptive name and expiration.
+- Select scopes or privacy settings (defaults are generally fine) and the generate the token. 
+- Copy your PAT and put it in the `password` field for any pop-ups asking for your GitHub credentials when you *push*.
+
+If you see `HEAD -> main` then all good.
+
+![Screenshot of push window in RStudio.](images/R-push.png)
 
 Now if you go back to your GitHub account and forked repo online, you should see the changes you made locally are now in the remote online repo and your commit message. 
 
-![See pushed changes on forked GitHub repo.](images/R-push-github.png)
+![Screenshot of pushed changes on forked GitHub repo.](images/R-push-github.png)
 
 In general, you should **commit** often and then **push**.
 
@@ -230,7 +242,7 @@ In general, you should **commit** often and then **push**.
 
 In the console, run `blogdown::serve_site()`. Alternatively, can click on RStudio 'Addins' and select 'Serve Site'. Be patient, but what happens? 
 
-![Served site in RStudio.](images/R-servesite.png)
+![Screenshot of served site in RStudio.](images/R-servesite.png)
 
 Some important information on what is going on from [blogdown: Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/a-quick-example.html#serve-site):
 
@@ -276,7 +288,7 @@ Can specify headings using # marks. The number of has symbols corresponds to the
 
 This will also create a structure outline of your document you can navigate either by using the 'Formatting' button at the bottom of the .Rmd or the right most button in the top right of the .Rmd. 
 
-![Buttons to view document outline](images/R-formatoutline.png)
+![Screenshot of buttons to view document outline](images/R-formatoutline.png)
 
 **Make lists:**
 
@@ -361,7 +373,7 @@ For a hyperlink to a website you put the word you want to hyperlink in square br
 
 To insert an image or gif from a website you add a `!` before the square brackets like so: `![description](https://media.giphy.com/media/sJWNLTclcvVmw/giphy.gif)`. The description in the `[]` will appear as a caption and the link must end in the appropriate file extension (.gif, .jpg, .png, etc) to work.
 
-![Funny Yawn](https://media.giphy.com/media/sJWNLTclcvVmw/giphy.gif)
+![Funny Yawn Credit: https://www.reddit.com/r/gifs/comments/54q75s/goodnight_tongue/](https://media.giphy.com/media/sJWNLTclcvVmw/giphy.gif)
 
 You can also insert pictures using the RStudio 'Addins' > 'Insert Image' and uploading an image saved on your computer with a few other options like alt text. This will result in the same hyperlink code as inserting an image, but with a *relative path* instead of the url.
 
@@ -382,11 +394,11 @@ Because we are not owner/developers of the upstream `geocommunity/blog_website` 
 - Click the green `Create pull request` button on the right. This will take you to a 'Open a pull request' window that will have your last commit and space to add a larger message with your pull request or **PR**. 
 - Once you are happy, click the green button at the end and wait for approval. You can have a bit of a conversation to hash out any issues as well over the approval process.
 
-![GitHub open a pull request.](images/GitHub-openPR.png)
+![Screenshot of GitHub open a pull request.](images/GitHub-openPR.png)
 
 Congratulations - now you have submitted your blog post to a blogdown site!
 
-![Cheers](https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif)
+![Cheers Credit: Sony](https://media.giphy.com/media/8Iv5lqKwKsZ2g/giphy.gif)
 
 ## Troubleshooting...
 
