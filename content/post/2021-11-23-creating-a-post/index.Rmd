@@ -11,6 +11,7 @@ tags:
   - git
   - GitHub
   - blogdown
+  - RMarkdown
 Description: ''
 DisableComments: no
 math: true
@@ -24,7 +25,7 @@ Unveil the new **website**!
 
 Point of contact - Mitchel Rudge: mitchel.rudge@uq.edu.au
 
-See the [About Us](/about.html) page for more info.
+See the [About](/about) page for more info.
 
 ## Creating a post on the UQGAC website
 
@@ -40,7 +41,7 @@ What we will cover:
 3. How to create a post on the UQGSAC blogdown website
 4. R Markdown basics
 
-I have pieced this together using many other resources on the above which are mentioned throughout.
+I have pieced this together using many other resources on the above which are mentioned throughout. Thank you to Mitch and Stéphane for their help with this tutorial and workshop!
 
 What you will need:
 
@@ -140,8 +141,9 @@ Next, in RStudio, go to `File > New Project`. In the pop-up window, click the la
 ![Pop-up windows of cloning a GitHub repo in RStudio](images/R-newproj-git-clone-ALL.png)
 
 Conceptually, what we have done is:
-![Figure borrowed from Jenny Bryan's Happy Git for the useR.](images/HGwR_fork-and-clone.png)
-    
+
+![Conceptual diagram of forking and cloning in GitHub Credit: Happy Git for the useR](images/HGwR_fork-and-clone.png)
+
 Now that we have *cloned* the repository, let's explore the file structure a little in the 'Files' tab in RStudio. It is NOT a very intuitively set-up even for intermediate users of R. For the purposes of creating a new post to add to the blog, we are mostly concerned with the `content/english/` directory that contains the `post/` sub-directory.
 
 The rest of the files are the 'backend' of the site using html, CSS, js, etc. to build the website. Have a look if you are curious but make changes at the risk of being 'that person' to break the site! But don't worry, since we are using Git version control all changes are tracked and reversible.
@@ -216,7 +218,7 @@ If you want to try **fetching upstream** it is easiest to do via GitHub. Followe
 - Now in RStudio, you should be good to **pull**.
 - Revisiting this diagram, the *fetch upstream* is updating your forked repo from the original yellow repo and then the pull is updating your local repo from your forked repo.
 
-![Figure modified from Jenny Bryan's Happy Git for the useR.](images/HGwR_fork-and-clone_modified.png)
+![Diagram of fetching upstream and pulling Credit: modified from Happy Git for the useR](images/HGwR_fetch-pull.png)
 
 Now we will *push* our commits from or local repo to our remote `origin/master` repo on GitHub. 
 
@@ -406,11 +408,10 @@ Let's face it, the likelihood of something going awry following this tutorial is
 
 - Sometimes it is difficult to tell when the 'LiveReload' has finished or if you are used to saving regularly every few minutes that constant updating of 'LiveReload' can freeze RStudio.
     - **Solution**: The good 'ole Restart R (Session > Restart R) or close and re-open.
+- Formatting wise, it's a good idea to put full line returns before/after formatting bits like lists and inserting images. Something to check if your content is not formatting as you expect.
 - OTHERS??
 
-## Acknowledgments
-
-## Resources mentioned
+## Resources mentioned:
 
 - [Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/yihui-xie.html) by Yihui Xi, Amber Thomas, and Alison Presmanes Hill.
 - ["Up & running with blogdown in 2021"](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) Alison Hill. 

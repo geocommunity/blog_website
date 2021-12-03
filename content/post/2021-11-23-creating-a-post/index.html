@@ -11,6 +11,7 @@ tags:
   - git
   - GitHub
   - blogdown
+  - RMarkdown
 Description: ''
 DisableComments: no
 math: true
@@ -24,7 +25,7 @@ math: true
 <h2>Geospatial Analysis Community of Practice - The University of Queensland (UQGAC)</h2>
 <p>Unveil the new <strong>website</strong>!</p>
 <p>Point of contact - Mitchel Rudge: <a href="mailto:mitchel.rudge@uq.edu.au" class="email">mitchel.rudge@uq.edu.au</a></p>
-<p>See the <a href="/about.html">About Us</a> page for more info.</p>
+<p>See the <a href="/about">About</a> page for more info.</p>
 </div>
 <div id="creating-a-post-on-the-uqgac-website" class="section level2">
 <h2>Creating a post on the UQGAC website</h2>
@@ -39,7 +40,7 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <li>How to create a post on the UQGSAC blogdown website</li>
 <li>R Markdown basics</li>
 </ol>
-<p>I have pieced this together using many other resources on the above which are mentioned throughout.</p>
+<p>I have pieced this together using many other resources on the above which are mentioned throughout. Thank you to Mitch and Stéphane for their help with this tutorial and workshop!</p>
 <p>What you will need:</p>
 <ol style="list-style-type: decimal">
 <li>Installations - R, RStudio, Git</li>
@@ -128,8 +129,11 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <img src="images/R-newproj-git-clone-ALL.png" alt="" />
 <p class="caption">Pop-up windows of cloning a GitHub repo in RStudio</p>
 </div>
-<p>Conceptually, what we have done is:
-<img src="images/HGwR_fork-and-clone.png" alt="Figure borrowed from Jenny Bryan’s Happy Git for the useR." /></p>
+<p>Conceptually, what we have done is:</p>
+<div class="figure">
+<img src="images/HGwR_fork-and-clone.png" alt="" />
+<p class="caption">Conceptual diagram of forking and cloning in GitHub Credit: Happy Git for the useR</p>
+</div>
 <p>Now that we have <em>cloned</em> the repository, let’s explore the file structure a little in the ‘Files’ tab in RStudio. It is NOT a very intuitively set-up even for intermediate users of R. For the purposes of creating a new post to add to the blog, we are mostly concerned with the <code>content/english/</code> directory that contains the <code>post/</code> sub-directory.</p>
 <p>The rest of the files are the ‘backend’ of the site using html, CSS, js, etc. to build the website. Have a look if you are curious but make changes at the risk of being ‘that person’ to break the site! But don’t worry, since we are using Git version control all changes are tracked and reversible.</p>
 <p>Now that we are somewhat familiar with the project structure, let’s create a new post.</p>
@@ -201,8 +205,8 @@ Twitter: <span class="citation">@fishiintheC</span></p>
 <li>Revisiting this diagram, the <em>fetch upstream</em> is updating your forked repo from the original yellow repo and then the pull is updating your local repo from your forked repo.</li>
 </ul>
 <div class="figure">
-<img src="images/HGwR_fork-and-clone_modified.png" alt="" />
-<p class="caption">Figure modified from Jenny Bryan’s Happy Git for the useR.</p>
+<img src="images/HGwR_fetch-pull.png" alt="" />
+<p class="caption">Diagram of fetching upstream and pulling Credit: modified from Happy Git for the useR</p>
 </div>
 <p>Now we will <em>push</em> our commits from or local repo to our remote <code>origin/master</code> repo on GitHub.</p>
 <p>If this is your first time using Git with RStudio, you will have to set-up a <strong>personal access token</strong> or <strong>PAT</strong> in GitHub. For detailed directions, go to the <a href="https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token">GitHub page</a>.</p>
@@ -378,14 +382,12 @@ You can also use inline math notation by sandwiching it between <code>$</code> <
 <ul>
 <li><strong>Solution</strong>: The good ’ole Restart R (Session &gt; Restart R) or close and re-open.</li>
 </ul></li>
+<li>Formatting wise, it’s a good idea to put full line returns before/after formatting bits like lists and inserting images. Something to check if your content is not formatting as you expect.</li>
 <li>OTHERS??</li>
 </ul>
 </div>
-<div id="acknowledgments" class="section level2">
-<h2>Acknowledgments</h2>
-</div>
 <div id="resources-mentioned" class="section level2">
-<h2>Resources mentioned</h2>
+<h2>Resources mentioned:</h2>
 <ul>
 <li><a href="https://bookdown.org/yihui/blogdown/yihui-xie.html">Creating Websites with R Markdown</a> by Yihui Xi, Amber Thomas, and Alison Presmanes Hill.</li>
 <li><a href="https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/">“Up &amp; running with blogdown in 2021”</a> Alison Hill.</li>
