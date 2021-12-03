@@ -88,21 +88,21 @@ In this case, we will be using **GitHub** to access the website files, make some
 We will focus on contributing a post to an existing website repository on GitHub, but there are lots of fabulous and free resources online that go more into depth on Git:
 
 - If you need to be convinced to use Git for version control see this [article](https://peerj.com/preprints/3159v2/) and [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) to git started both by Git/R guru Jenny Bryan.
-- See Dr Caitie Kuempel's R Ladies Brisbane [presentation](https://github.com/cdkuempel/getting_started_github) on getting started with GitHub in RStudio.
+- See Caitie Kuempel's R Ladies Brisbane [presentation](https://github.com/cdkuempel/getting_started_github) on getting started with GitHub in RStudio.
 
 ### Git Terminology
 
 **Repository/repo** - where a project is stored in GitHub. Think of it like a folder holding all the relevant documents that you can version control, view history, and add collaborators. The repository or repo holds all the relevant files for the website - most of which we will not touch.
+
+**Fork** - A copy of another user's repo on your account. This allows you to freely change a project without affecting the original upstream repo. You can keep your fork synced with changes in the original repo. - this is *fetching upstream*.
+
+**Clone** - a copy of a repository that lives on your computer instead of a website server like GitHub. Is still connected to the remote repo online and you can push/pull edits.
 
 **Commit** - is one or more changes to a file or set of files that you are asking GitHub to keep track of.
 
 **Push** - sending your committed changes to a remote repository on GitHub. Local changes updated on the GitHub website where other people can access.
 
 **Pull** - incorporating and merging changes. An edit on the remote repository on GitHub can be pulled to a local repository.
-
-**Fork** - A copy of another user's repo on your account. This allows you to freely change a project without affecting the original upstream repo. You can keep your fork synced with changes in the original repo. - this is *fetching upstream*.
-
-**Clone** - a copy of a repository that lives on your computer instead of a website server like GitHub. Is still connected to the remote repo online and you can push/pull edits.
 
 **Diff** - difference, or changes made that are visible as insertions/deletions for a commit.
 
@@ -244,7 +244,7 @@ Serving the site is using something called **LiveReload**:
 
 > Let’s introduce an important and helpful technology that you just used: LiveReload. Serving your site uses LiveReload, which means your website will be automatically rebuilt and reloaded in your web browser when you modify any source file of your website and save it. Basically, once you launch the website in a web browser, you do not need to rebuild it explicitly anymore. All you need to do is edit the source files, such as R Markdown documents, and save them. There is no need to click any buttons or run any commands. LiveReload is implemented via blogdown::serve_site() and Hugo, and you will only need to use it once per work session.
 
-Remember, *everytime* you **save** your .Rmd file will activate the *LiveReload*. To stop serving the site locally run `blogdown::stop_server()` in the console.
+Remember, *every time* you **save** your .Rmd file will activate the *LiveReload*. To stop serving the site locally run `blogdown::stop_server()` in the console.
 
 ### 7. Create your content 
 
@@ -332,7 +332,7 @@ plot(pressure)
 
 ##### Chunk options
 
-Chunks are the gray areas in the .Rmd file where you can add code that will be run. These are defined by three backticks (not a single quote, the key to the left of the 1). You can insert R code chunks but also in other languages! See the green 'Insert' code chunk button to see different options. An R code chunk will have the an `{r  }` after the opening backticks. 
+Chunks are the gray areas in the .Rmd file where you can add code that will be run. These are defined by three back ticks (not a single quote, the key to the left of the 1). You can insert R code chunks but also in other languages! See the green 'Insert' code chunk button to see different options. An R code chunk will have the an `{r  }` after the opening back ticks. 
 
 The keyboard short cut to add an R code chunk is `Ctrl` + `Alt` + `I`
 
@@ -395,3 +395,20 @@ Let's face it, the likelihood of something going awry following this tutorial is
 - Sometimes it is difficult to tell when the 'LiveReload' has finished or if you are used to saving regularly every few minutes that constant updating of 'LiveReload' can freeze RStudio.
     - **Solution**: The good 'ole Restart R (Session > Restart R) or close and re-open.
 - OTHERS??
+
+## Acknowledgments
+
+## Resources mentioned
+
+- [Creating Websites with R Markdown](https://bookdown.org/yihui/blogdown/yihui-xie.html) by Yihui Xi, Amber Thomas, and Alison Presmanes Hill.
+- ["Up & running with blogdown in 2021"](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/) Alison Hill. 
+- ["Creating a Geospatial Blog with blogdown" on the UQGSAC blog](https://geospatial-community.netlify.app/post/create-a-geospatial-blog/) by Mitch Rudge and Stéphane Guillou.
+- [Excuse me, do you have a moment to talk about version control?](https://peerj.com/preprints/3159v2/) by Jenny Bryan
+- [Happy Git and GitHub for the useR](https://happygitwithr.com/index.html) by Jenny Bryan.
+- [Getting Started with GitHub](https://github.com/cdkuempel/getting_started_github) R Ladies Brisbane presentation by Caitie Kuemple. 
+- [geocommunity/website GitHub repo](https://github.com/geocommunity/website)
+- [18.6 Commit best practices](https://r-pkgs.org/git.html#commit-best-practices) from the R packages book by Hadley Wickham and Jenny Bryan.
+- [R Markdown](http://rmarkdown.rstudio.com)
+- [KaTeX - Supported Functions](https://katex.org/docs/supported.html)
+- [Code Chuncks](https://rmarkdown.rstudio.com/lesson-3.html)
+- [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
