@@ -15,9 +15,9 @@ Will be presented by Mitch Rudge.
 
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40mitchrudge)](https://twitter.com/mitchrudge)
 
-**Bio** Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he is using drones to survey savanna trees, which helps to inform mine site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
+**Bio** Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he is using drones to survey savanna trees to inform mine site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
 
-**Workshop description** For this session, Mitch will walk through some basics of raster analysis using R. In particular, he will focus on the relatively new [Terra](https://github.com/rspatial/terra) package, which is set to replace the extremely popular [Raster](https://github.com/rspatial/raster) package. A basic understanding of R will help, but this workshop will be aimed at beginners with no prior knowledge. 
+**Workshop description** For this session, Mitch will walk through the basics of raster analysis using R. In particular, he will focus on the relatively new [Terra](https://github.com/rspatial/terra) package, which is set to replace the extremely popular [Raster](https://github.com/rspatial/raster) package. A basic understanding of R will help, but this workshop will be aimed at beginners with no prior knowledge. 
 
 
 
