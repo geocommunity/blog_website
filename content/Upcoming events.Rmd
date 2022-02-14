@@ -4,36 +4,91 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
+# Basic Raster Analysis with R
 
-The next workshop will form part of the [ResBaz](https://resbaz.github.io/resbaz2021qld/schedule/#session-42) festival.  `r emo::ji("point_down")`
+`r emo::ji("point_down")`
 
 
-![](/images/ResBazlogo.PNG) 
+Will be presented by Mitch Rudge.
 
-A low cost skill- and community-building festival where researchers come together to upskill in digital research tools and scholarship.
-Only $25 for three days of talks, workshops and meetups. 
+![](/images/mitch.PNG){width=40% height=40%}
 
-Purchase [here](https://www.eventbrite.com.au/e/resbaz-queensland-2021-tickets-185377598387) 
-Or 
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40mitchrudge)](https://twitter.com/mitchrudge)
 
-[volunteer to help out](https://docs.google.com/forms/d/e/1FAIpQLSfTwkZaRlKULFQrnY66P2MJSpYeUyS2eJ3RPcqMDNHy1QxmyA/viewform) for a free ticket
+**Bio** Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he is using drones to survey savanna trees, which helps to inform mine site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
 
-It will be presented by Dr Catherine Kim.
+**Workshop description** For this session, Mitch will walk through some basics of raster analysis using R. In particular, he will focus on the relatively new [Terra](https://github.com/rspatial/terra) package, which is set to replace the extremely popular [Raster](https://github.com/rspatial/raster) package. A basic understanding of R will help, but this workshop will be aimed at beginners with no prior knowledge. 
 
-![](/images/CKim_sq.jpg){width=30% height=30%}
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40fishiinthec)](https://twitter.com/fishiinthec)
 
-**Bio** Catherine completed her PhD in Biological Sciences at UQ earlier this year and now splits her time between research and teaching R at the Library. Her research is focuses on coral reef ecology and conservation and is continually developing her R and data science skills. 
 
-**Workshop description** For this session, Catherine will show us how the new UQ geospatial community of practice blog will operate. She will introduce a workflow using Git and R to run the blog by forking a GitHub repository, creating a blogpost in R, and pushing the post back to GitHub. Basic understanding of Git + GitHub and R + RStudio is helpful but the workshop will be aimed for beginners with no prior knowledge. 
+![](/./Upcoming events_files/terra_logo.png){width=30% height=30%}
 
-**When** Thursday 25th November 2021, 2:30 - 4:30pm
+**When** Thursday 24th February 2022, 2:30 - 4:30pm
 
-**Where** *In person* (ResBaz ticket holders only) Advanced Engineering Building (49), Room 502, UQ St Lucia.  
+**Online only** Check email for teams link. 
+If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
 
-or 
 
-*online* [Free on zoom](https://uqz.zoom.us/s/87436914908)
+
+
+
+
+# Forward schedule for 2022
+
+Here we have placeholders for upcoming workshops. 
+
+**March 31** 
+TBC
+
+**April 28**
+Tim Devereux - Using Python for cloud computing - Open Data Cube and Google Earth Engine  
+
+**May 26**
+Anthony Kimpton - How to publish a map online with Shiny 
+
+**June 30**
+TBC
+
+**July 28**
+TBC
+
+**August 25**
+TBC
+
+**September 29**
+TBC
+
+**October 27**
+Caitie Kuempel - Spatial analysis in R 
+
+**November 24**
+TBC
+
+**December 8**
+End of year catch up
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
