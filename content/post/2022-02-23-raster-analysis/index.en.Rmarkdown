@@ -172,10 +172,8 @@ Now that we know how to import a Raster, subset it, and define its CRS, its a go
 The `global()` function can be used to extract values like the average, mean and max cell values. Using the elevation data we have imported, we could work out the highest cell on the map with the following: 
 
 ```{r global } 
-
 max_h <- global(r, "max", na.rm=TRUE)
 max_h
-
 ```
 
 The humble histogram is another useful tool when getting a handle on raster data. Terra allows you to create a frequency distribution histogram with `hist()`:
@@ -229,13 +227,18 @@ On the dataset we have been working on, we will use another function: `spatSampl
 Here, we will randomly generate one point on the elevation raster. 
 
 ```{r }
-samp <- spatSample(r, 1, as.points=TRUE)
+samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
 ```
 
 Now we can make a buffer centered on this point using the `buffer()` function. 
+
 ```{r }
-buf <- buffer(samp, 100)
+buf <- buffer(samp, width = 100,quadsegs = 1)
 ```
+
+
+
+
 
 Now we can crop the buffered area. 
 
@@ -243,7 +246,6 @@ Now we can crop the buffered area.
 cropped <- crop(r, buf)
 plot(cropped)
 ```
-
 
 
 **stretch**

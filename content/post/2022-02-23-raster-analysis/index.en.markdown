@@ -206,7 +206,6 @@ The `global()` function can be used to extract values like the average, mean and
 
 
 ```r
-
 max_h <- global(r, "max", na.rm=TRUE)
 max_h
 ##       max
@@ -276,14 +275,19 @@ Here, we will randomly generate one point on the elevation raster.
 
 
 ```r
-samp <- spatSample(r, 1, as.points=TRUE)
+samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
 ```
 
 Now we can make a buffer centered on this point using the `buffer()` function. 
 
+
 ```r
-buf <- buffer(samp, 100)
+buf <- buffer(samp, width = 100,quadsegs = 1)
 ```
+
+
+
+
 
 Now we can crop the buffered area. 
 
@@ -294,7 +298,6 @@ plot(cropped)
 ```
 
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="480" />
-
 
 
 **stretch**
