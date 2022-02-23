@@ -6,7 +6,7 @@ theme = "anatole"
 summarylength = 10
 enableEmoji = true
 enableRobotsTXT = true
-
+coverImage = "images/site-feature-image.png"
 # Enable Disqus
 #disqusShortname = ""
 
