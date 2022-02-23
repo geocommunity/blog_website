@@ -25,18 +25,19 @@ What we will cover:
 
 1. Raster and vector basics
 2. Introducing the Terra package
-3. Importing and exporting raster data
+3. Creating, Importing and exporting rasters
 4. Dealing with coordinate reference systems
-5. Raster data manipulation
-6. Raster x Vector operations
-7. Compatibility between Raster and Terra
-8. Some applied examples
-9. A fun new package called Layer! 
+5. Naming and subsetting SpatRaster layers
+6. Raster summaries
+7. Raster data manipulation
+8. Compatibility between Raster and Terra
+9. A real world example with drone data
+10. A fun new package called Layer
 
 
 What you will need: Installations of R, RStudio and Terra
 
-## 1. Raster and vector basics. 
+## 1. Raster and vector basics
 **Rasters** divide areas into a grid of rectangles of equal size. Each rectangle holds one or more value for a variable of interest. 
 
 **Vectors** consist of a series of coordinates, which make points, lines or polygons. 
@@ -46,7 +47,7 @@ What you will need: Installations of R, RStudio and Terra
 http://gsp.humboldt.edu/
 
 
-## 2 Introducing the Terra package
+## 2. Introducing the Terra package
 
 <img width="250" src="https://raw.githubusercontent.com/rspatial/terra/master/man/figures/logo.png">
 
@@ -197,7 +198,7 @@ s$a #will select the a (red) band
 Note that, unlike with Raster, there is no need for different classes like Raster stacks/layers/bricks. 
 
 
-## 6 Raster summaries
+## 6. Raster summaries
 
 Now that we know how to import a Raster, subset it, and define its CRS, its a good time to start investigating its values.  
 
@@ -231,7 +232,7 @@ boxplot(r)
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/boxplot-1.png" width="480" />
 
 
-## 7 Raster data manipulation
+## 7. Raster data manipulation
 
 There are a huge number of functions within Terra for data manipulation. Here are a few that might be useful. 
 
@@ -322,7 +323,7 @@ plot(f)
 <img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="480" />
 
 
-## 8 Compatibility between Raster and Terra
+## 8. Compatibility between Raster and Terra
 
 If you are used to using `Raster`, it is not too difficult switch between Raster classes (RasterLayer, RasterStack etc) and SpatRaster using `rast()` function.
 
@@ -345,7 +346,7 @@ rst <- rast(stac) #now this is a SpatRaster
 
 
 
-## 9 A real world example with drone data
+## 9. A real world example with drone data
 
 In this example, we will use some of my drone data collected from savanna woodlands in north Australia.This is a typical example where we have an orthomosaic, which was derived from a camera (RGB), and a canopy height model, which was derived from LiDAR point cloud. 
 
@@ -475,7 +476,7 @@ plot(combined)
 Now we have a raster stack we can work with! 
 
 
-## 10 A cool new package called Layer
+## 10. A fun new package called Layer
 
 One fun little package I stumbled on recently is called `layer`. It doesn't really serve a purpose in terms of analysis, but will be good for making figures that demonstrate the datasets used. 
 
