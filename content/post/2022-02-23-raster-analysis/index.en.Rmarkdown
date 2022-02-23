@@ -102,18 +102,18 @@ x
 
 ## 4. Dealing with coordinate reference systems 
 
-**Different coordinate reference systems**
-Have a look here for a pretty good [rundown](https://rspatial.org/terra/spatial/6-crs.html).  
+Getting the coordinate reference systems correct is a very important, and sometimes tricky, aspect of geospatial analysis. 
 
-Angular coordinate reference systems - Represent the vertical and horizontal angles between the point and the center of the earth. 
+There are two main classes of coordinate reference systems, have a look here for a pretty good [rundown](https://rspatial.org/terra/spatial/6-crs.html).  
+
+Angular coordinate reference systems - these represent the vertical and horizontal angles between the point on the surface and the center of the earth (see figure). 
 
 ![](https://rspatial.org/terra/_images/sphere.png)
+Image reference: https://rspatial.org/terra/
 
-To get location using an angular CRS, we require a pair of coordinates and a reference datum; a model of the shape of the earth. Common datums include WGS84. 
+To get location using an angular CRS, we require a pair of coordinates and a reference datum; a model of the shape of the earth. WGS84 is probably most widely used global datum, where GDA94 / 2020 are commonly used Australian datums. 
 
-Projected CRS - here, angular CRS have been converted to a cartesion system, making it is easier to make maps and calculate area etc. These require a projection, a datum and a set of parameters.
-
-Projections include Mercator, UTM and Lambert. 
+Projected CRS - here, angular CRS have been converted to a Cartesian system, making it is easier to make maps and calculate area etc. These require a projection, a datum and a set of parameters. Projections include Mercator, UTM and Lambert. 
 
 
 **Defining a CRS in Terra**
