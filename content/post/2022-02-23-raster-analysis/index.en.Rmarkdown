@@ -17,6 +17,7 @@ DisableComments: no
 
 
 
+
 ## Basic Raster Analysis with R
 
 **Mitch Rudge**  

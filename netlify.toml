@@ -6,10 +6,10 @@ HUGO_VERSION = '0.89.4'
 
 [context]
 [context.branch-deploy]
-command = 'hugo -F -b $DEPLOY_PRIME_URL --buildFuture --buildDrafts'
+command = 'hugo -F -b $DEPLOY_PRIME_URL --buildFuture'
 
 [context.deploy-preview]
-command = 'hugo -F -b $DEPLOY_PRIME_URL --buildFuture --buildDrafts'
+command = 'hugo -F -b $DEPLOY_PRIME_URL --buildFuture'
 
 [context.production]
 [context.production.environment]
