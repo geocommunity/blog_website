@@ -227,17 +227,33 @@ samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
 ```
 
 Now we can make a buffer centered on this point using the `buffer()` function. 
-```{r }
-buf <- buffer(samp, width = 100,quadsegs = 1)
+```{r makebuffer, eval=FALSE, echo=TRUE}
+buf <- buffer(samp, width = 200)
+plot(r)
+plot(samp, add=TRUE)
+plot(buf, add=TRUE)
 ```
+![](images/crop_example1.PNG)
 
-Finally, we can crop the elevation raster to the buffered area. 
-```{r }
+
+
+Now we can crop the elevation raster to the buffered area. 
+```{r, eval=FALSE, echo=TRUE }
 cropped <- crop(r, buf)
 plot(cropped)
 ```
+![](images/crop_example_2.PNG)
+
+Notice that the buffer was a circle, but the cropped area is square. Why? Because the crop command uses the extent of the object which is always a rectangle. If you wanted to maintain the shape of the buffer, you will want to use `mask()`
+
+```{r mask, eval=FALSE, echo=TRUE}
+mask <- mask(r, buf)
+mask <- trim(mask) #we can trim down all the NA values using the trim function
+plot(mask)
+```
 
 
+![](images/maskandtrim.PNG)
 **stretch**
 Another task is to stretch values to a given range. For example, classification can require data that is normalised to 8bit (0-255). This can be handy if you want to normalise rasters on different scales, such as elevation in m AGL and reflectance in DN.  
 

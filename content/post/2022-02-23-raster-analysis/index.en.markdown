@@ -127,18 +127,18 @@ x
 
 ## 4. Dealing with coordinate reference systems 
 
-**Different coordinate reference systems**
-Have a look here for a pretty good [rundown](https://rspatial.org/terra/spatial/6-crs.html).  
+Getting the coordinate reference systems correct is a very important, and sometimes tricky, aspect of geospatial analysis. 
 
-Angular coordinate reference systems - Represent the vertical and horizontal angles between the point and the center of the earth. 
+There are two main classes of coordinate reference systems, have a look here for a pretty good [rundown](https://rspatial.org/terra/spatial/6-crs.html).  
+
+Angular coordinate reference systems - these represent the vertical and horizontal angles between the point on the surface and the center of the earth (see figure). 
 
 ![](https://rspatial.org/terra/_images/sphere.png)
+Image reference: https://rspatial.org/terra/
 
-To get location using an angular CRS, we require a pair of coordinates and a reference datum; a model of the shape of the earth. Common datums include WGS84. 
+To get location using an angular CRS, we require a pair of coordinates and a reference datum; a model of the shape of the earth. WGS84 is probably most widely used global datum, where GDA94 / 2020 are commonly used Australian datums. 
 
-Projected CRS - here, angular CRS have been converted to a cartesion system, making it is easier to make maps and calculate area etc. These require a projection, a datum and a set of parameters.
-
-Projections include Mercator, UTM and Lambert. 
+Projected CRS - here, angular CRS have been converted to a Cartesian system, making it is easier to make maps and calculate area etc. These require a projection, a datum and a set of parameters. Projections include Mercator, UTM and Lambert. 
 
 
 **Defining a CRS in Terra**
@@ -287,19 +287,34 @@ samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
 Now we can make a buffer centered on this point using the `buffer()` function. 
 
 ```r
-buf <- buffer(samp, width = 100,quadsegs = 1)
+buf <- buffer(samp, width = 200)
+plot(r)
+plot(samp, add=TRUE)
+plot(buf, add=TRUE)
 ```
+![](images/crop_example1.PNG)
 
-Finally, we can crop the elevation raster to the buffered area. 
+
+
+Now we can crop the elevation raster to the buffered area. 
 
 ```r
 cropped <- crop(r, buf)
 plot(cropped)
 ```
+![](images/crop_example_2.PNG)
 
-<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+Notice that the buffer was a circle, but the cropped area is square. Why? Because the crop command uses the extent of the object which is always a rectangle. If you wanted to maintain the shape of the buffer, you will want to use `mask()`
 
 
+```r
+mask <- mask(r, buf)
+mask <- trim(mask) #we can trim down all the NA values using the trim function
+plot(mask)
+```
+
+
+![](images/maskandtrim.PNG)
 **stretch**
 Another task is to stretch values to a given range. For example, classification can require data that is normalised to 8bit (0-255). This can be handy if you want to normalise rasters on different scales, such as elevation in m AGL and reflectance in DN.  
 
@@ -319,7 +334,7 @@ f <- focal(r, w=5, fun="mean")
 plot(f)
 ```
 
-<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 
 ## 8. Compatibility between Raster and Terra
