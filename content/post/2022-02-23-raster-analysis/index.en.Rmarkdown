@@ -1,7 +1,7 @@
 ---
 title: Basic Raster Analysis with R
 author: 'Mitch Rudge'
-date: '2022-02-24'
+date: '2022-02-21'
 slug: []
 categories:
   - spatial
