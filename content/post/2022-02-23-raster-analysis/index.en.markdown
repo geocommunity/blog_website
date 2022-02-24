@@ -57,7 +57,7 @@ Terra is set to replace the extremely popular Raster package. It is written by t
 **Advantages** of Terra over Raster. 
 It's faster - unlike `Raster`, `Terra` is mostly written in C++, making it much faster for many operations. 
 
-It's simpler - `Terra` does away with the complex data structure of `Raster` like `RasteLayer`, `RasterStack` and `RasterBrick`. We will go into this later. 
+It's simpler - `Terra` does away with the complex data structure of `Raster` like `RasterLayer`, `RasterStack` and `RasterBrick`. We will go into this later. 
 
 For now, lets install and load Terra. 
 
@@ -76,19 +76,11 @@ The following examples are largely based on examples from the official [manual](
 
 The ` rast()` function is used to create and import `SpatRasters`. 
 
-To create a SpatRaster from from scratch: 
+To create a SpatRaster from scratch: 
 
 ```r
-x <- terra::rast(nrows=108, ncols=21, xmin=0, xmax=10)
-x
-```
-
-```
-## class       : SpatRaster 
-## dimensions  : 108, 21, 1  (nrow, ncol, nlyr)
-## resolution  : 0.4761905, 1.666667  (x, y)
-## extent      : 0, 10, -90, 90  (xmin, xmax, ymin, ymax)
-## coord. ref. : lon/lat WGS 84
+x <- rast(nrows=108, ncols=108, xmin=0, xmax=10, ymin = 0, ymax = 10)
+values(x) <- 1:ncell(x)
 ```
 
 And, probably more useful, to import a raster from a file:
@@ -136,14 +128,14 @@ Angular coordinate reference systems - these represent the vertical and horizont
 ![](https://rspatial.org/terra/_images/sphere.png)
 Image reference: https://rspatial.org/terra/
 
-To get location using an angular CRS, we require a pair of coordinates and a reference datum; a model of the shape of the earth. WGS84 is probably most widely used global datum, where GDA94 / 2020 are commonly used Australian datums. 
+To get location using an angular CRS, we require a pair of coordinates and a reference datum; a model of the shape of the earth. WGS84 is probably the most widely used global datum, where GDA94 / 2020 are commonly used Australian datums. 
 
-Projected CRS - here, angular CRS have been converted to a Cartesian system, making it is easier to make maps and calculate area etc. These require a projection, a datum and a set of parameters. Projections include Mercator, UTM and Lambert. 
+Projected coordinate reference system - here, angular coordinates have been converted to a Cartesian system, making it is easier to make maps and calculate area etc. These require a projection, a datum and a set of parameters. Projections include Mercator, UTM and Lambert. 
 
 
 **Defining a CRS in Terra**
 
-Terra recommends the use of EPSG database, as PROJ.4 is no longer fully supported. 
+Terra recommends using the EPSG database, as PROJ.4 is no longer fully supported. 
 
 To look up an EPSG code, go to https://epsg.org/ and find your CRS.  
 
@@ -234,7 +226,7 @@ boxplot(r)
 ## 7. Raster data manipulation
 
 There are a huge number of functions within Terra for data manipulation, but here are a few that might be useful. 
-**trim** 
+###trim
 Often, we will find a lot of white space consisting of NA's around our Raster. To remove this, we can use the `trim()` function. Conversely, to add white space to a raster (say, to match the extent of another Raster), we can run the extend function. 
 
 
@@ -243,10 +235,10 @@ trimmed <- trim(r)
 plot(trimmed)
 ```
 
-**aggregate** and **resample**
+###aggregate and resample
 These are used to change the resolution of a `SpatRaster`. 
 
-Aggregate creates a new `SpatRaster` with with a lower resolution. Users need to provide the factor by which the raster will be reduced.
+Aggregate creates a new `SpatRaster` with a lower resolution. Users need to provide the factor by which the raster will be reduced.
 
 
 ```r
@@ -258,7 +250,7 @@ plot(agg)
 
 You can see that the resolution has been reduced, by a factor of five in this case.
 
-In reality, we will often need to combine rasters from different sources that have different origins and resolutions; this will require us to match the resolution, the origin and the extent. For this, the aggregate function is the way to go. To demonstrate this, we can first change the origin of the raster we just aggregated. 
+In reality, we will often need to combine rasters from different sources that have different origins and resolutions; this will require us to match the resolution, the origin and the extent. For this, the resample function is the way to go. To demonstrate this, we can first change the origin of the raster we just aggregated. 
 
 
 ```r
@@ -269,10 +261,10 @@ Then we can resample the original raster, `r`, using the new `agg` raster with d
 
 
 ```r
-rsm <- terra::resample(r, agg, method= 'bilinear')
+rsm <- resample(r, agg, method= 'bilinear')
 ```
 
-**crop**
+###crop
 Cropping is one of the most widely used operations when working with Raster data. 
 To demonstrate a simple crop, we will need to use a `SpatVector`: the other major data class used by Terra. 
 
@@ -282,6 +274,10 @@ Here, we will randomly generate one point on the elevation raster.
 
 ```r
 samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
+```
+
+```
+## Warning: [spatSample] fewer cells returned than requested
 ```
 
 Now we can make a buffer centered on this point using the `buffer()` function. 
@@ -304,6 +300,9 @@ plot(cropped)
 ```
 ![](images/crop_example_2.PNG)
 
+
+###Mask
+
 Notice that the buffer was a circle, but the cropped area is square. Why? Because the crop command uses the extent of the object which is always a rectangle. If you wanted to maintain the shape of the buffer, you will want to use `mask()`
 
 
@@ -315,17 +314,24 @@ plot(mask)
 
 
 ![](images/maskandtrim.PNG)
-**stretch**
+
+###stretch
 Another task is to stretch values to a given range. For example, classification can require data that is normalised to 8bit (0-255). This can be handy if you want to normalise rasters on different scales, such as elevation in m AGL and reflectance in DN.  
 
 In terra, this is as easy as:
 
 ```r
 str <- stretch(r) #defaults to 0-255
+global(str, "range", na.rm=TRUE)
+```
+
+```
+##      range max
+## test     0 255
 ```
 
 
-**focal**
+###focal
 The `focal()` function can be used to clean and smooth rasters. `Focal()` uses a moving window with size `w` and a function to average neighboring cells. Lets do that with the elevation dataset: 
 
 
@@ -339,7 +345,7 @@ plot(f)
 
 ## 8. Compatibility between Raster and Terra
 
-If you have grow acustomed to using `Raster`, don't worry, it is not difficult switch between Raster classes (RasterLayer, RasterStack etc) and SpatRaster using `rast()` function.
+If you have grow acustomed to using `Raster`, don't worry, it is not difficult switch between Raster classes (RasterLayer, RasterStack etc) and SpatRaster using the `rast()` function.
 
 Here is an example. 
 
@@ -382,7 +388,7 @@ res(ortho) #check the resolution
 #now lets reduce it down with aggregate 
 
 #note the filename variable lets us write directly to file
-terra::aggregate(ortho, fact = 10, fun = 'mean', filename = ortho_reduced_path)
+aggregate(ortho, fact = 10, fun = 'mean', filename = ortho_reduced_path)
 ortho_reduced <- rast(ortho_reduced_path)
 res(ortho_reduced)
 ```
@@ -499,16 +505,14 @@ But before we get into that, lets further reduce the resolution of the `combined
 
 
 ```r
-combined_lowres <- terra::aggregate(combined, fact = 10) #10x less rows and columns
+combined_lowres <- aggregate(combined, fact = 10) #10x less rows and columns
 ```
 
 Now we can load the `layer` and `raster` packages: 
 
 ```r
 install.packages("layer")
-install.packages("raster")
 library(layer)
-library(raster)
 ```
 
 Now we can provide the layers to `tilt_map`, then `plot_tilted_map`, to create a nice looking tilted stack that illustrates our data. Note within the `tilt_map` function, we convert the `SpatRaster` to `Raster` with the `raster()` function. 
