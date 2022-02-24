@@ -215,7 +215,7 @@ boxplot(r)
 
 There are a huge number of functions within Terra for data manipulation, but here are a few that might be useful. 
 ### Trim
-Often, we will find a lot of white space consisting of NA's around our Raster. To remove this, we can use the `trim()` function. Conversely, to add white space to a raster (say, to match the extent of another Raster), we can run the extend function. 
+Often, we will find a lot of white space consisting of NA's around our Raster. To remove this, we can use the `trim()` function. Conversely, to add white space to a raster (say, to match the extent of another Raster), we can run the `extend()` function. 
 
 
 ```r
@@ -378,9 +378,9 @@ res(ortho_reduced)
 ```
 
 
-Download the reduced orthomosaic [here](https://cloudstor.aarnet.edu.au/plus/s/wCiK6OgptZMoJku)
+Download the reduced orthomosaic [here](https://drive.google.com/file/d/1k0xW1VQS3QE41hm200vJUC2SbMbf6RGs/view?usp=sharing)
 
-And the chm [here](https://cloudstor.aarnet.edu.au/plus/s/U5MUyCHYxvWxL6g)
+And the chm [here](https://drive.google.com/file/d/1qoKeXKwTy0ohMQZWfweW4TAj4WV22g05/view?usp=sharing)
 
 The first thing to do is load the .tifs as `SpatRasters` in R. 
 
