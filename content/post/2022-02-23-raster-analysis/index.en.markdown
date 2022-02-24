@@ -105,18 +105,6 @@ x <- writeRaster(r, "output.tif", overwrite=TRUE)
 x
 ```
 
-```
-## class       : SpatRaster 
-## dimensions  : 115, 80, 1  (nrow, ncol, nlyr)
-## resolution  : 40, 40  (x, y)
-## extent      : 178400, 181600, 329400, 334000  (xmin, xmax, ymin, ymax)
-## coord. ref. : +proj=sterea +lat_0=52.1561605555556 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +datum=WGS84 +units=m +no_defs 
-## source      : output.tif 
-## name        : test 
-## min value   :  138 
-## max value   : 1736
-```
-
 ## 4. Dealing with coordinate reference systems 
 
 Getting the coordinate reference systems correct is a very important, and sometimes tricky, aspect of geospatial analysis. 
@@ -226,7 +214,7 @@ boxplot(r)
 ## 7. Raster data manipulation
 
 There are a huge number of functions within Terra for data manipulation, but here are a few that might be useful. 
-###trim
+### Trim
 Often, we will find a lot of white space consisting of NA's around our Raster. To remove this, we can use the `trim()` function. Conversely, to add white space to a raster (say, to match the extent of another Raster), we can run the extend function. 
 
 
@@ -235,7 +223,7 @@ trimmed <- trim(r)
 plot(trimmed)
 ```
 
-###aggregate and resample
+### Aggregate and Resample
 These are used to change the resolution of a `SpatRaster`. 
 
 Aggregate creates a new `SpatRaster` with a lower resolution. Users need to provide the factor by which the raster will be reduced.
@@ -264,7 +252,7 @@ Then we can resample the original raster, `r`, using the new `agg` raster with d
 rsm <- resample(r, agg, method= 'bilinear')
 ```
 
-###crop
+### Crop
 Cropping is one of the most widely used operations when working with Raster data. 
 To demonstrate a simple crop, we will need to use a `SpatVector`: the other major data class used by Terra. 
 
@@ -274,10 +262,6 @@ Here, we will randomly generate one point on the elevation raster.
 
 ```r
 samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
-```
-
-```
-## Warning: [spatSample] fewer cells returned than requested
 ```
 
 Now we can make a buffer centered on this point using the `buffer()` function. 
@@ -301,7 +285,7 @@ plot(cropped)
 ![](images/crop_example_2.PNG)
 
 
-###Mask
+### Mask
 
 Notice that the buffer was a circle, but the cropped area is square. Why? Because the crop command uses the extent of the object which is always a rectangle. If you wanted to maintain the shape of the buffer, you will want to use `mask()`
 
@@ -315,7 +299,7 @@ plot(mask)
 
 ![](images/maskandtrim.PNG)
 
-###stretch
+### Stretch
 Another task is to stretch values to a given range. For example, classification can require data that is normalised to 8bit (0-255). This can be handy if you want to normalise rasters on different scales, such as elevation in m AGL and reflectance in DN.  
 
 In terra, this is as easy as:
@@ -331,7 +315,7 @@ global(str, "range", na.rm=TRUE)
 ```
 
 
-###focal
+### Focal
 The `focal()` function can be used to clean and smooth rasters. `Focal()` uses a moving window with size `w` and a function to average neighboring cells. Lets do that with the elevation dataset: 
 
 
@@ -340,7 +324,7 @@ f <- focal(r, w=5, fun="mean")
 plot(f)
 ```
 
-<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 
 ## 8. Compatibility between Raster and Terra

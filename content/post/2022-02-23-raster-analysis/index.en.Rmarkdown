@@ -95,7 +95,7 @@ plot(r)
 ```
 
 To write a `SpatRaster` to file, we can use the the `writeRaster` function: 
-```{r message=FALSE, warning=FALSE, include=TRUE}
+```{r message=FALSE, eval=FALSE, echo=TRUE}
 x <- writeRaster(r, "output.tif", overwrite=TRUE)
 x
 ```
@@ -183,7 +183,7 @@ boxplot(r)
 ## 7. Raster data manipulation
 
 There are a huge number of functions within Terra for data manipulation, but here are a few that might be useful. 
-###trim
+### Trim
 Often, we will find a lot of white space consisting of NA's around our Raster. To remove this, we can use the `trim()` function. Conversely, to add white space to a raster (say, to match the extent of another Raster), we can run the extend function. 
 
 ```{r trim1, eval=FALSE, echo=TRUE}
@@ -191,7 +191,7 @@ trimmed <- trim(r)
 plot(trimmed)
 ```
 
-###aggregate and resample
+### Aggregate and Resample
 These are used to change the resolution of a `SpatRaster`. 
 
 Aggregate creates a new `SpatRaster` with a lower resolution. Users need to provide the factor by which the raster will be reduced.
@@ -215,14 +215,14 @@ Then we can resample the original raster, `r`, using the new `agg` raster with d
 rsm <- resample(r, agg, method= 'bilinear')
 ```
 
-###crop
+### Crop
 Cropping is one of the most widely used operations when working with Raster data. 
 To demonstrate a simple crop, we will need to use a `SpatVector`: the other major data class used by Terra. 
 
 On the data set we have been working on, we will first use the `spatSample()` function, another handy tool.  
 
 Here, we will randomly generate one point on the elevation raster. 
-```{r }
+```{r sample, eval=FALSE, echo=TRUE }
 samp <- spatSample(r, 1, as.points=TRUE, na.rm=TRUE)
 ```
 
@@ -245,7 +245,7 @@ plot(cropped)
 ![](images/crop_example_2.PNG)
 
 
-###Mask
+### Mask
 
 Notice that the buffer was a circle, but the cropped area is square. Why? Because the crop command uses the extent of the object which is always a rectangle. If you wanted to maintain the shape of the buffer, you will want to use `mask()`
 
@@ -258,7 +258,7 @@ plot(mask)
 
 ![](images/maskandtrim.PNG)
 
-###stretch
+### Stretch
 Another task is to stretch values to a given range. For example, classification can require data that is normalised to 8bit (0-255). This can be handy if you want to normalise rasters on different scales, such as elevation in m AGL and reflectance in DN.  
 
 In terra, this is as easy as:
@@ -268,7 +268,7 @@ global(str, "range", na.rm=TRUE)
 ```
 
 
-###focal
+### Focal
 The `focal()` function can be used to clean and smooth rasters. `Focal()` uses a moving window with size `w` and a function to average neighboring cells. Lets do that with the elevation dataset: 
 
 ``` {r }
