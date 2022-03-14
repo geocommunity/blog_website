@@ -1,7 +1,7 @@
 ---
 title: Basic Raster Analysis with R
 author: 'Mitch Rudge'
-date: '2022-02-21'
+date: '2022-02-24'
 slug: []
 categories:
   - spatial
@@ -14,14 +14,19 @@ Tags: []
 Categories: []
 DisableComments: no
 ---
-
-## Basic Raster Analysis with R
-
-**Mitch Rudge**  
+**Presented by Mitch Rudge**  
 PhD Candidate, UQ Sustainable Minerals Institute  
 Twitter: [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40mitchrudge)](https://twitter.com/mitchrudge)
 
-What we will cover:
+
+### This is post is associated with a workshop that was held on the 24th Feb 2022 
+
+
+**Workshop description** Mitch walked through the basics of raster analysis using R. In particular, he focused on the relatively new [Terra](https://github.com/rspatial/terra) package, which is set to replace the extremely popular [Raster](https://github.com/rspatial/raster) package. A basic understanding of R will help, but the workshop will be aimed at beginners with no prior knowledge. 
+
+
+
+## What we will cover:
 
 1. Raster and vector basics
 2. Introducing the Terra package
@@ -70,6 +75,7 @@ install.packages("terra")
 library(terra)
 ```
 
+
 ## 3. Creating, Importing and exporting rasters
 
 The following examples are largely based on examples from the official [manual](https://cran.r-project.org/web/packages/terra/index.html) 
@@ -104,7 +110,7 @@ x
 
 Getting the coordinate reference systems correct is a very important, and sometimes tricky, aspect of geospatial analysis. 
 
-There are two main classes of coordinate reference systems, have a look here for a pretty good [rundown](https://rspatial.org/terra/spatial/6-crs.html).  
+There are two main classes of coordinate reference systems, have a look [here](https://rspatial.org/terra/spatial/6-crs.html) for a pretty good.  
 
 Angular coordinate reference systems - these represent the vertical and horizontal angles between the point on the surface and the center of the earth (see figure). 
 
@@ -183,12 +189,14 @@ boxplot(r)
 ## 7. Raster data manipulation
 
 There are a huge number of functions within Terra for data manipulation, but here are a few that might be useful. 
-### Trim
+### Extend and trim
 Often, we will find a lot of white space consisting of NA's around our Raster. To remove this, we can use the `trim()` function. Conversely, to add white space to a raster (say, to match the extent of another Raster), we can run the `extend()` function. 
 
+To demonstrate this functionality, we will first add a lot of white space to our elevation raster using `extend`, before removing it with `trim`. 
+
 ```{r trim1, eval=FALSE, echo=TRUE}
-trimmed <- trim(r)
-plot(trimmed)
+extended <- extend(r, 50)
+trimmed <- trim(extended)
 ```
 
 ### Aggregate and Resample
@@ -299,6 +307,20 @@ Its that simple. And to change this back to a `Raster` object:
 ```{r rasterstack2, eval=FALSE, echo=TRUE}
 stac <- raster(rst) #now this is a RasterStack
 ```
+
+## 9. Options to allow the processing of large files
+
+Terra has some settable options that can help to improve performance. Have a look through them with `?terraOptions`
+
+Particularly useful options include `tempdir`, which provides a default location for files to be written. This can help prevent your C drive being clogged with temp files. 
+
+Also handy is `memfrac`, which lets us stipulate how much RAM `terra` is can use - from 0-0.9. 
+
+
+Check the current options with `terraOptions()`
+
+Set options using `terraOptions(memfrac=0.2, tempdir = "C:/temp/terrafiles")`. 
+
 
 
 ## 9. A real world example with drone data
@@ -451,9 +473,14 @@ plot_tiltedmaps(map_list,
 ![](images/layer_output.PNG)
 
 
+# About the author
 
+**Bio** Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he surveys savanna trees with drones to inform mine-site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
 
+![](/images/mitch.PNG)
 
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40mitchrudge)](https://twitter.com/mitchrudge)
 
+**Email** mitchel.rudge@uq.edu.au
 
 

@@ -5,41 +5,39 @@ title: Upcoming events
 ---
 
 
-# Basic Raster Analysis with R
+# Intro to spatial networks in R
 
 `r emo::ji("point_down")`
+Will be presented by Stephane Guillou
 
 
-Will be presented by Mitch Rudge.
-
-![](/images/mitch.PNG){width=40% height=40%}
-
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40mitchrudge)](https://twitter.com/mitchrudge)
-
-**Bio** Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he surveys savanna trees with drones to inform mine site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
-
-**Workshop description** For this session, Mitch will walk through the basics of raster analysis using R. In particular, he will focus on the relatively new [Terra](https://github.com/rspatial/terra) package, which is set to replace the extremely popular [Raster](https://github.com/rspatial/raster) package. A basic understanding of R will help, but this workshop will be aimed at beginners with no prior knowledge. 
+![](/./Upcoming events_files/steph_profile-resbaz.jpg){width=20%}
 
 
 
-![](/./Upcoming events_files/terra_logo.png){width=30% height=30%}
 
-**When** Thursday 24th February 2022, 2:30 - 4:30pm
+
+**Bio**  
+Stéphane is a software trainer at the UQ Library, specialising in open research software and data analysis support. After a few years working in plant science and agricultural research, he joined the great Library team where he is able to promote Open Research practices to the wider UQ community.
+
+
+**Workshop description** 
+In this session, you will learn some essentials about processing and visualising spatial networks in R, using packages like sfnetworks, igraph, ggraph, ggplot2 and tmap, focusing on the more recent developments in the world of R Spatial.
+
+
+**When** Thursday 31st March 2022, 2:30 - 4:30pm
+
 
 **Online only** Check email for teams link. 
 If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
 
 
 
+# Forward schedule 
 
+Here we have placeholders for upcoming workshops. If you have something you would like to share with the community, 
+please get in touch. 
 
-
-# Forward schedule for 2022
-
-Here we have placeholders for upcoming workshops. 
-
-**March 31** 
-TBC
 
 **April 28**
 Using Python for cloud computing with Open Data Cube and Google Earth Engine - Tim Devereux  
