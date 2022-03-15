@@ -7,22 +7,35 @@ title: Upcoming events
 
 # Intro to spatial networks in R
 
-`r emo::ji("point_down")`
-Will be presented by Stephane Guillou
 
 
-![](/./Upcoming events_files/steph_profile-resbaz.jpg){width=20%}
+<div style= "float:right ;position: relativ";out.width= "65%", out.extra='style="float:right; padding:5px"'>
+<img src="https://raw.githubusercontent.com/luukvdmeer/sfnetworks/master/man/figures/logo.png" width="150" position = "right"/> 
+</div>
+
+
+In this session, you will learn some essentials about processing and visualising spatial networks in R, using packages like sfnetworks, igraph, ggraph, ggplot2 and tmap, focusing on the more recent developments in the world of R Spatial.
+
+<br>
+<br>
+<br>
+
+<div style= "float:left ;position: relativ";out.width= "75%", out.extra='style="float:right; padding:10px"'>
+<img src="/./Upcoming events_files/steph_profile-resbaz.jpg" width = "120"  position = "left"/> 
+</div>
 
 
 
 
 
-**Bio**  
+
+The workshop will be presented by Stephane Guillou`r emo::ji("point_down")`
+
+
 Stéphane is a software trainer at the UQ Library, specialising in open research software and data analysis support. After a few years working in plant science and agricultural research, he joined the great Library team where he is able to promote Open Research practices to the wider UQ community.
 
-
-**Workshop description** 
-In this session, you will learn some essentials about processing and visualising spatial networks in R, using packages like sfnetworks, igraph, ggraph, ggplot2 and tmap, focusing on the more recent developments in the world of R Spatial.
+<br>
+<br>
 
 
 **When** Thursday 31st March 2022, 2:30 - 4:30pm
@@ -32,6 +45,8 @@ In this session, you will learn some essentials about processing and visualising
 If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
 
 
+<br>
+<br>
 
 # Forward schedule 
 

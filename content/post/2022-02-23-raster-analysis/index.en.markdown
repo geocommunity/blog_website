@@ -36,8 +36,9 @@ Twitter: [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bu
 6. Raster summaries
 7. Raster data manipulation
 8. Compatibility between Raster and Terra
-9. A real world example with drone data
-10. A fun new package called Layer
+9. Options to allow the processing of large files
+10. A real world example with drone data
+11. A fun new package called Layer
 
 
 You will need installations of R, RStudio and Terra. 
@@ -376,7 +377,7 @@ Set options using `terraOptions(memfrac=0.2, tempdir = "C:/temp/terrafiles")`.
 
 
 
-## 9. A real world example with drone data
+## 10. A real world example with drone data
 
 In this example, we will use some of my drone data collected from savanna woodlands in north Australia.This is a typical example where we have an orthomosaic, which was derived from a camera (RGB), and a canopy height model, which was derived from LiDAR point cloud. 
 
@@ -499,7 +500,7 @@ plot(combined)
 
 Now we have a raster stack we can work with! 
 
-## 10. A fun new package called Layer
+## 11. A fun new package called Layer
 
 One fun little package I stumbled on recently is called [`layer`](https://github.com/cran/layer). It doesn't really serve a purpose in terms of analysis, although I'll use it to make figures that demonstrate the raster data-sets used in analysis.  
 
@@ -542,7 +543,7 @@ plot_tiltedmaps(map_list,
 
 # About the author
 
-**Bio** Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he surveys savanna trees with drones to inform mine-site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
+Mitch is in the final year of a PhD with the Sustainable Minerals Institute, where he surveys savanna trees with drones to inform mine-site restoration. To process and analyse drone data - LiDAR, photogrammetry, multispec - Mitch has been forced to pick up skills in geospatial analysis using R and python. 
 
 ![](/images/mitch.PNG)
 
