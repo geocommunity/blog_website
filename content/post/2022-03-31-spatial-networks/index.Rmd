@@ -23,17 +23,18 @@ DisableComments: no
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
-                      warning = FALSE)
+                      warning = FALSE,
+                      message = FALSE)
 ```
 
-This tutorial is an introduction to dealing with tidy spatial networks in R, demonstrating a full process of data acquisition from the open spatial database OpenStreetMap, data preparation, and basic network analysis like isodistance and shortest path calculation.
+This tutorial is an introduction to dealing with tidy spatial networks in R, demonstrating a full process of data acquisition from the open spatial database OpenStreetMap, data preparation, and basic network analysis like isodistance and shortest path calculation. Along the way, we use the default plotting methods for spatial network objects, but also make use of the ggplot2 and tmap packages as alternatives.
 
 ## Setting up
 
 To follow this tutorial, you will have to have a number of packages available, which can be best sorted out with the following command:
 
 ```{r install_packages, eval=FALSE}
-install.packages(c("tidyverse", "sfnetworks", "tmap", "osmdata"))
+install.packages(c("dplyr", "ggplot2", "sfnetworks", "tmap", "osmdata"))
 ```
 
 ## sfnetworks
@@ -77,11 +78,8 @@ we_foot <- opq("west end, meanjin") %>%
 The osmdata package allows building Overpass queries to download OSM vector data that matches our criteria:
 
 -   Features tagged as `highway=footway`, including footpaths, crossings...
-
 -   Features tagged as `highway=steps`, for stairs
-
 -   Features tagged as `foot=yes`, for example bikeways on which foot traffic is allowed (see [this shared bikeway](https://www.openstreetmap.org/way/29124510) for an example)
-
 -   Features tagged as `highway=living_street`, a shared road on which pedestrians often have right of way
 
 Finding the right combination of OSM tags to use is always an iterative process, refining the selection at each step.
@@ -169,9 +167,33 @@ foot_net <- st_transform(foot_net, 7856)
 
 If the command above gives you a GDAL error, reassign the original CRS first: `st_crs(foot_net) <- 4326`
 
+### Clean up
+
+sfnetworks and tidygraph include many pre-processing and cleaning functions for graphs, some of them detailed in [this article](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html). One example of pre-processing is the removal of nodes that have only two edges connected, also called "**smoothing of pseudo-nodes**". We need to combine tidygraph's `convert()` function with a "spatial morpher" function from sfnetworks:
+
+```{r smooth}
+library(tidygraph)
+foot_simple <- convert(foot_net, to_spatial_smooth)
+plot(foot_simple)
+```
+
+One more relevant example for this dataset is the **subdivision of edges**: because some edges have interior nodes that are endpoints of other edges, they will not be connected to each other when analysing the network.
+
+![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)
+
+We again use a combination of `convert()` with the relevant spatial morpher, `to_spatial_subdivision()`:
+
+```{r subdivide_edges}
+foot_net <- convert(foot_net, to_spatial_subdivision)
+```
+
+The network should now contain more edges.
+
+More information about "spatial morphers", including what options exist for dealing with attributes when multiple features are merged, is available in the documentation: `?spatial_morphers`
+
 ### Weights
 
-As mentioned before, a common weight associated to each edge of the network is the edge's length. We can add this weight to our network, but we need to first "activate" the part of the object we want to modify:
+As mentioned before, a common weight associated with each edge of the network is the edge's length. We can add this weight to our network, but we need to first "activate" the part of the object we want to modify:
 
 ```{r add_weights}
 foot_net <- foot_net %>% 
@@ -189,30 +211,6 @@ ggplot() +
   labs(colour = "Edge length (m)")
 ```
 
-### Clean up
-
-sfnetworks and tidygraph include many pre-processing and cleaning functions for graphs, some of them detailed in [this article](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html). One example of pre-processing is the removal of nodes that have only two edges connected, also called "smoothing of pseudo-nodes". We need to combine tidygraph's `convert()` function with a "spatial morpher" function from sfnetworks:
-
-```{r smooth}
-library(tidygraph)
-foot_simple <- convert(foot_net, to_spatial_smooth)
-plot(foot_simple)
-```
-
-One more relevant example for this dataset is the **subdivision of edges**: because some edges have interior nodes that are endpoints of other edges, they will not be connected to each other when analysing the network.
-
-[![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html)
-
-We again use a combination of `convert()` with the relevant spatial morpher, `to_spatial_subdivision()`:
-
-```{r subdivide_edges}
-foot_net <- convert(foot_net, to_spatial_subdivision)
-```
-
-The network should now contain more edges.
-
-More information about "spatial morphers", including what options exist for dealing with attributes when multiple features are merged, is available in the documentation: `?spatial_morphers`
-
 ## Interactive map
 
 At this point, it might be interesting to create an interactive visualisation to zoom into, which might help spot issues with the data.
@@ -227,9 +225,9 @@ tm_shape(st_as_sf(foot_net, "nodes")) +
   tm_dots()
 ```
 
-### Remove small disconnecte
+### Remove small disconnected neighbourhoods
 
-There are a few islands in the network, in which not many points are connected to each other. We can remove those, by:
+There are a few "islands" in the network, in which not many points are connected to each other. We can remove those, by:
 
 1.  Choosing how far we look to determine the size of a neighbourhood, with tidygraph's `local_size()` function
 2.  Only keeping the neighbourhoods that have reached that threshold.
@@ -254,17 +252,17 @@ kurilpa_lib <- opq_osm_id(id = 523925261, type = "way") %>%
   st_transform(crs = 7856)
 ```
 
-Then, calculate the isodistance for a distance smaller or equal to 2000 metres (more or less a half-an-hour walk), using the `node_distance_from()` function from tidygraph:
+Then, calculate the isodistance for a distance smaller or equal to 1 km (more or less a 15-minute walk), using the `node_distance_from()` function from tidygraph:
 
 ```{r isodistance}
 foot_net <- activate(foot_net, "nodes")
 iso <- foot_net %>%
-  dplyr::filter(node_distance_from(st_nearest_feature(kurilpa_lib, foot_net), weights = as.numeric(weight)) <= 2000)
+  dplyr::filter(node_distance_from(st_nearest_feature(kurilpa_lib, foot_net), weights = as.numeric(weight)) <= 1000)
 ```
 
 Finally, draw a polygon around the isodistance, and plot everything:
 
-```{r plot_iso}
+```{r plot_iso, fig.height=6, fig.width=8}
 iso_poly <- iso %>%
   st_geometry() %>%
   st_combine() %>%
@@ -305,9 +303,9 @@ tm_tiles("CartoDB.Positron") +
 tm_shape(path_sf) +
   tm_lines(col = "red") +
 tm_shape(sailing_club) +
-  tm_dots(col = "blue", size = 0.1, text = "Sailing club") +
+  tm_dots(col = "blue", size = 0.1) +
 tm_shape(kurilpa_lib) +
-  tm_dots(col = "green", size = 0.1, text = "Library")
+  tm_dots(col = "green", size = 0.1)
 ```
 
 The granularity of the OSM data available for this area allows us to create a precise path for pedestrians, switching sides of roads when a crossing is reached. However, every new analysis of the network might reveal more interesting information about the data we have used. In this example, some private residential paths (usually blocked by gates) have been used, and avoiding those would mean extra steps in pre-processing (for example using existing OSM tags like `barrier=gate` and `access=private`.
