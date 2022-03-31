@@ -1,0 +1,317 @@
+---
+title: Introduction to tidy spatial networks
+author: 'Stéphane Guillou (UQ Library)'
+date: '2022-03-31'
+slug: []
+categories:
+  - spatial
+  - R
+  - tutorial
+tags:
+  - sfnetworks
+  - tidygraph
+  - tmap
+  - sf
+  - networks
+  - routing
+  - OSM
+  - isodistance
+draft: no
+Description: ''
+DisableComments: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE)
+```
+
+This tutorial is an introduction to dealing with tidy spatial networks in R, demonstrating a full process of data acquisition from the open spatial database OpenStreetMap, data preparation, and basic network analysis like isodistance and shortest path calculation.
+
+## Setting up
+
+To follow this tutorial, you will have to have a number of packages available, which can be best sorted out with the following command:
+
+```{r install_packages, eval=FALSE}
+install.packages(c("tidyverse", "sfnetworks", "tmap", "osmdata"))
+```
+
+## sfnetworks
+
+The main package this tutorial centres around is the [**sfnetworks**](https://luukvdmeer.github.io/sfnetworks) package, which is the result of joining what the [tidygraph](https://tidygraph.data-imaginist.com/) package does for networks with what the [sf](https://r-spatial.github.io/sf/) package does for spatial vector data.
+
+The data structure central to this package is a combination of two spatial objects, one describing the nodes (or points) and another describing the edges (or lines connecting the points). In the words of the developers:
+
+> "A close approximation of tidyness for relational *geospatial data* is two *sf objects*, one describing the node data and one describing the edge data."
+
+In other words, a `sfnetwork` object is made up of one `sf` object for nodes and one `sf` object for edges. (As opposed to two simple `data.frame`s for a tidygraph object.)
+
+![A visual explanation of sf objects by [Allison Horst](https://twitter.com/allison_horst/status/1071456081308614656) (copyright hers): a dataframe with sticky geometries in a list column. The geometries are "sticky" because they don't vanish when, say, you `select()` columns.](images/paste-8141125C.png)
+
+In the edges component of a network, it is also possible (or necessary) to specify where the edge starts and finishes, using the `from` and `to` columns. Such information can be interpreted as the direction of the edge in a "directed" network, or simply as its two extremities in the case of an "undirected" network.
+
+Finally, another important characteristic of the edges is their **weight**. This can relate to any kind of information, but if we are interested in distances between points, it will typically be the length of the edges.
+
+## From OSM data to an sfnetwork
+
+Although the structure of an `sfnetwork` seems to be quite complex, it is possible -- and useful! -- to use a shortcut and create one from a simple collection of linestrings.
+
+We can download download data from a spatial vector database like [OpenStreetMap](https://www.openstreetmap.org/) (OSM), focus on the lines (or "ways") and convert that `sf` object into an `sfnetwork` that will use the lines as edges, and their endpoints as nodes.
+
+Let's first download from OSM all the ways that are primary used by pedestrians in the suburb of West End. (To understand how these features are tagged in the database, a good starting point is the [Map Features page on the OSM wiki](https://wiki.openstreetmap.org/wiki/Map_Features).)
+
+```{r load_package}
+library(osmdata)
+```
+
+```{r get_west_end_footways, cache=TRUE}
+# build the query
+we_foot <- opq("west end, meanjin") %>% 
+  add_osm_features(features = c('"highway"="footway"',
+                                '"highway"="steps"',
+                                '"foot"="yes"',
+                                '"highway"="living_street"')) %>% 
+  osmdata_sf()
+```
+
+The osmdata package allows building Overpass queries to download OSM vector data that matches our criteria:
+
+-   Features tagged as `highway=footway`, including footpaths, crossings...
+
+-   Features tagged as `highway=steps`, for stairs
+
+-   Features tagged as `foot=yes`, for example bikeways on which foot traffic is allowed (see [this shared bikeway](https://www.openstreetmap.org/way/29124510) for an example)
+
+-   Features tagged as `highway=living_street`, a shared road on which pedestrians often have right of way
+
+Finding the right combination of OSM tags to use is always an iterative process, refining the selection at each step.
+
+We choose to return an `sf` object, which might contain points, lines and polygons. We are only interested in the lines:
+
+```{r only_lines}
+names(we_foot)
+we_foot_lines <- we_foot$osm_lines
+```
+
+We can visualise the resulting object with the sf package:
+
+```{r plot_lines}
+library(sf)
+we_foot_lines %>% 
+  # st_crop(west_end_sf) %>% 
+  st_geometry() %>% 
+  plot()
+```
+
+It seems to have kept a ferry route, which was tagged with `foot=yes` and `route=ferry` on OSM. We can remove it:
+
+```{r}
+library(dplyr)
+we_foot_lines <- we_foot_lines %>% 
+  filter(is.na(route))
+
+```
+
+Another caveat in our process is that some footpaths are mapped as closed ways on OSM, and are therefore returned as a polygon:
+
+```{r}
+we_foot$osm_polygons %>% 
+  st_geometry() %>% 
+  plot()
+```
+
+The smaller ones are proper pedestrian areas, but the bigger ones are probably footpaths encircling a whole residential block. It is possible to "cast" these polygons as ways and include them in the network:
+
+```{r}
+# cast polygons to lines
+poly_to_lines <- st_cast(we_foot$osm_polygons, "LINESTRING")
+# bind all lines together
+library(dplyr)
+we_foot_lines <- bind_rows(we_foot_lines, poly_to_lines)
+```
+
+This is what we are left with:
+
+```{r plot_rest}
+# plot it
+we_foot_lines %>% 
+  st_geometry() %>% 
+  plot()
+```
+
+We can now convert the object to an `sfnetwork` object, making sure we set it as undirected (the default is `directed = TRUE`):
+
+```{r to_sfnetwork, fig.height=6, fig.width=8}
+library(sfnetworks)
+foot_net <- as_sfnetwork(we_foot_lines, directed = FALSE)
+plot(foot_net)
+```
+
+## Prepare the network
+
+### CRS
+
+The current coordinate system for the network is a global one, EPSG:4326.
+
+```{r}
+st_crs(foot_net)
+```
+
+`st_transform()` allows us to transform the coordinates to a different projection. For this part of the world, a recent Projected Reference System is [EPSG:7856](https://epsg.io/7856) (or "GDA2020 / MGA zone 56").
+
+```{r fix_crs, include=FALSE}
+st_crs(foot_net) <- 4326
+```
+
+```{r transform_crs}
+foot_net <- st_transform(foot_net, 7856)
+```
+
+If the command above gives you a GDAL error, reassign the original CRS first: `st_crs(foot_net) <- 4326`
+
+### Weights
+
+As mentioned before, a common weight associated to each edge of the network is the edge's length. We can add this weight to our network, but we need to first "activate" the part of the object we want to modify:
+
+```{r add_weights}
+foot_net <- foot_net %>% 
+  activate("edges") %>% 
+  mutate(weight = edge_length())
+```
+
+Using `st_as_sf()`, we can extract the components of an `sfnetwork` object and use them in a familiar plotting system like ggplot2:
+
+```{r ggplot2_edge_length}
+library(ggplot2)
+ggplot() +
+  geom_sf(data = st_as_sf(foot_net, "edges"),
+          mapping = aes(colour = as.numeric(weight))) +
+  labs(colour = "Edge length (m)")
+```
+
+### Clean up
+
+sfnetworks and tidygraph include many pre-processing and cleaning functions for graphs, some of them detailed in [this article](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html). One example of pre-processing is the removal of nodes that have only two edges connected, also called "smoothing of pseudo-nodes". We need to combine tidygraph's `convert()` function with a "spatial morpher" function from sfnetworks:
+
+```{r smooth}
+library(tidygraph)
+foot_simple <- convert(foot_net, to_spatial_smooth)
+plot(foot_simple)
+```
+
+One more relevant example for this dataset is the **subdivision of edges**: because some edges have interior nodes that are endpoints of other edges, they will not be connected to each other when analysing the network.
+
+[![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html)
+
+We again use a combination of `convert()` with the relevant spatial morpher, `to_spatial_subdivision()`:
+
+```{r subdivide_edges}
+foot_net <- convert(foot_net, to_spatial_subdivision)
+```
+
+The network should now contain more edges.
+
+More information about "spatial morphers", including what options exist for dealing with attributes when multiple features are merged, is available in the documentation: `?spatial_morphers`
+
+## Interactive map
+
+At this point, it might be interesting to create an interactive visualisation to zoom into, which might help spot issues with the data.
+
+```{r message=FALSE}
+library(tmap)
+tmap_mode("view") # set to interactive mode
+tm_tiles("CartoDB.Positron") +
+tm_shape(st_as_sf(foot_net, "edges")) +
+  tm_lines(col = "footway", palette = "Accent", colorNA = "red") +
+tm_shape(st_as_sf(foot_net, "nodes")) +
+  tm_dots()
+```
+
+### Remove small disconnecte
+
+There are a few islands in the network, in which not many points are connected to each other. We can remove those, by:
+
+1.  Choosing how far we look to determine the size of a neighbourhood, with tidygraph's `local_size()` function
+2.  Only keeping the neighbourhoods that have reached that threshold.
+
+```{r remove_islands}
+foot_net <- foot_net %>% 
+  activate(nodes) %>% 
+  mutate(neighbourhood = local_size(order = 6)) %>% 
+  filter(neighbourhood > 5)
+```
+
+## Isodistances
+
+Let's now draw an isodistance around the [Kurilpa Library in West End](https://www.openstreetmap.org/way/523925261). First, download the library's feature from OSM, and calculate its centroid (because it is mapped as a building):
+
+```{r get_library}
+kurilpa_lib <- opq_osm_id(id = 523925261, type = "way") %>% 
+  osmdata_sf() %>% 
+  .$osm_polygons %>% 
+  st_centroid() %>% 
+  st_set_crs(4326) %>% # (if the following step generate GDAL error)
+  st_transform(crs = 7856)
+```
+
+Then, calculate the isodistance for a distance smaller or equal to 2000 metres (more or less a half-an-hour walk), using the `node_distance_from()` function from tidygraph:
+
+```{r isodistance}
+foot_net <- activate(foot_net, "nodes")
+iso <- foot_net %>%
+  dplyr::filter(node_distance_from(st_nearest_feature(kurilpa_lib, foot_net), weights = as.numeric(weight)) <= 2000)
+```
+
+Finally, draw a polygon around the isodistance, and plot everything:
+
+```{r plot_iso}
+iso_poly <- iso %>%
+  st_geometry() %>%
+  st_combine() %>%
+  st_convex_hull()
+plot(foot_net, col = "grey")
+plot(iso_poly, col = NA, border = "black", lwd = 3, add = TRUE)
+plot(iso, col = "lightgreen", add = TRUE)
+plot(kurilpa_lib, col = "red", pch = 8, cex = 2, lwd = 2, add = TRUE)
+```
+
+## Shortest path
+
+Let's now calculate the shortest distance from the South Brisbane Sailing Club to the library.
+
+```{r}
+# get the location of the Sailing Club's entrance
+sailing_club <- opq_osm_id(id = 7622867925, type = "node") %>% 
+  osmdata_sf() %>% 
+  .$osm_points %>%
+  st_set_crs(4326) %>% # (if the following step generate GDAL error)
+  st_transform(crs = 7856)
+# calculate the shortest path
+shortest <- foot_net %>% 
+  activate(edges) %>% 
+  st_network_paths(from = sailing_club, to = kurilpa_lib)
+# extract the node IDs
+node_path <- shortest %>%
+  slice(1) %>%
+  pull(node_paths) %>%
+  unlist()
+# only keep the network for these nodeIDs
+path_sf <- foot_net %>% 
+  activate(nodes) %>% 
+  slice(node_path) %>% 
+  st_as_sf("edges")
+# visualise
+tm_tiles("CartoDB.Positron") +
+tm_shape(path_sf) +
+  tm_lines(col = "red") +
+tm_shape(sailing_club) +
+  tm_dots(col = "blue", size = 0.1, text = "Sailing club") +
+tm_shape(kurilpa_lib) +
+  tm_dots(col = "green", size = 0.1, text = "Library")
+```
+
+The granularity of the OSM data available for this area allows us to create a precise path for pedestrians, switching sides of roads when a crossing is reached. However, every new analysis of the network might reveal more interesting information about the data we have used. In this example, some private residential paths (usually blocked by gates) have been used, and avoiding those would mean extra steps in pre-processing (for example using existing OSM tags like `barrier=gate` and `access=private`.
+
+## Legal
+
+Apart for illustrations in which the copyright is mentioned, this article is released under a CC-BY 4.0 licence. All data used for the data visualisations use OpenStreetMap data, which is [© OpenStreetMap contributors but released under an ODBL licence](https://www.openstreetmap.org/copyright).
