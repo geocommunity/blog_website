@@ -37,15 +37,17 @@ To follow this tutorial, you will have to have a number of packages available, w
 install.packages(c("dplyr", "ggplot2", "sfnetworks", "tmap", "osmdata"))
 ```
 
+If you run into issues installing and running sf (which relies on spatial libraries external to R), please refer to [their installation instructions](https://github.com/r-spatial/sf#installing).
+
 ## sfnetworks
 
-The main package this tutorial centres around is the [**sfnetworks**](https://luukvdmeer.github.io/sfnetworks) package, which is the result of joining what the [tidygraph](https://tidygraph.data-imaginist.com/) package does for networks with what the [sf](https://r-spatial.github.io/sf/) package does for spatial vector data.
+The main package this tutorial centres around is the [**sfnetworks**](https://luukvdmeer.github.io/sfnetworks) package (Lucas van der Meer, Lorena Abad *et al.*), which is the result of joining what the [tidygraph](https://tidygraph.data-imaginist.com/) package does for networks with what the [sf](https://r-spatial.github.io/sf/) package does for spatial vector data.
 
-The data structure central to this package is a combination of two spatial objects, one describing the nodes (or points) and another describing the edges (or lines connecting the points). In the words of the developers:
+The data structure central to this package is a combination of two spatial objects, one describing the **nodes** (or points) and another describing the **edges** (or lines connecting the points). In the words of the developers:
 
 > "A close approximation of tidyness for relational *geospatial data* is two *sf objects*, one describing the node data and one describing the edge data."
 
-In other words, a `sfnetwork` object is made up of one `sf` object for nodes and one `sf` object for edges. (As opposed to two simple `data.frame`s for a tidygraph object.)
+In other words, an `sfnetwork` object is made up of one `sf` object for nodes and one `sf` object for edges. (As opposed to two simple `data.frame`s for a tidygraph object.)
 
 ![A visual explanation of sf objects by [Allison Horst](https://twitter.com/allison_horst/status/1071456081308614656) (copyright hers): a dataframe with sticky geometries in a list column. The geometries are "sticky" because they don't vanish when, say, you `select()` columns.](images/paste-8141125C.png)
 
@@ -95,8 +97,7 @@ We can visualise the resulting object with the sf package:
 
 ```{r plot_lines}
 library(sf)
-we_foot_lines %>% 
-  # st_crop(west_end_sf) %>% 
+we_foot_lines %>%
   st_geometry() %>% 
   plot()
 ```
@@ -179,7 +180,7 @@ plot(foot_simple)
 
 One more relevant example for this dataset is the **subdivision of edges**: because some edges have interior nodes that are endpoints of other edges, they will not be connected to each other when analysing the network.
 
-![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)
+![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. Keep in mind the the blue and purple crossing edges will also be subdivided in this process. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)
 
 We again use a combination of `convert()` with the relevant spatial morpher, `to_spatial_subdivision()`:
 
@@ -282,22 +283,26 @@ Let's now calculate the shortest distance from the South Brisbane Sailing Club t
 sailing_club <- opq_osm_id(id = 7622867925, type = "node") %>% 
   osmdata_sf() %>% 
   .$osm_points %>%
-  st_set_crs(4326) %>% # (if the following step generate GDAL error)
+  st_set_crs(4326) %>% # (if the following step generates a GDAL error)
   st_transform(crs = 7856)
+
 # calculate the shortest path
 shortest <- foot_net %>% 
   activate(edges) %>% 
   st_network_paths(from = sailing_club, to = kurilpa_lib)
+
 # extract the node IDs
 node_path <- shortest %>%
   slice(1) %>%
   pull(node_paths) %>%
   unlist()
+
 # only keep the network for these nodeIDs
 path_sf <- foot_net %>% 
   activate(nodes) %>% 
   slice(node_path) %>% 
   st_as_sf("edges")
+
 # visualise
 tm_tiles("CartoDB.Positron") +
 tm_shape(path_sf) +
@@ -308,7 +313,24 @@ tm_shape(kurilpa_lib) +
   tm_dots(col = "green", size = 0.1)
 ```
 
-The granularity of the OSM data available for this area allows us to create a precise path for pedestrians, switching sides of roads when a crossing is reached. However, every new analysis of the network might reveal more interesting information about the data we have used. In this example, some private residential paths (usually blocked by gates) have been used, and avoiding those would mean extra steps in pre-processing (for example using existing OSM tags like `barrier=gate` and `access=private`.
+The granularity of the OSM data available for this area allows us to create a precise path for pedestrians, switching sides of roads only when a crossing is reached. However, every new analysis of the network might reveal more interesting information about the data we have used. For example, the shortest path calculated might go through private residential paths (usually blocked by gates), and avoiding those would mean extra steps in pre-processing (for example keeping track of existing OSM tags like `barrier=*` on nodes and `access=private` on ways).
+
+## Further resources
+
+-   [sfnetworks' documentation](https://luukvdmeer.github.io/sfnetworks/index.html), including its 5 articles, which inspired much of this tutorial
+-   tidygraph's gigantic [collection of graph manipulation functions](https://tidygraph.data-imaginist.com/reference/index.html)
+-   [Transportation chapter](https://geocompr.robinlovelace.net/transport.html) in the free *Geocomputation with R book* (Lovelace, Nowosad, Muenchow)
+-   [*Spatial networks in R with sf and tidygraph*](https://r-spatial.org/r/2019/09/26/spatial-networks.html), article by van der Meer, Abad and Lovelace (2019)
+-   Other related packages:
+    -   [ggraph](https://ggraph.data-imaginist.com/) for graph visualisation
+
+    -   [stplanr](https://docs.ropensci.org/stplanr/) for sustainable transport planning and modeling
+
+    -   [cppRouting](https://github.com/vlarmet/cppRouting) for calculating distances, shortest paths and isochrones/isodistances
+
+    -   [dodgr](https://atfutures.github.io/dodgr/) for distance and time calculations on directed graphs (and [its vignette on street network routing based on OSM data](https://cran.r-project.org/web/packages/dodgr/vignettes/times.html))
+
+    -   [osrm](https://rgeomatic.hypotheses.org/category/osrm) for using a routing API based on OSM data
 
 ## Legal
 
