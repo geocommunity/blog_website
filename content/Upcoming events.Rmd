@@ -4,46 +4,45 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
-
-# Intro to spatial networks in R
+# Cloud computing with Open Data Cube and Python 
 
 <br>
 
 
 
-<div style= "float:left ;position: relativ";out.width= "75%", out.extra='style="float:right; padding:10px"'>
-<img src="https://raw.githubusercontent.com/luukvdmeer/sfnetworks/master/man/figures/logo.png" width="130"/> 
+
+In this session, you will learn how to import, analyse and visualise satellite data using [Open Data Cube](https://www.opendatacube.org/),  one of the big geospatial cloud-computing platforms. We will be using Python code in Jupyter notebooks to run the commands.  
+
+
+<div style= "float:left ;position: relativ";out.width= "75%", out.extra='style="float:left; padding:10px"'>
+<img src="https://static.wixstatic.com/media/8959d6_98a1d74703d946ecab030b32f53db883~mv2.png/v1/fill/w_268,h_68,al_c,usm_0.66_1.00_0.01,enc_auto/f9d4ea_7a2d1d0c69ad4da0a2f48b69bc481612_.png" width="200"/> 
 </div>
 
-In this session, you will learn some essentials about processing and visualising spatial networks in R, using packages like sfnetworks, igraph, ggraph, ggplot2 and tmap, focusing on the more recent developments in the world of R Spatial.
+![](/./Upcoming events_files/python-logo.png)
 
 
-<br>
-<br>
 <br>
 <br>
 
 <div style= "float:right ;position: relativ";out.width= "75%", out.extra='style="float:right; padding:10px"'>
-<img src="/./Upcoming events_files/steph_profile-resbaz.jpg" width = "120"  position = "right"/> 
+<img src="/./Upcoming events_files/Timd.PNG" width = "120"  position = "right"/> 
 </div>
 
 
+The workshop will be presented by Tim Devereux.  
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40devereux_tim)](https://twitter.com/devereux_tim)
 
 
-
-
-The workshop will be presented by Stephane Guillou 
-
-Stéphane is a software trainer at the UQ Library, specialising in open research software and data analysis support. After a few years working in plant science and agricultural research, he joined the great Library team where he is able to promote Open Research practices to the wider UQ community.
+Tim is a PhD candidate with the UQ Remote Sensing Research Centre (RSRC), and has a background in Environmental and Computational Sciences. His research is focused on the development of high fidelity digital representations of Australian forests for next generation simulations. He is also a demonstrator for the SEES advanced remote sensing course at UQ.
 
 <br>
 <br>
 
 
-**When** Thursday 31st March 2022, 2:30 - 4:30pm
+**When** Thursday 28th April 2022, 2:30 - 4:30pm
 
 
-**Online only** Check email for teams link. 
+**Online only** check email for teams link. 
 If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
 
 
@@ -55,9 +54,6 @@ If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to
 Here we have placeholders for upcoming workshops. If you have something you would like to share with the community, 
 please get in touch. 
 
-
-**April 28**
-Using Python for cloud computing with Open Data Cube and Google Earth Engine - Tim Devereux  
 
 **May 26**
 How to publish a map online with Shiny - Anthony Kimpton 

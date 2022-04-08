@@ -27,6 +27,12 @@ knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE)
 ```
 
+
+The tutorial was written and presented by Stéphane Guillou. 
+
+
+
+
 This tutorial is an introduction to dealing with tidy spatial networks in R, demonstrating a full process of data acquisition from the open spatial database OpenStreetMap, data preparation, and basic network analysis like isodistance and shortest path calculation. Along the way, we use the default plotting methods for spatial network objects, but also make use of the ggplot2 and tmap packages as alternatives.
 
 ## Setting up
@@ -331,7 +337,26 @@ The granularity of the OSM data available for this area allows us to create a pr
     -   [dodgr](https://atfutures.github.io/dodgr/) for distance and time calculations on directed graphs (and [its vignette on street network routing based on OSM data](https://cran.r-project.org/web/packages/dodgr/vignettes/times.html))
 
     -   [osrm](https://rgeomatic.hypotheses.org/category/osrm) for using a routing API based on OSM data
-
+    
+  
 ## Legal
 
 Apart for illustrations in which the copyright is mentioned, this article is released under a CC-BY 4.0 licence. All data used for the data visualisations use OpenStreetMap data, which is [© OpenStreetMap contributors but released under an ODBL licence](https://www.openstreetmap.org/copyright).
+
+
+
+  
+## About the Author
+
+<div style= "float:right ;position: relativ";out.width= "75%", out.extra='style="float:right; padding:20px"'>
+<img src="/./Upcoming events_files/steph_profile-resbaz.jpg" width = "100"  position = "right"/> 
+</div>
+
+Stéphane is a software trainer at the UQ Library, specialising in open research software and data analysis support. After a few years working in plant science and agricultural research, he joined the great Library team where he is able to promote Open Research practices to the wider UQ community.
+
+
+<br>
+<br>
+
+
+
