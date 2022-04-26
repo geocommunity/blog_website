@@ -1,7 +1,7 @@
 ---
 title: Cloud computing with Open Data Cube and Python
 author: Tim Devereux
-date: '2022-04-28'
+date: '2022-04-25'
 slug: []
 categories: []
 tags:
