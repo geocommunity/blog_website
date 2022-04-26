@@ -4,15 +4,11 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
-<<<<<<< HEAD
-# Cloud Computing with Open Data Cube and Python 
-=======
+
+
 # Cloud computing with Open Data Cube and Python 
->>>>>>> 1127511819a6732676ae960d9759f3e1723f51e1
 
 <br>
-
-
 
 
 In this session, you will learn how to import, analyse and visualise satellite data using [Open Data Cube](https://www.opendatacube.org/),  one of the big geospatial cloud-computing platforms. We will be using Python code in Jupyter notebooks to run the commands.  
@@ -60,7 +56,7 @@ please get in touch.
 
 
 **May 26**
-How to publish a map online with Shiny - Anthony Kimpton 
+TBC
 
 **June 30**
 TBC
