@@ -4,7 +4,11 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
+<<<<<<< HEAD
 # Cloud Computing with Open Data Cube and Python 
+=======
+# Cloud computing with Open Data Cube and Python 
+>>>>>>> 1127511819a6732676ae960d9759f3e1723f51e1
 
 <br>
 
