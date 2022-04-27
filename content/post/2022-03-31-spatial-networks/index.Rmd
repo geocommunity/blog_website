@@ -28,8 +28,9 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-The tutorial was written and presented by Stéphane Guillou. 
-
+Written and presented by Stéphane Guillou
+Technology Trainer, UQ Library
+Mastodon: [@stragu@mastodon.indie.host](https://mastodon.indie.host/@stragu)
 
 This tutorial is an introduction to dealing with tidy spatial networks in R, demonstrating a full process of data acquisition from the open spatial database OpenStreetMap, data preparation, and basic network analysis like isodistance and shortest path calculation. Along the way, we use the default plotting methods for spatial network objects, but also make use of the ggplot2 and tmap packages as alternatives.
 
@@ -156,7 +157,7 @@ plot(foot_net)
 
 The current coordinate system for the network is a global one, EPSG:4326.
 
-```{r}
+```{r see_crs}
 st_crs(foot_net)
 ```
 
@@ -174,25 +175,36 @@ If the command above gives you a GDAL error, reassign the original CRS first: `s
 
 ### Clean up
 
-sfnetworks and tidygraph include many pre-processing and cleaning functions for graphs, some of them detailed in [this article](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html). One example of pre-processing is the removal of nodes that have only two edges connected, also called "**smoothing of pseudo-nodes**". We need to combine tidygraph's `convert()` function with a "spatial morpher" function from sfnetworks:
+sfnetworks and tidygraph include many pre-processing and cleaning functions for graphs, some of them detailed in [this article](https://luukvdmeer.github.io/sfnetworks/articles/sfn02_preprocess_clean.html).
 
-```{r smooth}
-library(tidygraph)
-foot_simple <- convert(foot_net, to_spatial_smooth)
-plot(foot_simple)
-```
+One relevant example for this dataset is the **subdivision of edges**: because some edges have interior nodes that are endpoints of other edges, they will not be connected to each other when analysing the network.
 
-One more relevant example for this dataset is the **subdivision of edges**: because some edges have interior nodes that are endpoints of other edges, they will not be connected to each other when analysing the network.
+![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. Keep in mind that the blue and purple crossing edges will also be subdivided in this process, because they do share a point at their intersection. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)
+We need to combine tidygraph's `convert()` function with a "spatial morpher" function from sfnetworks:
 
-![The green and pink edges are not considered connected when routing, for example. The green edge needs to be divided into two edges so endpoints connect. Keep in mind the the blue and purple crossing edges will also be subdivided in this process. (Copyright: tidygraph authors)](images/paste-5AC5A8E2.png)
-
-We again use a combination of `convert()` with the relevant spatial morpher, `to_spatial_subdivision()`:
 
 ```{r subdivide_edges}
+library(tidygraph)
 foot_net <- convert(foot_net, to_spatial_subdivision)
 ```
 
 The network should now contain more edges.
+
+Note that this will only happen for features sharing a node: if two edges overlap, like for bridges and underpaths, no extra node will be created where they cross, and therefore no new connecting endpoints will be created for them – which is good news!
+
+Also note that using `to_spatial_subdivision()` will copy tags into each of the subdivisions of an edge. This usually isn't a problem (think speed limits, surface, lighting, width...) but can be in some cases (for example if the length of the edge had already been added). The order of processing often matters.
+
+Another example is the removal of nodes that have only two edges connected, also called "**smoothing of pseudo-nodes**". This would be useful to simplify a network and reduce the processing times needed. We again use a combination of `convert()` with the relevant spatial morpher, `to_spatial_smooth()`:
+
+```{r smooth}
+foot_simple <- convert(foot_net, to_spatial_smooth)
+plot(foot_simple)
+```
+
+For our example, simplifying the network might not be useful:
+
+* If we calculate isodistances or isochrones, reducing the number of nodes will reduce the precision;
+* Once again, one needs to take care of the potential loss of valuable data. For example, do nodes contain relevant tags, like ones describing physical barriers? And how will the combined edges' tags be stored?
 
 More information about "spatial morphers", including what options exist for dealing with attributes when multiple features are merged, is available in the documentation: `?spatial_morphers`
 
@@ -324,6 +336,7 @@ The granularity of the OSM data available for this area allows us to create a pr
 -   [sfnetworks' documentation](https://luukvdmeer.github.io/sfnetworks/index.html), including its 5 articles, which inspired much of this tutorial
 -   tidygraph's gigantic [collection of graph manipulation functions](https://tidygraph.data-imaginist.com/reference/index.html)
 -   [Transportation chapter](https://geocompr.robinlovelace.net/transport.html) in the free *Geocomputation with R book* (Lovelace, Nowosad, Muenchow)
+-   [Spatial network analysis with the {sfnetworks} package](https://www.youtube.com/watch?v=2cCXUYgEtGw), video on analysing OSM data with sfnetworks, by Renate Thiede, for R-Ladies Johannesburg (2021)
 -   [*Spatial networks in R with sf and tidygraph*](https://r-spatial.org/r/2019/09/26/spatial-networks.html), article by van der Meer, Abad and Lovelace (2019)
 -   Other related packages:
     -   [ggraph](https://ggraph.data-imaginist.com/) for graph visualisation
@@ -336,14 +349,20 @@ The granularity of the OSM data available for this area allows us to create a pr
 
     -   [osrm](https://rgeomatic.hypotheses.org/category/osrm) for using a routing API based on OSM data
     
-  
+
 ## Legal
 
 Apart for illustrations in which the copyright is mentioned, this article is released under a CC-BY 4.0 licence. All data used for the data visualisations use OpenStreetMap data, which is [© OpenStreetMap contributors but released under an ODBL licence](https://www.openstreetmap.org/copyright).
 
+## Updates
 
+This article was updated after it was presented:
 
-  
+- 2022-04-27:
+  - Clarify information about overlapping ways being left alone by `to_spatial_subdivision()`
+  - Add Renate Thiede's excellent video on the exact same topic, discovered after finishing writing
+  - Add author's role and contact
+
 ## About the Author
 
 <div style= "float:right ;position: relativ";out.width= "75%", out.extra='style="float:right; padding:20px"'>
