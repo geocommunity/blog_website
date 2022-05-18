@@ -6,45 +6,26 @@ title: Upcoming events
 
 
 
-# Cloud computing with Open Data Cube and Python 
+# Problem solving session
 
 <br>
 
+Something different for May: a problem solving session! 
 
-In this session, you will learn how to import, analyse and visualise satellite data using [Open Data Cube](https://www.opendatacube.org/),  one of the big geospatial cloud-computing platforms. We will be using Python code in Jupyter notebooks to run the commands.  
-
-
-<div style= "float:left ;position: relativ";out.width= "75%", out.extra='style="float:left; padding:10px"'>
-<img src="https://static.wixstatic.com/media/8959d6_98a1d74703d946ecab030b32f53db883~mv2.png/v1/fill/w_268,h_68,al_c,usm_0.66_1.00_0.01,enc_auto/f9d4ea_7a2d1d0c69ad4da0a2f48b69bc481612_.png" width="200"/> 
-</div>
-
-![](/./Upcoming events_files/python-logo.png)
+Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with solutions.  
+Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
 
 
-<br>
-<br>
-
-<div style= "float:right ;position: relativ";out.width= "75%", out.extra='style="float:right; padding:10px"'>
-<img src="/./Upcoming events_files/Timd.PNG" width = "120"  position = "right"/> 
-</div>
 
 
-The workshop will be presented by Tim Devereux.  
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40devereux_tim)](https://twitter.com/devereux_tim)
+**When** Thursday 26th May 2022, 2:30 - 4:30pm
 
 
-Tim is a PhD candidate with the UQ Remote Sensing Research Centre (RSRC), and has a background in Environmental and Computational Sciences. His research is focused on the development of high fidelity digital representations of Australian forests for next generation simulations. He is also a demonstrator for the SEES advanced remote sensing course at UQ.
+**Hybrid - Online + in person**
+Location TBD, but somewhere at UQ St Lucia
 
-<br>
-<br>
-
-
-**When** Thursday 28th April 2022, 2:30 - 4:30pm
-
-
-**Online only** check email for teams link. 
+check email for teams link. 
 If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
-
 
 <br>
 <br>
@@ -53,10 +34,6 @@ If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to
 
 Here we have placeholders for upcoming workshops. If you have something you would like to share with the community, 
 please get in touch. 
-
-
-**May 26**
-TBC
 
 **June 30**
 TBC
