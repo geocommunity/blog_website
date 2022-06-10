@@ -12,16 +12,9 @@ Following the success of our last problem solving session, we will run another o
 
 <img width="200" src="https://m.media-amazon.com/images/I/81nKJATxK2L._AC_SX679_.jpg">
 
-
 Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with answers.   
 Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
 
-
-
-**When** Thursday 30th June 2022, 2:30 - 4:30pm
-=======
-Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with solutions.  
-Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
 
 **When** Thursday 26th May 2022, 2:30 - 4:30pm
 
