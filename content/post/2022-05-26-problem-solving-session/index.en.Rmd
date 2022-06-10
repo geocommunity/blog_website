@@ -17,6 +17,7 @@ Categories: []
 DisableComments: no
 ---
 
+
 ## About the session
 
 We did something different for May: a problem solving session! 
