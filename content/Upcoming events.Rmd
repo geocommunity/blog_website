@@ -4,6 +4,7 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
+<<<<<<< HEAD
 # Problem solving session - Part 2. 
 
 <br>
@@ -14,6 +15,19 @@ Following the success of our last problem solving session, we will run another o
 Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with answers.   
 Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
 
+=======
+# Problem solving session
+
+<br>
+
+Something different for May: a problem solving session! 
+
+![](https://c.tenor.com/Ay19-AbBCfIAAAAC/hangover-math.gif)
+
+Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with solutions.  
+Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
+
+>>>>>>> fd7583b5e2e8ffb8fbc8340de80b068c88fc5723
 **When** Thursday 26th May 2022, 2:30 - 4:30pm
 
 

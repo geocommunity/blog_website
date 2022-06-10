@@ -17,11 +17,14 @@ Categories: []
 DisableComments: no
 ---
 
+
 ## About the session
 
 We did something different for May: a problem solving session! 
 
 ![](https://c.tenor.com/Ay19-AbBCfIAAAAC/hangover-math.gif)
+
+
 Here, people emailed in some questions which we went through and discussed in the workshop. 
 
 It seemed to go pretty well, so i think we will use this format from time to time. 
@@ -244,8 +247,7 @@ We would obviously prefer our categorical raster to look like this, with names r
 rand_pts_named <- spatSample(coral_named, 10, "random", as.points=TRUE, na.rm = TRUE) #this will sample the number from among the strata (not NA) 
 rand_pts_named$stratum
 ```
-Not sure why this is the case and it might be a good one to put on stack overflow... but for now, lets just move on knowing the represent the classes. 
-
+Not sure why this is the case and it might be a good one to put on stack overflow... but for now, lets just move on knowing the integers represent the cover classes. 
 
 So getting back to the task - we can use the  random sample from the `coral` layer stored in the `rand_pts` `spatVector` using 
 `rasterize`:

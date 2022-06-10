@@ -40,8 +40,8 @@ DisableComments: no
 <div id="about-the-session" class="section level2">
 <h2>About the session</h2>
 <p>We did something different for May: a problem solving session!</p>
-<p><img src="https://c.tenor.com/Ay19-AbBCfIAAAAC/hangover-math.gif" />
-Here, people emailed in some questions which we went through and discussed in the workshop.</p>
+<p><img src="https://c.tenor.com/Ay19-AbBCfIAAAAC/hangover-math.gif" /></p>
+<p>Here, people emailed in some questions which we went through and discussed in the workshop.</p>
 <p>It seemed to go pretty well, so i think we will use this format from time to time.</p>
 <p>Below, we have the two main questions that were discussed, attempted solutions</p>
 </div>
@@ -66,8 +66,9 @@ This complicates the process of rasterising the buffers.</p>
 <pre class="r"><code>r &lt;- rast(ncols=10, nrows=10, xmin = 1, xmax = 1.1, ymin = 1, ymax = 1.1)
 values(r) &lt;- sample(1:ncell(r), ncell(r))</code></pre>
 <p>Then create some random points within our dummy raster (r). These represent the household locations.</p>
-<pre class="r"><code>samp &lt;- spatSample(r, 25, as.points=TRUE, method = &quot;random&quot;)
-widths &lt;- sample(100:1000, length(samp), replace = T)</code></pre>
+<pre class="r"><code>samp &lt;- spatSample(r, 25, as.points=TRUE, method = &quot;random&quot;)</code></pre>
+<pre><code>## Warning: [spatSample] fewer cells returned than requested</code></pre>
+<pre class="r"><code>widths &lt;- sample(100:1000, length(samp), replace = T)</code></pre>
 <p>Finally, we will add buffers to each of the points, randomly sized to represent the variability in maximum distance to field from household.</p>
 <pre class="r"><code>buf&lt;-list()
 for(i in 1:length(samp)) {buf[[i]] &lt;- buffer(samp[i], widths[i])}
@@ -85,14 +86,14 @@ plot(fields, add = T)</code></pre>
 <pre class="r"><code>fields</code></pre>
 <pre><code>##  class       : SpatVector 
 ##  geometry    : polygons 
-##  dimensions  : 25, 5  (geometries, attributes)
-##  extent      : 1.000346, 1.10358, 1.006309, 1.101114  (xmin, xmax, ymin, ymax)
+##  dimensions  : 23, 5  (geometries, attributes)
+##  extent      : 1.000589, 1.100858, 1.002061, 1.09257  (xmin, xmax, ymin, ymax)
 ##  coord. ref. : lon/lat WGS 84 
 ##  names       : lyr.1    ID  dmax  dmin  dmed
 ##  type        : &lt;int&gt; &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;
-##  values      :    34     1  1199 299.7 599.4
-##                   63     2  2608   652  1304
-##                   79     3 483.2 120.8 241.6</code></pre>
+##  values      :    36     1  3017 754.3  1509
+##                   43     2 330.5 82.62 165.2
+##                   64     3 597.5 149.4 298.7</code></pre>
 </div>
 <div id="method-1.-go-back-to-point-data-and-add-rasterise-points-using-the-grid." class="section level3">
 <h3>Method 1. go back to point data, and add rasterise points using the grid.</h3>
