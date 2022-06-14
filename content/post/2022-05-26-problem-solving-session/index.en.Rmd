@@ -27,7 +27,7 @@ We did something different for May: a problem solving session!
 
 Here, people emailed in some questions which we went through and discussed in the workshop. 
 
-It seemed to go pretty well, so i think we will use this format from time to time. 
+It seemed to go pretty well, so we will probably use this format from time to time. 
 
 Below, we have the two main questions that were discussed, attempted solutions  
 
@@ -191,7 +191,7 @@ field size so be careful with summary statistics.
 ## Question 2. Take a sample of a continuous raster using a random sample of a categorical raster. 
 
 ### The problem
-Have 2 rasters, one categorical representing classes of coral reef cover, and on continuous representing wave action. 
+Have 2 rasters, one categorical representing classes of coral reef cover, and one continuous representing wave action. 
 
 Wanting to take a random sample of the reef cover raster (excluding NAs), then use that sample to return corresponding values of the continuous raster. The two rasters have different resolutions. 
  

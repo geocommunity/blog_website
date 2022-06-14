@@ -16,7 +16,9 @@ Following the success of our last problem solving session, we will run another o
 Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with answers.   
 Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
 
-**When** Thursday 26th May 2022, 2:30 - 4:30pm
+
+**When** Thursday 30th June 2022, 2:30 - 4:30pm
+
 
 **Hybrid - Online + in person**
 Location TBD, but somewhere at UQ St Lucia
@@ -24,7 +26,6 @@ Location TBD, but somewhere at UQ St Lucia
 check email for teams link. 
 If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
 
-<br>
 <br>
 
 # Forward schedule 
@@ -50,9 +51,6 @@ TBC
 
 **December 8**
 End of year catch up
-
-
-
 
 
 

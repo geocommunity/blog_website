@@ -42,7 +42,7 @@ DisableComments: no
 <p>We did something different for May: a problem solving session!</p>
 <p><img src="https://c.tenor.com/Ay19-AbBCfIAAAAC/hangover-math.gif" /></p>
 <p>Here, people emailed in some questions which we went through and discussed in the workshop.</p>
-<p>It seemed to go pretty well, so i think we will use this format from time to time.</p>
+<p>It seemed to go pretty well, so we will probably use this format from time to time.</p>
 <p>Below, we have the two main questions that were discussed, attempted solutions</p>
 </div>
 <div id="question-1---rasterizing-field-size-information-per-farm." class="section level2">
@@ -86,23 +86,13 @@ plot(fields, add = T)</code></pre>
 <pre><code>##  class       : SpatVector 
 ##  geometry    : polygons 
 ##  dimensions  : 25, 5  (geometries, attributes)
-<<<<<<< HEAD
-##  extent      : 0.9961233, 1.102412, 0.9960649, 1.098627  (xmin, xmax, ymin, ymax)
+##  extent      : 0.9970934, 1.099214, 1.001609, 1.097342  (xmin, xmax, ymin, ymax)
 ##  coord. ref. : lon/lat WGS 84 
 ##  names       : lyr.1    ID  dmax  dmin  dmed
 ##  type        : &lt;int&gt; &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;
-##  values      :   100     1 50.46 12.62 25.23
-##                   29     2  2357 589.3  1179
-##                   54     3  2585 646.3  1293</code></pre>
-=======
-##  extent      : 0.9971744, 1.102736, 0.9994201, 1.096149  (xmin, xmax, ymin, ymax)
-##  coord. ref. : lon/lat WGS 84 
-##  names       : lyr.1    ID  dmax  dmin  dmed
-##  type        : &lt;int&gt; &lt;int&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;
-##  values      :    50     1 85.18 21.29 42.59
-##                    5     2   817 204.2 408.5
-##                   72     3  1168   292   584</code></pre>
->>>>>>> c5dda87f5671015ef8839cc37fcdb312e70b57de
+##  values      :    66     1   440   110   220
+##                   93     2 209.9 52.47 104.9
+##                   17     3  1270 317.4 634.8</code></pre>
 </div>
 <div id="method-1.-go-back-to-point-data-and-add-rasterise-points-using-the-grid." class="section level3">
 <h3>Method 1. go back to point data, and add rasterise points using the grid.</h3>
@@ -175,7 +165,7 @@ field size so be careful with summary statistics.</p>
 <h2>Question 2. Take a sample of a continuous raster using a random sample of a categorical raster.</h2>
 <div id="the-problem" class="section level3">
 <h3>The problem</h3>
-<p>Have 2 rasters, one categorical representing classes of coral reef cover, and on continuous representing wave action.</p>
+<p>Have 2 rasters, one categorical representing classes of coral reef cover, and one continuous representing wave action.</p>
 <p>Wanting to take a random sample of the reef cover raster (excluding NAs), then use that sample to return corresponding values of the continuous raster. The two rasters have different resolutions.</p>
 </div>
 <div id="attempted-solution" class="section level3">
