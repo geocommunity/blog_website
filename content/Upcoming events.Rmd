@@ -25,12 +25,20 @@ We will be using the following R packages: rshiny, shinydashboard, sf, mapdeck, 
 This workshop is suitable for beginners, but some R knowledge will help. 
 
 
+**When**
+Thursday 28th July, 2:30 - 4:30pm 
 
+**Where**
+Hybrid! 
+
+Online: Teams link will be sent out via email
+
+In person: Room 411 [Chamberlain building](https://maps.uq.edu.au/?campusId=&zLevel=1&zoom=18&lat=-27.495424166439562&lng=153.01455482777038&isSelectedPoint=true), UQ St Lucia 
+
+<iframe src="https://maps.uq.edu.au/?campusId=406&zoom=18.116295796373223&lat=-27.495256639696635&lng=153.01426850138762&zLevel=1&embed=true" width="420" height="600" style="border: 1px solid grey; margin: 0;"></iframe>
 
 <br>
 <br>
-
-
 
 
 # Forward schedule 
