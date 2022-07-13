@@ -4,39 +4,40 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
-# Problem solving session II 
+# Mapping interactively with Rshiny - Christina Buelow
+
+
+<img  width='200' align = "right" src='https://www.kindpng.com/picc/m/706-7068650_r-shiny-logo-png-transparent-png.png' />
+
+
+<img  width='200' align = "centre" src='https://pbs.twimg.com/profile_images/1343848219076296705/KZ4vKq6N_400x400.jpg' />
 
 <br>
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40ChristinABuelow)](https://twitter.com/ChristinABuelow)
 
-Following the success of our last problem solving session, we will run another one in June. 
-
-<img width="200" src="https://m.media-amazon.com/images/I/81nKJATxK2L._AC_SX679_.jpg">
-
-
-Send through your geospatial questions (preferably about R, Python or QGIS), and we will try to come up with answers.   
-Then we will go through the solutions during the workshop, and put the examples up on the website for future reference.  
+Christina is a quantitative ecologist at Griffith University interested in conserving blue forest ecosystems and informing climate-smart coastal restoration.
 
 
-**When** Thursday 30th June 2022, 2:30 - 4:30pm
+In this workshop, she will show us how to use R to read in spatial data and make beautiful interactive online maps. 
+
+We will be using the following R packages: rshiny, shinydashboard, sf, mapdeck, leaflet, rmapshaper.
+
+This workshop is suitable for beginners, but some R knowledge will help. 
 
 
-**Hybrid - Online + in person**
-Location TBD, but somewhere at UQ St Lucia
-
-check email for teams link. 
-If you are not on the mailing list, email mitchel.rudge@uq.edu.au and request to be added. 
 
 
 <br>
+<br>
+
+
+
 
 # Forward schedule 
 
 Here we have placeholders for upcoming workshops. If you have something you would like to share with the community, 
 please get in touch. 
 
-
-**July 28**
-Mapping interactively with Rshiny - Christina Buelow
 
 **August 25**
 Climate analysis in R - Ralph Trancoso da Silva 
