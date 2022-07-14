@@ -262,7 +262,7 @@ print(base_loop)
 
 ```
 ##    user  system elapsed 
-##    0.02    0.00    6.14
+##    0.01    0.00    6.12
 ```
 
 
@@ -323,7 +323,7 @@ print(do_loop)
 
 ```
 ##    user  system elapsed 
-##    0.00    0.00    6.11
+##    0.03    0.00    6.16
 ```
 
 This takes a similar amount of time to process as base R. Some functions do not gain performance when parallelised or the output of a function may be more reliable when executed as a single process. So in some situations parallelism is not always desired. 
@@ -349,7 +349,7 @@ print(dopar_loop)
 
 ```
 ##    user  system elapsed 
-##    0.00    0.02    1.04
+##    0.02    0.00    1.06
 ```
 
 It takes ~1 seconds to run the our function on 6 cores. How long would it take on 3 cores, or 12 cores? What happens if we change the number of iterations? 
@@ -362,9 +362,9 @@ print(rbind(base_loop,do_loop,dopar_loop)[,1:3])
 
 ```
 ##            user.self sys.self elapsed
-## base_loop       0.02     0.00    6.14
-## do_loop         0.00     0.00    6.11
-## dopar_loop      0.00     0.02    1.04
+## base_loop       0.01        0    6.12
+## do_loop         0.03        0    6.16
+## dopar_loop      0.02        0    1.06
 ```
 
 
@@ -377,15 +377,16 @@ But is constantly getting this warning:
 
 This is discussed [here]("https://github.com/rspatial/terra/issues/30").
 
-Where Robert Hijmans (the main terra developer), seems to say here that it is an annoying problem with no solution. 
-It seems like it is related to the garbage collection R function `gc()`
+Where Robert Hijmans (the main terra developer), seems to say that it is an annoying problem with no solution. 
+
 
 April 2022, from Robert Hijmans: 
 >You can ignore these messages from the garbage collector. They do not affect your data. They are very annoying. I have done a lot of things to get to the bottom of this, but sofar to no avail. I have much simpler packages that also show these messages and I need to go back to one of these to create a reproducible example for others to look at (even it only happens on the first run) that does not require installation of GDAL etc.
 
+It appears to be related to the garbage collection R function `gc()`
+
 One person suggested this as a “dirty workaround”
 `try(terra::XXX, silent = TRUE)` 
-
 
 So it seems that there is no easy solution to this particular error. 
 
@@ -396,9 +397,9 @@ So it seems that there is no easy solution to this particular error.
 <span style="color: red;">This is currently unsolved, so please get in touch if you have a solution</span>
  
 
-Catherine is having an issue with reprojecting between certain EPSG codes in terra. 
+Catherine is having an issue with reprojecting between rasters with certain EPSG codes in terra. 
 
-Project CRS is epsg:28355, but also has one raster in epsg:9001. So trying to convert the 9001 to 28355. 
+Project CRS is epsg:28355, but also has one raster in epsg:9001. So trying to convert the 9001 to 28355 and it is not working. 
 
 
 Also found that when trying to make a reproducible example, got NAs for the reprojected raster - whether reprojecting from 9001 or 28355...  
@@ -516,7 +517,7 @@ This might give more flexibility in terms of map making, but doesn’t give you 
 We will stay posted with what Paul ends up doing! 
 
 
-##Running arcpy on a supercomputer? - Deqiang MA
+## Running arcpy on a supercomputer? - Deqiang MA
 Deqiang is wanting to know how to run arcpy on the supercomputer. 
 
 Because Arcpy uses windows, it is not able to be run on any of the university HPCs…
