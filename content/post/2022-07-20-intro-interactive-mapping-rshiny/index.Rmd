@@ -1,12 +1,21 @@
 ---
-title: 2022-07-20-intro-interactive-mapping-rshiny
-author: R package build
+title: Interactive mapping with RShiny
+author: ''
 date: '2022-07-20'
 slug: []
 categories: []
-tags: []
+tags: 
+  - shiny
+  - leaflet
+  - tmap
+  - sf
 Description: ''
 Tags: []
+output:
+  blogdown::html_page:
+    toc: true
 Categories: []
 DisableComments: no
 ---
+
+
