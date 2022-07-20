@@ -18,4 +18,192 @@ Categories: []
 DisableComments: no
 ---
 
+# A journey in maps and apps...
+<br>
+1. The basics of programming for interactivity: *Reactivity*
+<br>
+2. R package options for mapping interactively in R, with pros and cons
+<br>
+3. Make an interactive map and share in a web app
+<br>
+
+**Note**: This journey is thanks to the awesome book [Mastering Shiny](https://mastering-shiny.org/index.html)
+<br>
+
+## Why interactive and why Shiny?
+
+**Open Science**
+
+  - Interactive web apps are a great way to make our research **open**, **transparent**, and **engaging**
+  - Move beyond static papers
+
+**Shiny**
+  
+  - Performative apps without HTML, javascript, CSS...
+  - Range of users - academics to tech companies 
+  - Need to be hosted on a web server
+
+**Server options**
+
+  - [shinyapps.io](https://www.shinyapps.io/): free or subscription options
+  - [See here for more info on Rshiny servers](https://shiny.rstudio.com/articles/shiny-server.html)
+  - There are other 'non-R' server options out there too
+
+## App fundamentals
+
+Interactivity requires *Reactivity*
+
+What is **reactive programming**?
+
+  - Outputs *react* to inputs
+
+    - Means computations are only done when necessary (moving beyond **functions** to **reactions**)
+    - Reactive contexts are **lazy** and **cached**
+
+
+  - It's different from how we normally code our scripts:
+  
+    - Commands vs. recipes
+    - Imperative vs. declarative
+    - Assertive vs. passive-aggressive
+
+## Shiny
+
+{shiny} provides a framework for **reactive programming**:
+
+
+  - User-interface (ui): how it looks. Takes *inputs* and displays *outputs*
+  
+  - Server: has the recipe to turn *inputs* into *outputs*
+
+*hint*: if you have {shiny} installed, just type `shinyapp` in your R script to insert boilerplate shiny app code and get started quickly
+
+```{r, eval=FALSE}
+library(shiny)
+ui <- fluidPage(
+  
+)
+server <- function(input, output, session) {
+  
+}
+shinyApp(ui, server)
+```
+
+## A simple histogram
+
+```{r}
+hist(rnorm(25))
+```
+
+
+## A reactive histogram
+
+```{r, eval=FALSE}
+library(shiny)
+ui <- fluidPage(
+  numericInput(inputId = "n", "Sample size", value = 25), 
+  plotOutput(outputId = "hist")
+)
+server <- function(input, output, session) {
+  output$hist <- renderPlot({
+    hist(rnorm(input$n))
+    })
+}
+shinyApp(ui, server)
+```
+
+**Note** There's an additional reactive tool, *reactive expressions*. *Reactive expressions* can be used to eliminate redundant code in your app, thereby improving efficiency. Find more information [here](https://mastering-shiny.org/reactivity-intro.html).
+
+## But what about maps?
+
+My go-to for mapping in R these days is {tmap}
+
+One of the reasons is that I can make either interactive or static, publication-quality maps with ease. Just set the 'mode'.
+
+```{r, warning = F}
+library(tmap)
+data('World')
+tmap_mode('view')
+qtm(World, 'name') # qtm stands for 'quick thematic mapper'
+```
+
+## Share with shiny
+
+If we're in a hurry, we can put our interactive {tmap} in a {shiny} app to share
+
+```{R, eval=FALSE}
+library(shiny)
+library(tmap)
+data('World')
+ui <- fluidPage(
+  tmapOutput('map')
+)
+server <- function(input, output, session) {
+  output$map <- renderTmap({
+    qtm(World, 'name')})
+}
+shinyApp(ui, server)
+```
+
+## Add some reactivity
+
+Let's add a widget to allow users to choose their country from a list
+
+```{R, eval=FALSE}
+library(shiny)
+library(tmap)
+library(dplyr)
+data('World')
+ui <- fluidPage(
+  tmapOutput('map'),
+  selectInput('var', 'Select country',
+              choices = c('Global', as.character(World$name)),
+              selected = 'Global')
+)
+server <- function(input, output, session) {
+  output$map <- renderTmap({
+    if(input$var == 'Global'){
+      qtm(World, 'name')
+    }else{
+      qtm(filter(World, name == input$var))
+    }
+  })
+}
+shinyApp(ui, server)
+```
+
+
+## Customising and scaling your interactive map
+
+If you want to **customise** your map with more *features*, the [leaflet](https://rstudio.github.io/leaflet/) R package offers some nice functionality (there are others too)
+
+{tmap} and {leaflet} both use **'scalable vector graphics'** (SVG) to visualise maps on the web
+
+  - This is fine for simple apps, but if you need to render large datasets or do complex computations they will be really slow
+
+**Scaling-up** your map app might require graphics to be rendered in **'WebGL'** instead of SVG
+
+
+  - There are several R packages to try including [mapdeck](https://symbolixau.github.io/mapdeck/articles/mapdeck.html) and [rdeck](https://github.com/anthonynorth/rdeck)
+  - These usually require API tokens to access basemaps from [mapbox](https://www.mapbox.com/)
+
+Should I go **SVG** or **WebGL**?
+
+  - Generally I've found there is a **feature vs. speed trade-off**
+  - Recommend start with **SVG** and if too slow then move to **WebGL** 
+
+## Tips and tricks
+
+- Lots of complex polygons? Use [rmapshaper](https://cran.r-project.org/web/packages/rmapshaper/vignettes/rmapshaper.html) to simplify, this can really **speed up** a slow map app
+- App still slow? Use [profvis](https://rstudio.github.io/profvis/) to profile your script and find the bottleneck
+- Have you reached the **'cliff of complexity'**?
+Check out [Engineering production grade shiny apps](https://engineering-shiny.org/successful-shiny-app.html)
+
+
+## Leaflet example
+
+Follow the R script 'leaflet-map.R' to build an interactive {leaflet} map
+
+Next follow the R script 'leaflet-app.R' to turn the interactive {leaflet} map into a share-able and dynamic {shiny} web app
+
 
