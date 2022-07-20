@@ -52,13 +52,15 @@ DisableComments: no
 
 <div id="a-journey-in-maps-and-apps" class="section level1">
 <h1>A journey in maps and apps…</h1>
-<p><br>
-1. The basics of programming for interactivity: <em>Reactivity</em>
-<br>
-2. R package options for mapping interactively in R, with pros and cons
-<br>
-3. Make an interactive map and share in a web app
-<br></p>
+<ol style="list-style-type: decimal">
+<li>The basics of programming for interactivity: <em>Reactivity</em>
+<br></li>
+<li>R package options for mapping interactively in R, with pros and cons
+<br></li>
+<li>Make an interactive map and share in a web app</li>
+</ol>
+<p>To follow along in R and reproduce the code make sure you will need several packages that can be installed with a single line of code:</p>
+<p><code>install.packages(c('shiny', 'leaflet', 'sf', 'tmap', 'dplyr'))</code></p>
 <p><strong>Note</strong>: This journey is thanks to the awesome book <a href="https://mastering-shiny.org/index.html">Mastering Shiny</a>
 <br></p>
 <div id="why-interactive-and-why-shiny" class="section level2">
@@ -216,7 +218,10 @@ Check out <a href="https://engineering-shiny.org/successful-shiny-app.html">Engi
 </div>
 <div id="leaflet-example" class="section level2">
 <h2>Leaflet example</h2>
-<p>Follow the R script ‘leaflet-map.R’ to build an interactive {leaflet} map</p>
-<p>Next follow the R script ‘leaflet-app.R’ to turn the interactive {leaflet} map into a share-able and dynamic {shiny} web app</p>
+<p>Head over to Christina’s public <a href="https://github.com/cabuelow/intro-rshiny-mapping">github repo</a> and clone to your local computer. This will give you access to all of the scripts and data you need to:
+<br>
+1. Build an interactive {leaflet} map: follow the R script ‘leaflet-map.R’
+<br>
+2. Turn the interactive {leaflet} map into a share-able and dynamic {shiny} web app: follow the R script ‘leaflet-app.R’</p>
 </div>
 </div>
