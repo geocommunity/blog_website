@@ -1,0 +1,12 @@
+---
+title: 2022-07-20-intro-interactive-mapping-rshiny
+author: R package build
+date: '2022-07-20'
+slug: []
+categories: []
+tags: []
+Description: ''
+Tags: []
+Categories: []
+DisableComments: no
+---
