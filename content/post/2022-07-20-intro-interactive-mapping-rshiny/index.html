@@ -18,6 +18,7 @@ Categories: []
 DisableComments: no
 ---
 
+<script src="{{< blogdown/postref >}}index_files/header-attrs/header-attrs.js"></script>
 <script src="{{< blogdown/postref >}}index_files/htmlwidgets/htmlwidgets.js"></script>
 <script src="{{< blogdown/postref >}}index_files/jquery/jquery.min.js"></script>
 <link href="{{< blogdown/postref >}}index_files/leaflet/leaflet.css" rel="stylesheet" />
@@ -33,25 +34,23 @@ DisableComments: no
 
 <div id="TOC">
 <ul>
-<li><a href="#a-journey-in-maps-and-apps">A journey in maps and apps…</a>
-<ul>
-<li><a href="#why-interactive-and-why-shiny">Why interactive and why Shiny?</a></li>
-<li><a href="#app-fundamentals">App fundamentals</a></li>
-<li><a href="#shiny">Shiny</a></li>
-<li><a href="#a-simple-histogram">A simple histogram</a></li>
-<li><a href="#a-reactive-histogram">A reactive histogram</a></li>
-<li><a href="#but-what-about-maps">But what about maps?</a></li>
-<li><a href="#share-with-shiny">Share with shiny</a></li>
-<li><a href="#add-some-reactivity">Add some reactivity</a></li>
-<li><a href="#customising-and-scaling-your-interactive-map">Customising and scaling your interactive map</a></li>
-<li><a href="#tips-and-tricks">Tips and tricks</a></li>
-<li><a href="#leaflet-example">Leaflet example</a></li>
-</ul></li>
+<li><a href="#why-interactive-and-why-shiny" id="toc-why-interactive-and-why-shiny">Why interactive and why Shiny?</a></li>
+<li><a href="#app-fundamentals" id="toc-app-fundamentals">App fundamentals</a></li>
+<li><a href="#shiny" id="toc-shiny">Shiny</a></li>
+<li><a href="#a-simple-histogram" id="toc-a-simple-histogram">A simple histogram</a></li>
+<li><a href="#a-reactive-histogram" id="toc-a-reactive-histogram">A reactive histogram</a></li>
+<li><a href="#but-what-about-maps" id="toc-but-what-about-maps">But what about maps?</a></li>
+<li><a href="#share-with-shiny" id="toc-share-with-shiny">Share with shiny</a></li>
+<li><a href="#add-some-reactivity" id="toc-add-some-reactivity">Add some reactivity</a></li>
+<li><a href="#customising-and-scaling-your-interactive-map" id="toc-customising-and-scaling-your-interactive-map">Customising and scaling your interactive map</a></li>
+<li><a href="#tips-and-tricks" id="toc-tips-and-tricks">Tips and tricks</a></li>
+<li><a href="#leaflet-example" id="toc-leaflet-example">Leaflet example</a></li>
+<li><a href="#about-the-author" id="toc-about-the-author">About the author</a></li>
 </ul>
 </div>
 
-<div id="a-journey-in-maps-and-apps" class="section level1">
-<h1>A journey in maps and apps…</h1>
+<p>In this workshop, we learned how to use R to read in spatial data and make beautiful interactive online maps.
+# A journey in maps and apps…</p>
 <ol style="list-style-type: decimal">
 <li>The basics of programming for interactivity: <em>Reactivity</em>
 <br></li>
@@ -59,10 +58,9 @@ DisableComments: no
 <br></li>
 <li>Make an interactive map and share in a web app</li>
 </ol>
-<p>To follow along in R and reproduce the code make sure you will need several packages that can be installed with a single line of code:</p>
-<p><code>install.packages(c('shiny', 'leaflet', 'sf', 'tmap', 'dplyr'))</code></p>
-<p><strong>Note</strong>: This journey is thanks to the awesome book <a href="https://mastering-shiny.org/index.html">Mastering Shiny</a>
-<br></p>
+<p>To follow along in R you will need several packages that can be installed with a single line of code:</p>
+<pre class="r"><code>install.packages(c(&#39;shiny&#39;, &#39;leaflet&#39;, &#39;sf&#39;, &#39;tmap&#39;, &#39;dplyr&#39;))</code></pre>
+<p><strong>Note</strong>: This journey is thanks to the awesome book <a href="https://mastering-shiny.org/index.html">Mastering Shiny</a></p>
 <div id="why-interactive-and-why-shiny" class="section level2">
 <h2>Why interactive and why Shiny?</h2>
 <p><strong>Open Science</strong></p>
@@ -105,8 +103,8 @@ DisableComments: no
 <h2>Shiny</h2>
 <p>{shiny} provides a framework for <strong>reactive programming</strong>:</p>
 <ul>
-<li><p>User-interface (ui): how it looks. Takes <em>inputs</em> and displays <em>outputs</em></p></li>
-<li><p>Server: has the recipe to turn <em>inputs</em> into <em>outputs</em></p></li>
+<li>User-interface (ui): how it looks. Takes <em>inputs</em> and displays <em>outputs</em></li>
+<li>Server: has the recipe to turn <em>inputs</em> into <em>outputs</em></li>
 </ul>
 <p><em>hint</em>: if you have {shiny} installed, just type <code>shinyapp</code> in your R script to insert boilerplate shiny app code and get started quickly</p>
 <pre class="r"><code>library(shiny)
@@ -121,7 +119,7 @@ shinyApp(ui, server)</code></pre>
 <div id="a-simple-histogram" class="section level2">
 <h2>A simple histogram</h2>
 <pre class="r"><code>hist(rnorm(25))</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="a-reactive-histogram" class="section level2">
 <h2>A reactive histogram</h2>
@@ -136,6 +134,7 @@ server &lt;- function(input, output, session) {
     })
 }
 shinyApp(ui, server)</code></pre>
+<p>You’ll need to hit the ‘Run app’ button in the top right corner of your script.</p>
 <p><strong>Note</strong> There’s an additional reactive tool, <em>reactive expressions</em>. <em>Reactive expressions</em> can be used to eliminate redundant code in your app, thereby improving efficiency. Find more information <a href="https://mastering-shiny.org/reactivity-intro.html">here</a>.</p>
 </div>
 <div id="but-what-about-maps" class="section level2">
@@ -164,6 +163,7 @@ server &lt;- function(input, output, session) {
     qtm(World, &#39;name&#39;)})
 }
 shinyApp(ui, server)</code></pre>
+<p>Don’t forget to hit the ‘Run app’ button in the top right corner of your script</p>
 </div>
 <div id="add-some-reactivity" class="section level2">
 <h2>Add some reactivity</h2>
@@ -188,6 +188,7 @@ server &lt;- function(input, output, session) {
   })
 }
 shinyApp(ui, server)</code></pre>
+<p>Don’t forget to hit the ‘Run app’ button in the top right corner of your script</p>
 </div>
 <div id="customising-and-scaling-your-interactive-map" class="section level2">
 <h2>Customising and scaling your interactive map</h2>
@@ -224,4 +225,12 @@ Check out <a href="https://engineering-shiny.org/successful-shiny-app.html">Engi
 <br>
 2. Turn the interactive {leaflet} map into a share-able and dynamic {shiny} web app: follow the R script ‘leaflet-app.R’</p>
 </div>
+<div id="about-the-author" class="section level1">
+<h1>About the author</h1>
+<p><img  width='200' align = "centre" src='https://pbs.twimg.com/profile_images/1343848219076296705/KZ4vKq6N_400x400.jpg' /></p>
+<p><br>
+<a href="https://twitter.com/ChristinABuelow"><img src="https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&amp;label=Follow%20%40ChristinABuelow" alt="Twitter URL" /></a></p>
+<p>Christina is a quantitative ecologist at Griffith University interested in conserving blue forest ecosystems and informing climate-smart coastal restoration.</p>
+<p><br>
+<br></p>
 </div>

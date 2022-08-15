@@ -4,35 +4,36 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
-# Mapping interactively with Rshiny - Christina Buelow
+# Analysing climate data with R - Ralph Trancoso
 
 
-<img  width='200' align = "right" src='https://www.kindpng.com/picc/m/706-7068650_r-shiny-logo-png-transparent-png.png' />
+In this workshop, Ralph Trancoso will show us how to use R to delve into climate data - both observations and projections. If you want to include climate data in your research but don't know where to start, don't miss this one!   
+
+![Credit: climate.nasa.gov](/./Upcoming events_files/climateprojection_768_80.jpg){width=300px}
 
 
-<img  width='200' align = "centre" src='https://pbs.twimg.com/profile_images/1343848219076296705/KZ4vKq6N_400x400.jpg' />
+
 
 <br>
-[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&label=Follow%20%40ChristinABuelow)](https://twitter.com/ChristinABuelow)
-
-Christina is a quantitative ecologist at Griffith University interested in conserving blue forest ecosystems and informing climate-smart coastal restoration.
+<br>
 
 
-In this workshop, she will show us how to use R to read in spatial data and make beautiful interactive online maps. 
 
-We will be using the following R packages: rshiny, shinydashboard, sf, mapdeck, leaflet, rmapshaper.
+<img  width='180' align = "right" src='https://its-ss-academicportal.s3.amazonaws.com/prod/uqresearchers/photo/18673.jpeg' />
 
-This workshop is suitable for beginners, but some R knowledge will help. 
+<br>
+
+Ralph is a research scientist with expertise in climate change, ecohydrology, and deforestation impacts. Ralph is particularly interested in how climate and landscape changes affect the environment and impact society. He is a Principal Climate Change Scientist at the Department of Environment and Science (Queensland Government) and a Research Fellow at the School of Biological Sciences (University of Queensland).
+
+<br>
+<br>
 
 
 **When**
-Thursday 28th July, 2:30 - 4:30pm 
+Thursday 1st September, 2:30 - 4:30pm 
 
 **Where**
-
-Online: Teams link will be sent out via email 
-
-<span style="color: red;"> Due to the covid/flu surge, this will be online only </span>  
+Online, a teams link will be sent out via email 
 
 <br>
 <br>
@@ -43,9 +44,6 @@ Online: Teams link will be sent out via email
 Here we have placeholders for upcoming workshops. If you have something you would like to share with the community, 
 please get in touch. 
 
-
-**August 25**
-Climate analysis in R - Ralph Trancoso da Silva 
 
 **September 29**
 TBC
