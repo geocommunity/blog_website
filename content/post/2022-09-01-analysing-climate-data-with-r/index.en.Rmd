@@ -20,7 +20,7 @@ This post contains the scripts provided by Ralph Trancoso in the Analysing Clima
 
 # 1 Installing and loading the data, and the `raster`, `ncdf4`, `rgdal`, and `ggplot2` packages, setting directory, loading gridded data
 
-To follow this tutorial, you will need to download some prepared climate data. 
+To follow this tutorial, you will need to [download some prepared climate data](https://cloudstor.aarnet.edu.au/plus/s/Z35pnzhUEpnK7Gt). 
 
 Save this link to somewhere on you computer, in our example the c drive, the unzip the folder.  
 
