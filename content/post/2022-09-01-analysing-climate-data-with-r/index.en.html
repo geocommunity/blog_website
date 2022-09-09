@@ -1,0 +1,222 @@
+---
+title: Analysing Climate data with R
+author: Ralph Trancoso
+date: '2022-09-01'
+slug: []
+categories:
+  - R
+  - climate
+  - raster
+tags: []
+Description: ''
+Tags: []
+Categories: []
+DisableComments: no
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>This post contains the scripts provided by Ralph Trancoso in the Analysing Climate Data in R workshop.</p>
+<div id="installing-and-loading-the-data-and-the-raster-ncdf4-rgdal-and-ggplot2-packages-setting-directory-loading-gridded-data" class="section level1">
+<h1>1 Installing and loading the data, and the <code>raster</code>, <code>ncdf4</code>, <code>rgdal</code>, and <code>ggplot2</code> packages, setting directory, loading gridded data</h1>
+<p>To follow this tutorial, you will need to download some prepared climate data.</p>
+<p>Save this link to somewhere on you computer, in our example the c drive, the unzip the folder.</p>
+<p>If you don’t have the ‘raster’ and <code>ncdf4</code> packages installed, install them:</p>
+<pre class="r"><code>install.packages(&quot;raster&quot;) # Installing the packages required for the workshop
+install.packages(&quot;ncdf4&quot;)
+install.packages(&quot;rgdal&quot;)
+install.packages(&quot;ggplot2&quot;)</code></pre>
+<p>Now load the <code>raster</code> package, and set the directory to where you stored the Rclim folder - in this example on the C drive.</p>
+<pre class="r"><code>library(raster)
+
+setwd(&quot;C:/Rclim&quot;) #workshop dataset
+
+setwd(&quot;C:/Rclim/worldclim&quot;) # Set work directory to worldclim data
+getwd() # get work directory
+dir() # list files in the work directory
+
+?stack # what does stack do?
+aus_temp &lt;- stack(&quot;tmean_australia_wc.nc&quot;)  # Loading gridded #data as RasterStack</code></pre>
+<p>#2 Querying the RasterStack data and quick plot using raster::plot and raster::spplot</p>
+<pre class="r"><code>ncol(aus_temp)
+nrow(aus_temp)
+ncell(aus_temp)
+nlayers(aus_temp)
+dim(aus_temp)
+
+projection(aus_temp)
+res(aus_temp)
+inMemory(aus_temp)
+fromDisk(aus_temp)
+
+names(aus_temp)
+
+plot(aus_temp/10)
+spplot(aus_temp/10) # lattice plot, returns a trellice </code></pre>
+<p>Each layer represents a month of the year, from 1-12.
+So lets rename the layers.</p>
+<pre class="r"><code>months &lt;- c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+            &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;)
+
+names(aus_temp) &lt;- months
+
+plot(aus_temp/10)
+spplot(aus_temp/10) # lattice plot, returns a trellice  </code></pre>
+</div>
+<div id="calculating-anomalies-as-gridded-time-series-and-global-average" class="section level1">
+<h1>3 Calculating anomalies as gridded time-series and global average</h1>
+<pre class="r"><code>setwd(&quot;C:/Rclim/CMIP6&quot;) # Set work directory to CMIP6 data
+proj_temp &lt;- stack(&quot;tas_Asea_ACCESS-ESM1-5_ssp370_r1i1p1f1_gr1.5_1950-2100.nc&quot;)
+
+names(proj_temp)
+years &lt;- seq(1950, 2100, by=1)
+names(proj_temp ) &lt;- years
+names(proj_temp)
+
+anomaly &lt;- function(x) {
+    anom &lt;-  x - mean(x[[32:61]]) # for reference period 1981-2010 
+    names(anom) &lt;- seq(1950, 2100, by=1)    
+    return(anom)
+}
+
+T_anom &lt;- anomaly(proj_temp)
+spplot(T_anom[[1:16]])
+spplot(T_anom[[135:151]])
+T_anom_mean &lt;- as.data.frame(cbind(years, cellStats(T_anom, mean)))
+names(T_anom_mean) &lt;- c(&quot;year&quot;, &quot;T_anom_mean&quot;)
+
+setwd(&quot;C:/Rclim&quot;) # Set work directory to main folder
+dir.create(&quot;output&quot;)
+setwd(&quot;C:/Rclim/output&quot;)
+jpeg(file=&quot;anomaly_ts.jpeg&quot;, height = 600,  width = 1000, res=150)
+plot(T_anom_mean$year, T_anom_mean$T_anom_mean, type = &quot;p&quot;, pch = 19, 
+     col = &quot;red&quot;, xlab=&quot;year&quot;, ylab=&quot;Projected temperature anomaly&quot;, 
+     main=&quot;ACCESS-ESM1-5 SSP370 - ref period:1981-2010&quot;)
+dev.off()</code></pre>
+</div>
+<div id="handling-regions-as-shapefiles" class="section level1">
+<h1>4 Handling regions as shapefiles</h1>
+<pre class="r"><code>library(rgdal)
+
+setwd(&quot;C:/Rclim/shp&quot;)
+countries = readOGR(dsn=&quot;.&quot;, layer=&quot;TM_WORLD_BORDERS_SIMPL-0.3&quot;)
+plot(countries)
+spplot(countries, &quot;POP2005&quot;)
+
+df&lt;- as.data.frame(countries@data)
+#fix(df)
+
+## select a country customise your study area for the workshop analysis:
+my_country &lt;- subset(countries, NAME == &quot;Australia&quot;)</code></pre>
+</div>
+<div id="regionalizations-of-climate-data---plotting-time-series-as-line-plot-and-bar-chart" class="section level1">
+<h1>5 Regionalizations of climate data - plotting time-series as line plot and bar chart</h1>
+<pre class="r"><code>library(ggplot2)
+
+setwd(&quot;C:/Rclim/CMIP6&quot;) # Set work directory to CMIP6 data
+proj_temp &lt;- stack(&quot;tas_Asea_ACCESS-ESM1-5_ssp370_r1i1p1f1_gr1.5_1950-2100.nc&quot;)
+proj_temp &lt;- proj_temp -273.15
+names(proj_temp) &lt;- c(seq(1950,2100, by=1))
+
+
+mydf &lt;- structure(list(
+longitude = c(153.0251, 145.7781, 149.1821, 146.8169, 139.4927, 144.2555), 
+latitude = c(-27.4698, -16.9186, -21.1425, -19.2590, -20.7256, -23.4422)), 
+.Names = c(&quot;longitude&quot;, &quot;latitude&quot;), class = &quot;data.frame&quot;, row.names = c(NA, -6L))
+xy &lt;- mydf[,c(1,2)]
+
+spdf &lt;- SpatialPointsDataFrame(coords = xy, data = mydf, 
+proj4string = CRS(&quot;+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0&quot;))
+
+plot(my_country)
+plot(spdf, add=T, col=&quot;red&quot;)
+
+proj_temp_cities &lt;- extract(proj_temp, spdf)
+proj_temp_cities &lt;- as.data.frame(proj_temp_cities)
+proj_temp_cities &lt;-as.data.frame(t(proj_temp_cities))
+proj_temp_cities$year &lt;- 1:nrow(proj_temp_cities)+1980
+names(proj_temp_cities) &lt;- c(&quot;Brisbane&quot;, &quot;Cairns&quot;, &quot;Mackay&quot;, &quot;Townsville&quot;, &quot;Mount_Isa&quot;, &quot;Longreach&quot;, &quot;year&quot;)
+
+#install.packages(&quot;reshape2&quot;)
+library(reshape2)
+proj_temp_cities_melt &lt;- melt(proj_temp_cities, id=&quot;year&quot;)
+
+ts1 &lt;- ggplot(proj_temp_cities_melt) +
+    geom_line(aes(x=year, y=value, colour=variable)) +
+    ggtitle(&quot;Projected average temperature ACCESS-ESM1.5 SSP3-7.0&quot;) +
+    ylab(&quot;Temperature (°C)&quot;)  +
+    scale_color_brewer(name= &quot;cities&quot;, palette=&quot;Set1&quot;) +
+    theme_bw() 
+ts1</code></pre>
+</div>
+<div id="convertig-gridcells-to-data-frame-within-a-study-area-mask-and-plotting-boxplots-in-ggplot2" class="section level1">
+<h1>6 Convertig gridcells to data frame within a study area mask and plotting boxplots in ggplot2</h1>
+<pre class="r"><code>setwd(&quot;C:/Rclim/IPCC&quot;) # Set work directory to CMIP6 data
+dir() 
+
+# Mean temperature
+temp_list &lt;- list.files(path=&quot;C:\\Rclim\\IPCC&quot;, pattern = &quot;Mean temperature&quot;, full.names = TRUE)
+temp_GW &lt;- stack(temp_list)
+names(temp_GW) &lt;- c(&quot;GW1.5&quot;, &quot;GW2.0&quot;, &quot;GW3.0&quot;, &quot;GW4.0&quot;) 
+plot(temp_GW)
+
+#masking data outside country and converting grid to dataframe
+
+temp_GW_country &lt;- as.data.frame(mask(temp_GW, my_country))
+dim(temp_GW_country)
+head(temp_GW_country)   
+temp_GW_country &lt;- na.omit(temp_GW_country)
+dim(temp_GW_country)
+
+#install.packages(&quot;reshape2&quot;)
+library(reshape2)
+temp_GW_country_m &lt;- melt(temp_GW_country)
+
+#creating a boxplot of avg temp per global warming level on ggplot2
+
+bp1 &lt;- ggplot(temp_GW_country_m, aes(x=variable, y=value, fill=variable)) +
+geom_boxplot()+
+xlab(&quot;Global warming level (°C)&quot;)+
+ylab(&quot;Change in average surface temperature (°C)&quot;)+
+ggtitle(paste(&quot;Change in average surface temperature per global warming level in &quot;, my_country@data$NAME[1], sep=&quot;&quot;)) +
+theme_bw()
+
+bp1 &lt;- bp1 + scale_color_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;) # why it does not work? - change from color to fill</code></pre>
+</div>
+<div id="repeat-the-extraction-and-plot-for-precipitation-andor-other-metrics" class="section level1">
+<h1>7 Repeat the extraction and plot for precipitation and/or other metrics</h1>
+<pre class="r"><code># Total precipitation
+prec_list &lt;- list.files(path=&quot;C:\\Rclim\\IPCC&quot;, pattern = &quot;Total precipitation&quot;, full.names = TRUE)
+prec_GW &lt;- stack(prec_list)
+names(prec_GW) &lt;- c(&quot;GW1.5&quot;, &quot;GW2.0&quot;, &quot;GW3.0&quot;, &quot;GW4.0&quot;) 
+plot(prec_GW)
+
+#masking data outside country and converting grid to dataframe
+
+prec_GW_country &lt;- as.data.frame(mask(prec_GW, my_country))
+prec_GW_GW_country &lt;- na.omit(prec_GW_country)
+prec_GW_country_m &lt;- melt(prec_GW_country)
+
+#creating a boxplot of precipitation per global warming level on ggplot2
+
+bp2 &lt;- ggplot(prec_GW_country_m, aes(x=variable, y=value, fill=variable)) +
+geom_boxplot()+
+xlab(&quot;Global warming level (°C)&quot;)+
+ylab(&quot;Change in total precipitation (%)&quot;)+
+ggtitle(paste(&quot;Change in total precipitation per global warming level in &quot;, my_country@data$NAME[1], sep=&quot;&quot;)) +
+theme_bw() +
+scale_fill_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;)</code></pre>
+</div>
+<div id="where-to-find-climate-data" class="section level1">
+<h1>Where to find climate data</h1>
+<p>The authority for climate data is the IPCC. And the interactive atlas has the latest data</p>
+<p><a href="https://interactive-atlas.ipcc.ch/regional-information" class="uri">https://interactive-atlas.ipcc.ch/regional-information</a></p>
+</div>
+<div id="about-the-author" class="section level1">
+<h1>About the author</h1>
+<p><img  width='180' align = "right" src='https://its-ss-academicportal.s3.amazonaws.com/prod/uqresearchers/photo/18673.jpeg' /></p>
+<p><br>
+<a href="https://twitter.com/RalphTrancoso"><img src="https://img.shields.io/twitter/url/https/twitter.com/bukotsunikki.svg?style=social&amp;label=Follow%20%40RalphTrancoso" alt="Twitter URL" /></a></p>
+<p>Ralph is a research scientist with expertise in climate change, ecohydrology, and deforestation impacts. Ralph is particularly interested in how climate and landscape changes affect the environment and impact society. He is a Principal Climate Change Scientist at the Department of Environment and Science (Queensland Government) and a Research Fellow at the School of Biological Sciences (University of Queensland).</p>
+</div>
