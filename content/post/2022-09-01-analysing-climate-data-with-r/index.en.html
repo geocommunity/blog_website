@@ -27,33 +27,47 @@ DisableComments: no
 install.packages(&quot;ncdf4&quot;)
 install.packages(&quot;rgdal&quot;)
 install.packages(&quot;ggplot2&quot;)</code></pre>
-<p>Now load the <code>raster</code> package, and set the directory to where you stored the Rclim folder - in this example on the C drive.</p>
+<p>Now load the <code>raster</code> package, and set the directory to where you stored the Rclim folder.</p>
+<p>Set your home directory, for example, if you put the rclim folder on you C drive:</p>
+<pre class="r"><code>home &lt;- &quot;C:/Rclim&quot;</code></pre>
+<p>Now load the <code>raster</code> packages, and set your directory to where the climate data is.</p>
 <pre class="r"><code>library(raster)
+setwd(home) #workshop dataset
 
-setwd(&quot;C:/Rclim&quot;) #workshop dataset
-
-setwd(&quot;C:/Rclim/worldclim&quot;) # Set work directory to worldclim data
-getwd() # get work directory
-dir() # list files in the work directory
-
+setwd(paste0(home, &quot;/worldclim&quot;)) # Set work directory to worldclim data
+#getwd() # get work directory
+#dir() # list files in the work directory
 ?stack # what does stack do?
 aus_temp &lt;- stack(&quot;tmean_australia_wc.nc&quot;)  # Loading gridded #data as RasterStack</code></pre>
-<p>#2 Querying the RasterStack data and quick plot using raster::plot and raster::spplot</p>
-<pre class="r"><code>ncol(aus_temp)
-nrow(aus_temp)
-ncell(aus_temp)
-nlayers(aus_temp)
-dim(aus_temp)
-
-projection(aus_temp)
-res(aus_temp)
-inMemory(aus_temp)
-fromDisk(aus_temp)
-
-names(aus_temp)
-
-plot(aus_temp/10)
-spplot(aus_temp/10) # lattice plot, returns a trellice </code></pre>
+</div>
+<div id="querying-the-rasterstack-data-and-quick-plot-using-rasterplot-and-rasterspplot" class="section level1">
+<h1>2 Querying the RasterStack data and quick plot using raster::plot and raster::spplot</h1>
+<p>Below are a whole bunch of checks that you can run on the raster data set.</p>
+<pre class="r"><code>ncol(aus_temp) #check the number of columns</code></pre>
+<pre><code>## [1] 554</code></pre>
+<pre class="r"><code>nrow(aus_temp) #check the number of rows</code></pre>
+<pre><code>## [1] 551</code></pre>
+<pre class="r"><code>ncell(aus_temp) #check the number of cells</code></pre>
+<pre><code>## [1] 305254</code></pre>
+<pre class="r"><code>nlayers(aus_temp) #check the number of layers</code></pre>
+<pre><code>## [1] 12</code></pre>
+<pre class="r"><code>dim(aus_temp) #check the dimensions (rows, columns, layers)</code></pre>
+<pre><code>## [1] 551 554  12</code></pre>
+<pre class="r"><code>projection(aus_temp) #check the projection</code></pre>
+<pre><code>## [1] &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+<pre class="r"><code>res(aus_temp) #check the resolution</code></pre>
+<pre><code>## [1] 0.08333333 0.08333333</code></pre>
+<pre class="r"><code>inMemory(aus_temp) #check if the data is stored in memory</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>fromDisk(aus_temp) #check if the data was read from disk</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>names(aus_temp) #check the names of the layers</code></pre>
+<pre><code>##  [1] &quot;X1&quot;  &quot;X2&quot;  &quot;X3&quot;  &quot;X4&quot;  &quot;X5&quot;  &quot;X6&quot;  &quot;X7&quot;  &quot;X8&quot;  &quot;X9&quot;  &quot;X10&quot; &quot;X11&quot; &quot;X12&quot;</code></pre>
+<pre class="r"><code>plot(aus_temp/10)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Or use spplot</p>
+<pre class="r"><code>spplot(aus_temp/10) # lattice plot, returns a trellice </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Each layer represents a month of the year, from 1-12.
 So lets rename the layers.</p>
 <pre class="r"><code>months &lt;- c(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
@@ -61,84 +75,129 @@ So lets rename the layers.</p>
 
 names(aus_temp) &lt;- months
 
-plot(aus_temp/10)
-spplot(aus_temp/10) # lattice plot, returns a trellice  </code></pre>
+plot(aus_temp/10)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Or, using spplot to create a lattice plot</p>
+<pre class="r"><code>spplot(aus_temp/10) # lattice plot, returns a trellice  </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="calculating-anomalies-as-gridded-time-series-and-global-average" class="section level1">
 <h1>3 Calculating anomalies as gridded time-series and global average</h1>
-<pre class="r"><code>setwd(&quot;C:/Rclim/CMIP6&quot;) # Set work directory to CMIP6 data
+<pre class="r"><code>setwd(paste0(home, &quot;/CMIP6&quot;)) # Set work directory to CMIP6 data
 proj_temp &lt;- stack(&quot;tas_Asea_ACCESS-ESM1-5_ssp370_r1i1p1f1_gr1.5_1950-2100.nc&quot;)
-
-names(proj_temp)
-years &lt;- seq(1950, 2100, by=1)
+names(proj_temp)</code></pre>
+<pre><code>##   [1] &quot;X1&quot;   &quot;X2&quot;   &quot;X3&quot;   &quot;X4&quot;   &quot;X5&quot;   &quot;X6&quot;   &quot;X7&quot;   &quot;X8&quot;   &quot;X9&quot;   &quot;X10&quot; 
+##  [11] &quot;X11&quot;  &quot;X12&quot;  &quot;X13&quot;  &quot;X14&quot;  &quot;X15&quot;  &quot;X16&quot;  &quot;X17&quot;  &quot;X18&quot;  &quot;X19&quot;  &quot;X20&quot; 
+##  [21] &quot;X21&quot;  &quot;X22&quot;  &quot;X23&quot;  &quot;X24&quot;  &quot;X25&quot;  &quot;X26&quot;  &quot;X27&quot;  &quot;X28&quot;  &quot;X29&quot;  &quot;X30&quot; 
+##  [31] &quot;X31&quot;  &quot;X32&quot;  &quot;X33&quot;  &quot;X34&quot;  &quot;X35&quot;  &quot;X36&quot;  &quot;X37&quot;  &quot;X38&quot;  &quot;X39&quot;  &quot;X40&quot; 
+##  [41] &quot;X41&quot;  &quot;X42&quot;  &quot;X43&quot;  &quot;X44&quot;  &quot;X45&quot;  &quot;X46&quot;  &quot;X47&quot;  &quot;X48&quot;  &quot;X49&quot;  &quot;X50&quot; 
+##  [51] &quot;X51&quot;  &quot;X52&quot;  &quot;X53&quot;  &quot;X54&quot;  &quot;X55&quot;  &quot;X56&quot;  &quot;X57&quot;  &quot;X58&quot;  &quot;X59&quot;  &quot;X60&quot; 
+##  [61] &quot;X61&quot;  &quot;X62&quot;  &quot;X63&quot;  &quot;X64&quot;  &quot;X65&quot;  &quot;X66&quot;  &quot;X67&quot;  &quot;X68&quot;  &quot;X69&quot;  &quot;X70&quot; 
+##  [71] &quot;X71&quot;  &quot;X72&quot;  &quot;X73&quot;  &quot;X74&quot;  &quot;X75&quot;  &quot;X76&quot;  &quot;X77&quot;  &quot;X78&quot;  &quot;X79&quot;  &quot;X80&quot; 
+##  [81] &quot;X81&quot;  &quot;X82&quot;  &quot;X83&quot;  &quot;X84&quot;  &quot;X85&quot;  &quot;X86&quot;  &quot;X87&quot;  &quot;X88&quot;  &quot;X89&quot;  &quot;X90&quot; 
+##  [91] &quot;X91&quot;  &quot;X92&quot;  &quot;X93&quot;  &quot;X94&quot;  &quot;X95&quot;  &quot;X96&quot;  &quot;X97&quot;  &quot;X98&quot;  &quot;X99&quot;  &quot;X100&quot;
+## [101] &quot;X101&quot; &quot;X102&quot; &quot;X103&quot; &quot;X104&quot; &quot;X105&quot; &quot;X106&quot; &quot;X107&quot; &quot;X108&quot; &quot;X109&quot; &quot;X110&quot;
+## [111] &quot;X111&quot; &quot;X112&quot; &quot;X113&quot; &quot;X114&quot; &quot;X115&quot; &quot;X116&quot; &quot;X117&quot; &quot;X118&quot; &quot;X119&quot; &quot;X120&quot;
+## [121] &quot;X121&quot; &quot;X122&quot; &quot;X123&quot; &quot;X124&quot; &quot;X125&quot; &quot;X126&quot; &quot;X127&quot; &quot;X128&quot; &quot;X129&quot; &quot;X130&quot;
+## [131] &quot;X131&quot; &quot;X132&quot; &quot;X133&quot; &quot;X134&quot; &quot;X135&quot; &quot;X136&quot; &quot;X137&quot; &quot;X138&quot; &quot;X139&quot; &quot;X140&quot;
+## [141] &quot;X141&quot; &quot;X142&quot; &quot;X143&quot; &quot;X144&quot; &quot;X145&quot; &quot;X146&quot; &quot;X147&quot; &quot;X148&quot; &quot;X149&quot; &quot;X150&quot;
+## [151] &quot;X151&quot;</code></pre>
+<p>We can see that these names make no sense. So the names relate to years, we can re-name each layer:</p>
+<pre class="r"><code>years &lt;- seq(1950, 2100, by=1)
 names(proj_temp ) &lt;- years
-names(proj_temp)
-
-anomaly &lt;- function(x) {
+names(proj_temp)</code></pre>
+<pre><code>##   [1] &quot;X1950&quot; &quot;X1951&quot; &quot;X1952&quot; &quot;X1953&quot; &quot;X1954&quot; &quot;X1955&quot; &quot;X1956&quot; &quot;X1957&quot; &quot;X1958&quot;
+##  [10] &quot;X1959&quot; &quot;X1960&quot; &quot;X1961&quot; &quot;X1962&quot; &quot;X1963&quot; &quot;X1964&quot; &quot;X1965&quot; &quot;X1966&quot; &quot;X1967&quot;
+##  [19] &quot;X1968&quot; &quot;X1969&quot; &quot;X1970&quot; &quot;X1971&quot; &quot;X1972&quot; &quot;X1973&quot; &quot;X1974&quot; &quot;X1975&quot; &quot;X1976&quot;
+##  [28] &quot;X1977&quot; &quot;X1978&quot; &quot;X1979&quot; &quot;X1980&quot; &quot;X1981&quot; &quot;X1982&quot; &quot;X1983&quot; &quot;X1984&quot; &quot;X1985&quot;
+##  [37] &quot;X1986&quot; &quot;X1987&quot; &quot;X1988&quot; &quot;X1989&quot; &quot;X1990&quot; &quot;X1991&quot; &quot;X1992&quot; &quot;X1993&quot; &quot;X1994&quot;
+##  [46] &quot;X1995&quot; &quot;X1996&quot; &quot;X1997&quot; &quot;X1998&quot; &quot;X1999&quot; &quot;X2000&quot; &quot;X2001&quot; &quot;X2002&quot; &quot;X2003&quot;
+##  [55] &quot;X2004&quot; &quot;X2005&quot; &quot;X2006&quot; &quot;X2007&quot; &quot;X2008&quot; &quot;X2009&quot; &quot;X2010&quot; &quot;X2011&quot; &quot;X2012&quot;
+##  [64] &quot;X2013&quot; &quot;X2014&quot; &quot;X2015&quot; &quot;X2016&quot; &quot;X2017&quot; &quot;X2018&quot; &quot;X2019&quot; &quot;X2020&quot; &quot;X2021&quot;
+##  [73] &quot;X2022&quot; &quot;X2023&quot; &quot;X2024&quot; &quot;X2025&quot; &quot;X2026&quot; &quot;X2027&quot; &quot;X2028&quot; &quot;X2029&quot; &quot;X2030&quot;
+##  [82] &quot;X2031&quot; &quot;X2032&quot; &quot;X2033&quot; &quot;X2034&quot; &quot;X2035&quot; &quot;X2036&quot; &quot;X2037&quot; &quot;X2038&quot; &quot;X2039&quot;
+##  [91] &quot;X2040&quot; &quot;X2041&quot; &quot;X2042&quot; &quot;X2043&quot; &quot;X2044&quot; &quot;X2045&quot; &quot;X2046&quot; &quot;X2047&quot; &quot;X2048&quot;
+## [100] &quot;X2049&quot; &quot;X2050&quot; &quot;X2051&quot; &quot;X2052&quot; &quot;X2053&quot; &quot;X2054&quot; &quot;X2055&quot; &quot;X2056&quot; &quot;X2057&quot;
+## [109] &quot;X2058&quot; &quot;X2059&quot; &quot;X2060&quot; &quot;X2061&quot; &quot;X2062&quot; &quot;X2063&quot; &quot;X2064&quot; &quot;X2065&quot; &quot;X2066&quot;
+## [118] &quot;X2067&quot; &quot;X2068&quot; &quot;X2069&quot; &quot;X2070&quot; &quot;X2071&quot; &quot;X2072&quot; &quot;X2073&quot; &quot;X2074&quot; &quot;X2075&quot;
+## [127] &quot;X2076&quot; &quot;X2077&quot; &quot;X2078&quot; &quot;X2079&quot; &quot;X2080&quot; &quot;X2081&quot; &quot;X2082&quot; &quot;X2083&quot; &quot;X2084&quot;
+## [136] &quot;X2085&quot; &quot;X2086&quot; &quot;X2087&quot; &quot;X2088&quot; &quot;X2089&quot; &quot;X2090&quot; &quot;X2091&quot; &quot;X2092&quot; &quot;X2093&quot;
+## [145] &quot;X2094&quot; &quot;X2095&quot; &quot;X2096&quot; &quot;X2097&quot; &quot;X2098&quot; &quot;X2099&quot; &quot;X2100&quot;</code></pre>
+<p>The X is at the start of each of each year to ensure they are of type character.</p>
+<pre class="r"><code>anomaly &lt;- function(x) {
     anom &lt;-  x - mean(x[[32:61]]) # for reference period 1981-2010 
     names(anom) &lt;- seq(1950, 2100, by=1)    
     return(anom)
-}
-
-T_anom &lt;- anomaly(proj_temp)
-spplot(T_anom[[1:16]])
-spplot(T_anom[[135:151]])
-T_anom_mean &lt;- as.data.frame(cbind(years, cellStats(T_anom, mean)))
-names(T_anom_mean) &lt;- c(&quot;year&quot;, &quot;T_anom_mean&quot;)
-
-setwd(&quot;C:/Rclim&quot;) # Set work directory to main folder
+}</code></pre>
+<pre class="r"><code>T_anom &lt;- anomaly(proj_temp)
+spplot(T_anom[[1:16]])</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>spplot(T_anom[[135:151]])</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
+<pre class="r"><code>T_anom_mean &lt;- as.data.frame(cbind(years, cellStats(T_anom, mean)))
+names(T_anom_mean) &lt;- c(&quot;year&quot;, &quot;T_anom_mean&quot;)</code></pre>
+<pre class="r"><code>setwd(home) # Set work directory to main folder
 dir.create(&quot;output&quot;)
-setwd(&quot;C:/Rclim/output&quot;)
+setwd(paste0(home, &quot;/output&quot;))
 jpeg(file=&quot;anomaly_ts.jpeg&quot;, height = 600,  width = 1000, res=150)
 plot(T_anom_mean$year, T_anom_mean$T_anom_mean, type = &quot;p&quot;, pch = 19, 
      col = &quot;red&quot;, xlab=&quot;year&quot;, ylab=&quot;Projected temperature anomaly&quot;, 
      main=&quot;ACCESS-ESM1-5 SSP370 - ref period:1981-2010&quot;)
 dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<p>Have a look in the output folder, you should see something like this
+<img src="images/anomaly_ts.jpeg" /></p>
 </div>
 <div id="handling-regions-as-shapefiles" class="section level1">
 <h1>4 Handling regions as shapefiles</h1>
 <pre class="r"><code>library(rgdal)
 
-setwd(&quot;C:/Rclim/shp&quot;)
-countries = readOGR(dsn=&quot;.&quot;, layer=&quot;TM_WORLD_BORDERS_SIMPL-0.3&quot;)
-plot(countries)
-spplot(countries, &quot;POP2005&quot;)
-
-df&lt;- as.data.frame(countries@data)
-#fix(df)
-
-## select a country customise your study area for the workshop analysis:
-my_country &lt;- subset(countries, NAME == &quot;Australia&quot;)</code></pre>
+setwd(paste0(home, &quot;/shp&quot;))
+countries = readOGR(dsn=&quot;.&quot;, layer=&quot;TM_WORLD_BORDERS_SIMPL-0.3&quot;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;C:\Users\uqmrudg1\Desktop\Rclim\shp&quot;, layer: &quot;TM_WORLD_BORDERS_SIMPL-0.3&quot;
+## with 246 features
+## It has 11 fields
+## Integer64 fields read as strings:  POP2005</code></pre>
+<pre class="r"><code>plot(countries)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+Or use <code>spplot</code> to color by population:</p>
+<pre class="r"><code>spplot(countries, &quot;POP2005&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="regionalizations-of-climate-data---plotting-time-series-as-line-plot-and-bar-chart" class="section level1">
 <h1>5 Regionalizations of climate data - plotting time-series as line plot and bar chart</h1>
 <pre class="r"><code>library(ggplot2)
 
-setwd(&quot;C:/Rclim/CMIP6&quot;) # Set work directory to CMIP6 data
+setwd(paste0(home, &quot;/CMIP6&quot;)) # Set work directory to CMIP6 data
 proj_temp &lt;- stack(&quot;tas_Asea_ACCESS-ESM1-5_ssp370_r1i1p1f1_gr1.5_1950-2100.nc&quot;)
 proj_temp &lt;- proj_temp -273.15
 names(proj_temp) &lt;- c(seq(1950,2100, by=1))
 
+## From your countries vector we read in, select a country customise your study area for the workshop analysis:
+my_country &lt;- subset(countries, NAME == &quot;Australia&quot;)
+
+
+df&lt;- as.data.frame(countries@data)
+#fix(df) # to have a look at the dataframe of the countries
 
 mydf &lt;- structure(list(
 longitude = c(153.0251, 145.7781, 149.1821, 146.8169, 139.4927, 144.2555), 
 latitude = c(-27.4698, -16.9186, -21.1425, -19.2590, -20.7256, -23.4422)), 
 .Names = c(&quot;longitude&quot;, &quot;latitude&quot;), class = &quot;data.frame&quot;, row.names = c(NA, -6L))
 xy &lt;- mydf[,c(1,2)]
-
-spdf &lt;- SpatialPointsDataFrame(coords = xy, data = mydf, 
-proj4string = CRS(&quot;+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0&quot;))
+spdf &lt;- SpatialPointsDataFrame(coords = xy, data = mydf, proj4string = CRS(&quot;+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0&quot;))
 
 plot(my_country)
-plot(spdf, add=T, col=&quot;red&quot;)
-
-proj_temp_cities &lt;- extract(proj_temp, spdf)
+plot(spdf, add=T, col=&quot;red&quot;)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>proj_temp_cities &lt;- extract(proj_temp, spdf)
 proj_temp_cities &lt;- as.data.frame(proj_temp_cities)
 proj_temp_cities &lt;-as.data.frame(t(proj_temp_cities))
 proj_temp_cities$year &lt;- 1:nrow(proj_temp_cities)+1980
-names(proj_temp_cities) &lt;- c(&quot;Brisbane&quot;, &quot;Cairns&quot;, &quot;Mackay&quot;, &quot;Townsville&quot;, &quot;Mount_Isa&quot;, &quot;Longreach&quot;, &quot;year&quot;)
-
-#install.packages(&quot;reshape2&quot;)
+names(proj_temp_cities) &lt;- c(&quot;Brisbane&quot;, &quot;Cairns&quot;, &quot;Mackay&quot;, &quot;Townsville&quot;, &quot;Mount_Isa&quot;, &quot;Longreach&quot;, &quot;year&quot;)</code></pre>
+<pre class="r"><code>#install.packages(&quot;reshape2&quot;)
 library(reshape2)
 proj_temp_cities_melt &lt;- melt(proj_temp_cities, id=&quot;year&quot;)
 
@@ -149,31 +208,55 @@ ts1 &lt;- ggplot(proj_temp_cities_melt) +
     scale_color_brewer(name= &quot;cities&quot;, palette=&quot;Set1&quot;) +
     theme_bw() 
 ts1</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="convertig-gridcells-to-data-frame-within-a-study-area-mask-and-plotting-boxplots-in-ggplot2" class="section level1">
 <h1>6 Convertig gridcells to data frame within a study area mask and plotting boxplots in ggplot2</h1>
-<pre class="r"><code>setwd(&quot;C:/Rclim/IPCC&quot;) # Set work directory to CMIP6 data
-dir() 
-
-# Mean temperature
-temp_list &lt;- list.files(path=&quot;C:\\Rclim\\IPCC&quot;, pattern = &quot;Mean temperature&quot;, full.names = TRUE)
+<pre class="r"><code>setwd(paste0(home, &quot;/IPCC&quot;)) # Set work directory to CMIP6 data
+dir() </code></pre>
+<pre><code>##  [1] &quot;CMIP6 - Consecutive Dry Days (CDD) Change days - Warming 1.5°C SSP5-8.5 (rel. to 1850-1900) - Annual (32 models).nc&quot;
+##  [2] &quot;CMIP6 - Consecutive Dry Days (CDD) Change days - Warming 2°C SSP5-8.5 (rel. to 1850-1900) - Annual (32 models).nc&quot;  
+##  [3] &quot;CMIP6 - Consecutive Dry Days (CDD) Change days - Warming 3°C SSP5-8.5 (rel. to 1850-1900) - Annual (32 models).nc&quot;  
+##  [4] &quot;CMIP6 - Consecutive Dry Days (CDD) Change days - Warming 4°C SSP5-8.5 (rel. to 1850-1900) - Annual (19 models).nc&quot;  
+##  [5] &quot;CMIP6 - Maximum temperature (TX) Change deg C - Warming 1.5°C SSP5-8.5 (rel. to 1850-1900) - Annual (27 models).nc&quot; 
+##  [6] &quot;CMIP6 - Maximum temperature (TX) Change deg C - Warming 2°C SSP5-8.5 (rel. to 1850-1900) - Annual (27 models).nc&quot;   
+##  [7] &quot;CMIP6 - Maximum temperature (TX) Change deg C - Warming 3°C SSP5-8.5 (rel. to 1850-1900) - Annual (27 models).nc&quot;   
+##  [8] &quot;CMIP6 - Maximum temperature (TX) Change deg C - Warming 4°C SSP5-8.5 (rel. to 1850-1900) - Annual (16 models).nc&quot;   
+##  [9] &quot;CMIP6 - Mean temperature (T) Change deg C - Warming 1.5°C SSP5-8.5 (rel. to 1850-1900) - Annual (34 models).nc&quot;     
+## [10] &quot;CMIP6 - Mean temperature (T) Change deg C - Warming 2°C SSP5-8.5 (rel. to 1850-1900) - Annual (34 models).nc&quot;       
+## [11] &quot;CMIP6 - Mean temperature (T) Change deg C - Warming 3°C SSP5-8.5 (rel. to 1850-1900) - Annual (34 models).nc&quot;       
+## [12] &quot;CMIP6 - Mean temperature (T) Change deg C - Warming 4°C SSP5-8.5 (rel. to 1850-1900) - Annual (20 models).nc&quot;       
+## [13] &quot;CMIP6 - Total precipitation (PR) Change % - Warming 1.5°C SSP5-8.5 (rel. to 1850-1900) - Annual (33 models).nc&quot;     
+## [14] &quot;CMIP6 - Total precipitation (PR) Change % - Warming 2°C SSP5-8.5 (rel. to 1850-1900) - Annual (33 models).nc&quot;       
+## [15] &quot;CMIP6 - Total precipitation (PR) Change % - Warming 3°C SSP5-8.5 (rel. to 1850-1900) - Annual (33 models).nc&quot;       
+## [16] &quot;CMIP6 - Total precipitation (PR) Change % - Warming 4°C SSP5-8.5 (rel. to 1850-1900) - Annual (19 models).nc&quot;</code></pre>
+<pre class="r"><code># Mean temperature
+temp_list &lt;- list.files(path= paste0(home, &quot;/IPCC&quot;), pattern = &quot;Mean temperature&quot;, full.names = TRUE)
 temp_GW &lt;- stack(temp_list)
 names(temp_GW) &lt;- c(&quot;GW1.5&quot;, &quot;GW2.0&quot;, &quot;GW3.0&quot;, &quot;GW4.0&quot;) 
-plot(temp_GW)
-
-#masking data outside country and converting grid to dataframe
+plot(temp_GW)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>#masking data outside country and converting grid to dataframe
 
 temp_GW_country &lt;- as.data.frame(mask(temp_GW, my_country))
-dim(temp_GW_country)
-head(temp_GW_country)   
-temp_GW_country &lt;- na.omit(temp_GW_country)
-dim(temp_GW_country)
-
-#install.packages(&quot;reshape2&quot;)
+dim(temp_GW_country)</code></pre>
+<pre><code>## [1] 64800     4</code></pre>
+<pre class="r"><code>head(temp_GW_country)   </code></pre>
+<pre><code>##   GW1.5 GW2.0 GW3.0 GW4.0
+## 1    NA    NA    NA    NA
+## 2    NA    NA    NA    NA
+## 3    NA    NA    NA    NA
+## 4    NA    NA    NA    NA
+## 5    NA    NA    NA    NA
+## 6    NA    NA    NA    NA</code></pre>
+<pre class="r"><code>temp_GW_country &lt;- na.omit(temp_GW_country)
+dim(temp_GW_country)</code></pre>
+<pre><code>## [1] 699   4</code></pre>
+<pre class="r"><code>#install.packages(&quot;reshape2&quot;)
 library(reshape2)
-temp_GW_country_m &lt;- melt(temp_GW_country)
-
-#creating a boxplot of avg temp per global warming level on ggplot2
+temp_GW_country_m &lt;- melt(temp_GW_country)</code></pre>
+<pre><code>## No id variables; using all as measure variables</code></pre>
+<pre class="r"><code>#creating a boxplot of avg temp per global warming level on ggplot2
 
 bp1 &lt;- ggplot(temp_GW_country_m, aes(x=variable, y=value, fill=variable)) +
 geom_boxplot()+
@@ -182,23 +265,25 @@ ylab(&quot;Change in average surface temperature (°C)&quot;)+
 ggtitle(paste(&quot;Change in average surface temperature per global warming level in &quot;, my_country@data$NAME[1], sep=&quot;&quot;)) +
 theme_bw()
 
-bp1 &lt;- bp1 + scale_color_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;) # why it does not work? - change from color to fill</code></pre>
+bp1 &lt;- bp1 + scale_color_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;) # why it does not work? - change from color to fill
+bp1</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 <div id="repeat-the-extraction-and-plot-for-precipitation-andor-other-metrics" class="section level1">
 <h1>7 Repeat the extraction and plot for precipitation and/or other metrics</h1>
 <pre class="r"><code># Total precipitation
-prec_list &lt;- list.files(path=&quot;C:\\Rclim\\IPCC&quot;, pattern = &quot;Total precipitation&quot;, full.names = TRUE)
+prec_list &lt;- list.files(path= paste0(home, &quot;/IPCC&quot;), pattern = &quot;Total precipitation&quot;, full.names = TRUE)
 prec_GW &lt;- stack(prec_list)
 names(prec_GW) &lt;- c(&quot;GW1.5&quot;, &quot;GW2.0&quot;, &quot;GW3.0&quot;, &quot;GW4.0&quot;) 
-plot(prec_GW)
-
-#masking data outside country and converting grid to dataframe
+plot(prec_GW)</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>#masking data outside country and converting grid to dataframe
 
 prec_GW_country &lt;- as.data.frame(mask(prec_GW, my_country))
 prec_GW_GW_country &lt;- na.omit(prec_GW_country)
-prec_GW_country_m &lt;- melt(prec_GW_country)
-
-#creating a boxplot of precipitation per global warming level on ggplot2
+prec_GW_country_m &lt;- melt(prec_GW_country)</code></pre>
+<pre><code>## No id variables; using all as measure variables</code></pre>
+<pre class="r"><code>#creating a boxplot of precipitation per global warming level on ggplot2
 
 bp2 &lt;- ggplot(prec_GW_country_m, aes(x=variable, y=value, fill=variable)) +
 geom_boxplot()+
@@ -206,7 +291,10 @@ xlab(&quot;Global warming level (°C)&quot;)+
 ylab(&quot;Change in total precipitation (%)&quot;)+
 ggtitle(paste(&quot;Change in total precipitation per global warming level in &quot;, my_country@data$NAME[1], sep=&quot;&quot;)) +
 theme_bw() +
-scale_fill_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;)</code></pre>
+scale_fill_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;)
+bp2</code></pre>
+<pre><code>## Warning: Removed 256404 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="where-to-find-climate-data" class="section level1">
 <h1>Where to find climate data</h1>
