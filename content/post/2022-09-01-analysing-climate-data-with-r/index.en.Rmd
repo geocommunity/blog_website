@@ -62,7 +62,6 @@ aus_temp <- stack("tmean_australia_wc.nc")  # Loading gridded #data as RasterSta
 ```
 
 # 2 Querying the RasterStack data and quick plot using raster::plot and raster::spplot
-<<<<<<< HEAD
 
 Below are a whole bunch of checks that you can run on the raster data set.
 ```{r message=FALSE, warning=FALSE}
@@ -85,31 +84,7 @@ Now plot the rasters using the `plot` function:
 plot(aus_temp/10)
 ```
 
-Or use `spplot`:
-
-=======
-
-Below are a whole bunch of checks that you can run on the raster data set.
-```{r message=FALSE, warning=FALSE}
-ncol(aus_temp) #check the number of columns
-nrow(aus_temp) #check the number of rows
-ncell(aus_temp) #check the number of cells
-nlayers(aus_temp) #check the number of layers
-dim(aus_temp) #check the dimensions (rows, columns, layers)
-
-projection(aus_temp) #check the projection
-res(aus_temp) #check the resolution
-inMemory(aus_temp) #check if the data is stored in memory
-fromDisk(aus_temp) #check if the data was read from disk
-
-names(aus_temp) #check the names of the layers
-
-plot(aus_temp/10)
-```
-
-Or use spplot
-
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+Or use spplot:
 ```{r message=FALSE, warning=FALSE}
 spplot(aus_temp/10) # lattice plot, returns a trellice 
 ```
@@ -126,19 +101,10 @@ names(aus_temp) <- months #set the layer names to months
 
 plot(aus_temp/10)
 ```
-<<<<<<< HEAD
 
 Or, using `spplot` to create a lattice plot
 
 ```{r message=FALSE, warning=FALSE}
-
-=======
-
-Or, using spplot to create a lattice plot
-
-```{r message=FALSE, warning=FALSE}
-
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 spplot(aus_temp/10) # lattice plot, returns a trellice 	
 ```
 
@@ -146,10 +112,8 @@ spplot(aus_temp/10) # lattice plot, returns a trellice
 
 # 3 Calculating anomalies as gridded time-series and global average
 
-<<<<<<< HEAD
 First, load the CMIP6 data set. 
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+
 ```{r message=FALSE, warning=FALSE}
 setwd(paste0(home, "/CMIP6")) # Set work directory to CMIP6 data
 proj_temp <- stack("tas_Asea_ACCESS-ESM1-5_ssp370_r1i1p1f1_gr1.5_1950-2100.nc")
@@ -165,15 +129,9 @@ names(proj_temp)
 ```
 
 The X is at the start of each of each year to ensure they are of type character. 
-<<<<<<< HEAD
-
 
 Now we can create a simple function to calculate the temperature anomaly. 
-=======
 
-
-
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r message=FALSE, warning=FALSE}
 anomaly <- function(x) {
     anom <-  x - mean(x[[32:61]]) # for reference period 1981-2100
@@ -203,22 +161,13 @@ Then we can calculate the average temperature anomaly
 T_anom_mean <- as.data.frame(cbind(years, cellStats(T_anom, mean)))
 names(T_anom_mean) <- c("year", "T_anom_mean")
 ```
-<<<<<<< HEAD
 
 Finally, we can take a look at the average temperature anomaloy for the entire dataset. 
 ```{r message=FALSE, warning=FALSE}
-setwd(home) # Set work directory to main folder
-dir.create("output") #create an output folder
 setwd(paste0(home, "/output")) #set directory to output
-=======
-
-
-
-```{r message=FALSE, warning=FALSE}
 setwd(home) # Set work directory to main folder
 dir.create("output")
 setwd(paste0(home, "/output"))
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 jpeg(file="anomaly_ts.jpeg", height = 600,  width = 1000, res=150)
 plot(T_anom_mean$year, T_anom_mean$T_anom_mean, type = "p", pch = 19, 
      col = "red", xlab="year", ylab="Projected temperature anomaly", 
@@ -228,7 +177,10 @@ dev.off()
 
 Have a look in the output folder, you should see something like this
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ![](images/anomaly_ts.jpeg)
@@ -237,8 +189,11 @@ Have a look in the output folder, you should see something like this
 # 4 Handling regions as shapefiles
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Here, we load and plot a shapefile of the worlds country boundaries. 
 
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r message=FALSE, warning=FALSE}
@@ -249,8 +204,13 @@ countries = readOGR(dsn=".", layer="TM_WORLD_BORDERS_SIMPL-0.3")
 plot(countries)
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 Or use `spplot` to color by population: 
+=======
+Or use `spplot` to color by population: 
+
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 Or use `spplot` to color by population: 
 
@@ -284,6 +244,7 @@ latitude = c(-27.4698, -16.9186, -21.1425, -19.2590, -20.7256, -23.4422)),
 xy <- mydf[,c(1,2)]
 spdf <- SpatialPointsDataFrame(coords = xy, data = mydf, proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```
 
 Finally, plot the points we chose on the map of Australia. 
@@ -294,12 +255,17 @@ plot(spdf, add=T, col="red")
 
 
 =======
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 
 plot(my_country)
 plot(spdf, add=T, col="red")
 ```
 
 
+<<<<<<< HEAD
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+=======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r }
 proj_temp_cities <- extract(proj_temp, spdf)
@@ -308,10 +274,15 @@ proj_temp_cities <-as.data.frame(t(proj_temp_cities))
 proj_temp_cities$year <- 1:nrow(proj_temp_cities)+1980
 names(proj_temp_cities) <- c("Brisbane", "Cairns", "Mackay", "Townsville", "Mount_Isa", "Longreach", "year")
 ```
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 We can plot the projected temperature change of the cities we have selected. 
 =======
+
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+=======
+
 
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r}
@@ -410,6 +381,7 @@ https://interactive-atlas.ipcc.ch/regional-information
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 **Worldclim** Global climate and weather data. WorldClim is a database of high spatial resolution global weather and climate data.
 www.worldclim.org
  
@@ -425,6 +397,8 @@ https://longpaddock.qld.gov.au/qld-future-climate/data-info/tern/
 
 
 
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 # About the author 

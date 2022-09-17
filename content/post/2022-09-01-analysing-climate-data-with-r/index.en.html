@@ -64,6 +64,7 @@ aus_temp &lt;- stack(&quot;tmean_australia_wc.nc&quot;)  # Loading gridded #data
 <pre class="r"><code>names(aus_temp) #check the names of the layers</code></pre>
 <pre><code>##  [1] &quot;X1&quot;  &quot;X2&quot;  &quot;X3&quot;  &quot;X4&quot;  &quot;X5&quot;  &quot;X6&quot;  &quot;X7&quot;  &quot;X8&quot;  &quot;X9&quot;  &quot;X10&quot; &quot;X11&quot; &quot;X12&quot;</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p>Now plot the rasters using the <code>plot</code> function:</p>
 <pre class="r"><code>plot(aus_temp/10)</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
@@ -71,11 +72,16 @@ aus_temp &lt;- stack(&quot;tmean_australia_wc.nc&quot;)  # Loading gridded #data
 <pre class="r"><code>spplot(aus_temp/10) # lattice plot, returns a trellice </code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 =======
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 <pre class="r"><code>plot(aus_temp/10)</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Or use spplot</p>
 <pre class="r"><code>spplot(aus_temp/10) # lattice plot, returns a trellice </code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<<<<<<< HEAD
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+=======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 <p>Each layer represents a month of the year, from 1-12.
 So lets rename the layers and plot again.</p>
@@ -86,6 +92,7 @@ names(aus_temp) &lt;- months #set the layer names to months
 
 plot(aus_temp/10)</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>Or, using <code>spplot</code> to create a lattice plot</p>
 <pre class="r"><code>spplot(aus_temp/10) # lattice plot, returns a trellice  </code></pre>
@@ -94,6 +101,15 @@ plot(aus_temp/10)</code></pre>
 <div id="calculating-anomalies-as-gridded-time-series-and-global-average" class="section level1">
 <h1>3 Calculating anomalies as gridded time-series and global average</h1>
 <p>First, load the CMIP6 data set.</p>
+=======
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Or, using spplot to create a lattice plot</p>
+<pre class="r"><code>spplot(aus_temp/10) # lattice plot, returns a trellice  </code></pre>
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="calculating-anomalies-as-gridded-time-series-and-global-average" class="section level1">
+<h1>3 Calculating anomalies as gridded time-series and global average</h1>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Or, using spplot to create a lattice plot</p>
@@ -145,6 +161,7 @@ names(proj_temp)</code></pre>
 ## [145] &quot;X2094&quot; &quot;X2095&quot; &quot;X2096&quot; &quot;X2097&quot; &quot;X2098&quot; &quot;X2099&quot; &quot;X2100&quot;</code></pre>
 <p>The X is at the start of each of each year to ensure they are of type character.</p>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p>Now we can create a simple function to calculate the temperature anomaly.</p>
 <pre class="r"><code>anomaly &lt;- function(x) {
     anom &lt;-  x - mean(x[[32:61]]) # for reference period 1981-2100
@@ -166,6 +183,8 @@ names(T_anom_mean) &lt;- c(&quot;year&quot;, &quot;T_anom_mean&quot;)</code></pr
 dir.create(&quot;output&quot;) #create an output folder
 setwd(paste0(home, &quot;/output&quot;)) #set directory to output
 =======
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 <pre class="r"><code>anomaly &lt;- function(x) {
     anom &lt;-  x - mean(x[[32:61]]) # for reference period 1981-2010 
     names(anom) &lt;- seq(1950, 2100, by=1)    
@@ -181,6 +200,9 @@ names(T_anom_mean) &lt;- c(&quot;year&quot;, &quot;T_anom_mean&quot;)</code></pr
 <pre class="r"><code>setwd(home) # Set work directory to main folder
 dir.create(&quot;output&quot;)
 setwd(paste0(home, &quot;/output&quot;))
+<<<<<<< HEAD
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+=======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 jpeg(file=&quot;anomaly_ts.jpeg&quot;, height = 600,  width = 1000, res=150)
 plot(T_anom_mean$year, T_anom_mean$T_anom_mean, type = &quot;p&quot;, pch = 19, 
@@ -190,8 +212,13 @@ dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p>Have a look in the output folder, you should see something like this</p>
 <p><img src="images/anomaly_ts.jpeg" /></p>
+=======
+<p>Have a look in the output folder, you should see something like this
+<img src="images/anomaly_ts.jpeg" /></p>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p>Have a look in the output folder, you should see something like this
 <img src="images/anomaly_ts.jpeg" /></p>
@@ -211,15 +238,21 @@ countries = readOGR(dsn=&quot;.&quot;, layer=&quot;TM_WORLD_BORDERS_SIMPL-0.3&qu
 ## Integer64 fields read as strings:  POP2005</code></pre>
 <pre class="r"><code>plot(countries)</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Or use <code>spplot</code> to color by population:</p>
 <pre class="r"><code>spplot(countries, &quot;POP2005&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 =======
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 Or use <code>spplot</code> to color by population:</p>
 <pre class="r"><code>spplot(countries, &quot;POP2005&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<<<<<<< HEAD
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+=======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 </div>
 <div id="regionalizations-of-climate-data---plotting-time-series-as-line-plot-and-bar-chart" class="section level1">
@@ -244,17 +277,23 @@ latitude = c(-27.4698, -16.9186, -21.1425, -19.2590, -20.7256, -23.4422)),
 .Names = c(&quot;longitude&quot;, &quot;latitude&quot;), class = &quot;data.frame&quot;, row.names = c(NA, -6L))
 xy &lt;- mydf[,c(1,2)]
 <<<<<<< HEAD
+<<<<<<< HEAD
 spdf &lt;- SpatialPointsDataFrame(coords = xy, data = mydf, proj4string = CRS(&quot;+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0&quot;))</code></pre>
 <p>Finally, plot the points we chose on the map of Australia.</p>
 <pre class="r"><code>plot(my_country)
 plot(spdf, add=T, col=&quot;red&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 =======
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 spdf &lt;- SpatialPointsDataFrame(coords = xy, data = mydf, proj4string = CRS(&quot;+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0&quot;))
 
 plot(my_country)
 plot(spdf, add=T, col=&quot;red&quot;)</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<<<<<<< HEAD
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+=======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 <pre class="r"><code>proj_temp_cities &lt;- extract(proj_temp, spdf)
 proj_temp_cities &lt;- as.data.frame(proj_temp_cities)
@@ -262,7 +301,10 @@ proj_temp_cities &lt;-as.data.frame(t(proj_temp_cities))
 proj_temp_cities$year &lt;- 1:nrow(proj_temp_cities)+1980
 names(proj_temp_cities) &lt;- c(&quot;Brisbane&quot;, &quot;Cairns&quot;, &quot;Mackay&quot;, &quot;Townsville&quot;, &quot;Mount_Isa&quot;, &quot;Longreach&quot;, &quot;year&quot;)</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p>We can plot the projected temperature change of the cities we have selected.</p>
+=======
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 <pre class="r"><code>#install.packages(&quot;reshape2&quot;)
@@ -277,7 +319,11 @@ ts1 &lt;- ggplot(proj_temp_cities_melt) +
     theme_bw() 
 ts1</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+=======
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
@@ -308,7 +354,11 @@ temp_GW &lt;- stack(temp_list)
 names(temp_GW) &lt;- c(&quot;GW1.5&quot;, &quot;GW2.0&quot;, &quot;GW3.0&quot;, &quot;GW4.0&quot;) 
 plot(temp_GW)</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+=======
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
@@ -344,7 +394,11 @@ theme_bw()
 bp1 &lt;- bp1 + scale_color_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;) # why it does not work? - change from color to fill
 bp1</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+=======
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
@@ -357,7 +411,11 @@ prec_GW &lt;- stack(prec_list)
 names(prec_GW) &lt;- c(&quot;GW1.5&quot;, &quot;GW2.0&quot;, &quot;GW3.0&quot;, &quot;GW4.0&quot;) 
 plot(prec_GW)</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+=======
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
@@ -379,7 +437,11 @@ scale_fill_brewer(name= &quot;GW level&quot;, palette=&quot;YlOrRd&quot;)
 bp2</code></pre>
 <pre><code>## Warning: Removed 256404 rows containing non-finite values (stat_boxplot).</code></pre>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+=======
+<p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+>>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 =======
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 >>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
