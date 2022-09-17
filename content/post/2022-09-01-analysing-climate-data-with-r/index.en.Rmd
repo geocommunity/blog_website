@@ -80,6 +80,9 @@ names(aus_temp) #check the names of the layers
 
 Now plot the rasters using the `plot` function:
 
+
+
+
 ```{r message=FALSE, warning=FALSE}
 plot(aus_temp/10)
 ```
@@ -176,26 +179,16 @@ dev.off()
 ```
 
 Have a look in the output folder, you should see something like this
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ![](images/anomaly_ts.jpeg)
 
 
 # 4 Handling regions as shapefiles
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 Here, we load and plot a shapefile of the worlds country boundaries. 
 
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
+Here, we load and plot a shapefile of the worlds country boundaries. 
+
 ```{r message=FALSE, warning=FALSE}
 library(rgdal)
 
@@ -203,18 +196,10 @@ setwd(paste0(home, "/shp"))
 countries = readOGR(dsn=".", layer="TM_WORLD_BORDERS_SIMPL-0.3")
 plot(countries)
 ```
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 Or use `spplot` to color by population: 
-=======
-Or use `spplot` to color by population: 
 
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-=======
-Or use `spplot` to color by population: 
-
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r message=FALSE, warning=FALSE}
 spplot(countries, "POP2005")
 ```
@@ -243,8 +228,6 @@ latitude = c(-27.4698, -16.9186, -21.1425, -19.2590, -20.7256, -23.4422)),
 .Names = c("longitude", "latitude"), class = "data.frame", row.names = c(NA, -6L))
 xy <- mydf[,c(1,2)]
 spdf <- SpatialPointsDataFrame(coords = xy, data = mydf, proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 ```
 
 Finally, plot the points we chose on the map of Australia. 
@@ -253,20 +236,6 @@ plot(my_country)
 plot(spdf, add=T, col="red")
 ```
 
-
-=======
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-
-plot(my_country)
-plot(spdf, add=T, col="red")
-```
-
-
-<<<<<<< HEAD
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r }
 proj_temp_cities <- extract(proj_temp, spdf)
 proj_temp_cities <- as.data.frame(proj_temp_cities)
@@ -274,17 +243,11 @@ proj_temp_cities <-as.data.frame(t(proj_temp_cities))
 proj_temp_cities$year <- 1:nrow(proj_temp_cities)+1980
 names(proj_temp_cities) <- c("Brisbane", "Cairns", "Mackay", "Townsville", "Mount_Isa", "Longreach", "year")
 ```
-<<<<<<< HEAD
 
-<<<<<<< HEAD
 We can plot the projected temperature change of the cities we have selected. 
-=======
 
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-=======
+We can plot the projected temperature change of the cities we have selected. 
 
-
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 ```{r}
 #install.packages("reshape2")
 library(reshape2)
@@ -379,9 +342,6 @@ bp2
 **IPCC interactive atlas** The authority for climate data is the IPCC. And the interactive atlas has the latest data
 https://interactive-atlas.ipcc.ch/regional-information
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 **Worldclim** Global climate and weather data. WorldClim is a database of high spatial resolution global weather and climate data.
 www.worldclim.org
  
@@ -395,12 +355,6 @@ longpaddock.qld.gov.au
 **CMIP5 downscaled climate projections over Queensland** High-resolution climate change projections for Queensland using dynamical downscaling of CMIP5 global climate models are available for download in gridded format with spatial resolution of 10 km at Terrestrial Ecosystem Research Network (TERN)
 https://longpaddock.qld.gov.au/qld-future-climate/data-info/tern/
 
-
-
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
-=======
->>>>>>> eff99f0102ab1f52540fe549b56e036bd8445c77
 # About the author 
 
 <img  width='180' align = "right" src='https://its-ss-academicportal.s3.amazonaws.com/prod/uqresearchers/photo/18673.jpeg' />
