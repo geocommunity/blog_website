@@ -15,7 +15,7 @@ DisableComments: no
 ---
 
 
-This post contains the scripts provided by Ralph Trancoso in the Analysing Climate Data in R workshop. 
+This post contains the scripts provided by Ralph Trancoso in the Analysing Climate Data in R workshop. The recording is also available, just email mitchel.rudge@uq.edu.au for access. 
 
 
 # 1 Installing and loading the data, and the `raster`, `ncdf4`, `rgdal`, and `ggplot2` packages, setting directory, loading gridded data
@@ -342,14 +342,14 @@ bp2
 **IPCC interactive atlas** The authority for climate data is the IPCC. And the interactive atlas has the latest data
 https://interactive-atlas.ipcc.ch/regional-information
 
-**Worldclim** Global climate and weather data. WorldClim is a database of high spatial resolution global weather and climate data.
-www.worldclim.org
- 
-**SILO** gridded data for Australia until yesterday:
-https://longpaddock.qld.gov.au/silo/gridded-data/
+**Worldclim** Global climate and weather data. WorldClim is a database of high spatial resolution global weather and climate data. https://www.worldclim.org/ 
+
+
+**SILO** gridded data for Australia until yesterday: https://longpaddock.qld.gov.au/silo/gridded-data/
+
  
 **LongPaddock** Provided by the Queensland Government, gridded data available for a range of variables in NetCDF and GeoTiff formats. The NetCDF datasets are arranged in annual blocks where each file contains all of the grids for the selected year and variable.
-longpaddock.qld.gov.au
+https://longpaddock.qld.gov.au
  
 
 **CMIP5 downscaled climate projections over Queensland** High-resolution climate change projections for Queensland using dynamical downscaling of CMIP5 global climate models are available for download in gridded format with spatial resolution of 10 km at Terrestrial Ecosystem Research Network (TERN)
