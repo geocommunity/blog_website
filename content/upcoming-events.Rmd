@@ -1,16 +1,10 @@
 ---
 date: "2018-12-27T20:46:49-06:00"
+
 title: Upcoming events
-editor_options: 
-  markdown: 
-    wrap: sentence
 ---
 
-# "Things I wish I had known about R spatial"
-
-# &
-
-# Problem solving session IV
+# "Things I wish I had known about R spatial" & Problem solving session IV
 
 To end the year with a bang, we're doing a double session this month.
 
