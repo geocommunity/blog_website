@@ -11,7 +11,7 @@ customCss = []
 # example ["js/custom.js"]
 customJs = [] 
 mainSections = ["post"]
-images = ["images/site-feature-image.png"]
+images = ["images/turkeypin.svg"]
 doNotLoadAnimations = false
 # Form Spree Contact Form
 #contactFormAction = "https://formspree.io/f/your-form-hash-here"
@@ -48,7 +48,7 @@ use = "katex"  # options: "katex", "mathjax". default is "katex".
 [[socialIcons]]
 icon = "fab fa-github"
 title = "GitHub"
-url = "https://github.com/geocommunity/"
+url = "https://github.com/geocommunity/blog_website"
 
 #[[socialIcons]]
 #icon = "fab fa-instagram"
