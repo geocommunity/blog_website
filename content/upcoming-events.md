@@ -1,5 +1,5 @@
 ---
-date: "2018-12-27T20:46:49-06:00"
+date: "2023-1-23"
 
 title: Upcoming events
 ---
@@ -10,7 +10,7 @@ If you use R for spatial analysis, you may be aware of the new S2 geometry libra
 
 We’ll get into this and some workflows for accurately calculating area in R. (Sounds trivial, but actually there can be a lot of decisions to make - e.g., should I project my data, or shouldn’t I?)
 
-If we have time in the session, we can also do some problem solving. So give me a shout if have any burning spatial questions in particular: ([c.buelow\@griffith.edu.au](mailto:c.buelow@griffith.edu.au){.email}) 
+If we have time in the session, we can also do some problem solving. So give me a shout if have any burning spatial questions in particular: ([c.buelow\@griffith.edu.au](mailto:c.buelow@griffith.edu.au)) 
 
 <br> <br>
 
