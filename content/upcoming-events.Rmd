@@ -4,19 +4,17 @@ date: "2018-12-27T20:46:49-06:00"
 title: Upcoming events
 ---
 
-# "Things I wish I had known about R spatial" & Problem solving session IV
+# What’s new with S2?
 
-To end the year with a bang, we're doing a double session this month.
+If you use R for spatial analysis, you may be aware of the new S2 geometry library. What’s the big deal? What does it mean if I’m calculating area or distances in R?
 
-We will start with a short session on Spatial Analysis in R - **Things I wish I had known about R spatial** by Christina Buelow.
+We’ll get into this and some workflows for accurately calculating area in R. (Sounds trivial, but actually there can be a lot of decisions to make - e.g., should I project my data, or shouldn’t I?)
 
-For the second half we will have another **problem solving session**.
-As with previous problem-solving sessions, we will have a free-range discussion with the goal of helping people get back on track with their geospatial data analysis.
-If you have a thorny problem, feel free to send it through to Nicholas Wiggins ([n.wiggins\@uq.edu.au](mailto:n.wiggins@uq.edu.au){.email}) ahead of the session and we will try to come up with a solution.
+If we have time in the session, we can also do some problem solving. So give me a shout if have any burning spatial questions in particular: ([c.buelow\@griffith.edu.au](mailto:c.buelow@griffith.edu.au){.email}) 
 
 <br> <br>
 
-**When** Thursday 24th November, 2:30 - 4:30pm
+**When** Thursday 9th February, 2:00 - 4:00pm
 
 **Where** Online, a teams link will be sent out via email
 
@@ -26,11 +24,3 @@ If you have a thorny problem, feel free to send it through to Nicholas Wiggins (
 
 Here we have placeholders for upcoming workshops.
 If you have something you would like to share with the community, please get in touch.
-
-**December 9th**
-
-End of year catch up at the River Quay Green at South Bank from 4pm.
-
--   Byo food and drinks for a picnic.
--   Bring family and friends.
--   Help decide on a new name for our Geospatial community.
