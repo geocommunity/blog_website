@@ -1,7 +1,7 @@
 baseURL = "https://geospatial-community.netlify.app/"
 languageCode = "en"
 DefaultContentLanguage = "en"
-title = "UQ geocommunity website"
+title = "Brisbane geocommunity website"
 theme = "anatole"
 summarylength = 10
 enableEmoji = true
