@@ -7,7 +7,7 @@ categories: []
 tags: []
 Description: ''
 Tags: []
-Categories: []
+Categories: [newsletter]
 DisableComments: no
 ---
 

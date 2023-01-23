@@ -7,7 +7,7 @@ categories: []
 tags: []
 Description: ''
 Tags: [survey, planning 2023, R training]
-Categories: [website]
+Categories: [website, newsletter]
 DisableComments: no
 ---
 
