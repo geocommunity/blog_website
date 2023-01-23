@@ -12,11 +12,9 @@ We’ll get into this and some workflows for accurately calculating area in R. (
 
 If we have time in the session, we can also do some problem solving. So give me a shout if have any burning spatial questions in particular: ([c.buelow\@griffith.edu.au](mailto:c.buelow@griffith.edu.au)) 
 
-<br> <br>
+## **When** Thursday 9th February, 2:00 - 4:00pm
 
-**When** Thursday 9th February, 2:00 - 4:00pm
-
-**Where** Online, a teams link will be sent out via email
+## **Where** Online, a teams link will be sent out via email
 
 <br> <br>
 
