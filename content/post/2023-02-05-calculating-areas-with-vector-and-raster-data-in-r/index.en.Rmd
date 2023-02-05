@@ -57,8 +57,7 @@ When s2 is off, {sf} performs geodesic (i.e., ellipsoidal) area calculations usi
 
 Let's examine the speed vs. accuracy trade-off. We'll start by loading some vector polygons representing countries of the world and check if the geometries are valid.
 
-```{r}
-#| warning: false
+```{r, warning = FALSE}
 library(tidyverse)
 library(sf)
 library(tmap)
@@ -91,8 +90,7 @@ area_s2 - area_GeoLib # subtract to get the difference in area estimates
 
 There is an \~6000 km2 difference in area (note the m2 indicated in the output is incorrect, because we divided by 1e6 to convert m2 to km2). The geodesic calculation using the GeographicLib (i.e, s2 turned off) will be the most accurate estimate because it doesn't assume the Earth is a perfect sphere. But which is faster? Let's use {microbenchmark} to find out.
 
-```{r}
-#| warning: false
+```{r, warning = FALSE}
 library(microbenchmark)
 
 microbenchmark(
