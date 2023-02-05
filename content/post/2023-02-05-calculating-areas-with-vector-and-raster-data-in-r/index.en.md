@@ -11,7 +11,7 @@ Categories: []
 DisableComments: no
 ---
 
-This short tutorial will focus on area calculation in R using both vector and raster data. Use the following code to install all necessary packages:
+This short tutorial will focus on area calculation in R using both vector and raster data. Use the following code to install all necessary packages
 
 `install.packages('terra', 'tmap', 'sf', 'tidyverse', 'exactextractr', 'rnaturalearthdata', 'microbenchmark')`
 
