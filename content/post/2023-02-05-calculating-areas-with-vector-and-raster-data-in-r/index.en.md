@@ -23,7 +23,7 @@ Can I calculate area accurately using a latitude-longitude geographic coordinate
 
 GCS's represent the Earth's surface in 3-dimensions and have angular, lat-long units (Figure 1). They are defined by a datum (reference points associated with an ellipsoid (a model of the size and shape of the Earth)), a prime meridian, and an angular unit of measure. See [here](https://geocompr.robinlovelace.net/spatial-class.html#geographic-coordinate-systems) for more detail. Calculating area in a 3-D GCS requires geodesic (i.e., ellipsoidal) computations, which can be complex and computationally expensive.
 
-PCS's flatten a GCS into 2-dimensions representing linear units (e.g., metres), helping to make area computations less complex and therefore faster, but also causing some distortion of the Earth’s surface.  There are many PCS's available to use (see [here](https://www.geo-projections.com/)), some of which preserve area (i.e., equal-area projections).
+PCS's flatten a GCS into 2-dimensions representing linear units (e.g., metres), helping to make area computations less complex and therefore faster, but also causing some distortion of the Earth's surface. There are many PCS's available to use (see [here](https://www.geo-projections.com/)), some of which preserve area (i.e., equal-area projections).
 
 ![Figure 1. Note This image is borrowed from here](images/Fig2.png).
 
@@ -51,7 +51,7 @@ Now, when the s2 spherical geometry is on and your data is in a 3-D lat-long GCS
 
 #### Should I have s2 turned on when calculating area in a geographic CRS?
 
-While the s2 geometry library offers many advantages, when it comes to area there is a speed vs. accuracy trade-off. When s2 is on, {sf} calculates area assuming a spherical approximation of the Earth. But the Earth isn't a perfect sphere, it's a **spheroid**. It bulges at the equator. 
+While the s2 geometry library offers many advantages, when it comes to area there is a speed vs. accuracy trade-off. When s2 is on, {sf} calculates area assuming a spherical approximation of the Earth. But the Earth isn't a perfect sphere, it's a **spheroid**. It bulges at the equator.
 
 When s2 is off, {sf} performs geodesic (i.e., ellipsoidal) area calculations using the high precision [GeographicLib](https://geographiclib.sourceforge.io/) that uses a spheroid to represent the Earth's size and shape. Geodesic calculations will be more accurate than those performed with s2 on, as s2 assumes a spherical representation of the Earth. But geodesic computations more complex, and time costly.
 
