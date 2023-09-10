@@ -1,0 +1,305 @@
+---
+title: Calculating areas with vector and raster data in R
+author: Christina Buelow
+date: '2023-02-05'
+slug: []
+categories: []
+tags: []
+Description: ''
+Tags: [meet-up, area computations, raster, vector, terra, sf]
+Categories: []
+DisableComments: no
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="{{< blogdown/postref >}}index.en_files/jquery/jquery.min.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/leaflet/leaflet.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/leaflet/leaflet.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/proj4/proj4.min.js"></script>
+<script src="{{< blogdown/postref >}}index.en_files/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="{{< blogdown/postref >}}index.en_files/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index.en_files/leaflet-binding/leaflet.js"></script>
+<script src="{{< blogdown/postref >}}index.en_files/leaflet-providers/leaflet-providers_1.9.0.js"></script>
+<script src="{{< blogdown/postref >}}index.en_files/leaflet-providers-plugin/leaflet-providers-plugin.js"></script>
+<script src="{{< blogdown/postref >}}index.en_files/clipboard/setClipboardText.js"></script>
+
+
+<p>This short tutorial will focus on area calculation in R using both vector and raster data. Use the following code to install all necessary packages</p>
+<p><code>install.packages('terra', 'tmap', 'sf', 'tidyverse', 'exactextractr', 'rnaturalearthdata', 'microbenchmark')</code></p>
+<p><strong>Disclaimer</strong>: the <a href="https://github.com/cabuelow">author</a> of these notes is by no means an expert on this topic. This is merely a compilation of information I’ve gathered while going down a googling ‘rabbit-hole’. So please get in <a href="mailto:c.buelow@griffith.edu.au">touch</a> if anything in the notes should be corrected.</p>
+<div id="area-in-3-dimensions-vs.-2-dimensions" class="section level3">
+<h3>Area in 3-dimensions vs. 2-dimensions</h3>
+<p>Can I calculate area accurately using a latitude-longitude geographic coordinate reference system (GCS), or should I use a projected coordinate reference system (PCS)?</p>
+<p>GCS’s represent the Earth’s surface in 3-dimensions and have angular, lat-long units (Figure 1). They are defined by a datum (reference points associated with an ellipsoid (a model of the size and shape of the Earth)), a prime meridian, and an angular unit of measure. See <a href="https://geocompr.robinlovelace.net/spatial-class.html#geographic-coordinate-systems">here</a> for more detail. Calculating area in a 3-D GCS requires geodesic (i.e., ellipsoidal) computations, which can be complex and computationally expensive.</p>
+<p>PCS’s flatten a GCS into 2-dimensions representing linear units (e.g., metres), helping to make area computations less complex and therefore faster, but also causing some distortion of the Earth’s surface. There are many PCS’s available to use (see <a href="https://www.geo-projections.com/">here</a>), some of which preserve area (i.e., equal-area projections).</p>
+<p><img src="images/Fig2.png" alt="Figure 1. Note This image is borrowed from here" />.</p>
+<div id="which-coordinate-reference-system-to-use" class="section level4">
+<h4>Which coordinate reference system to use?</h4>
+<p>Here we’ll focus on how coordinate reference systems influence area calculations. There is a common misconception that you cannot calculate area accurately when in a lat-long GCS, but this is not true. For example, read the help documentation from the <code>expanse</code> function in {terra}:</p>
+<pre class="r"><code>?terra::expanse</code></pre>
+<pre><code>## starting httpd help server ... done</code></pre>
+<p>‘For vector data, the best way to compute area is to use the longitude/latitude CRS. This is contrary to (erroneous) popular belief that suggest that you should use a planar coordinate reference system.’</p>
+<p>More generally however, choosing the best coordinate reference system will depend on the scale and location of your spatial data, and the goal of your analysis. Sometimes you will need to use multiple CRS’s to complete various tasks associated with a single analysis. We won’t dive into the details here, but find a good overview things to consider when choosing a CRS <a href="https://geocompr.robinlovelace.net/reproj-geo-data.html">here</a>.</p>
+<p>Note also that it’s always preferable to leave your raster data in it’s native projection if your analysis requires use of values stored in the raster pixels. This is because projecting rasters involves calculating new pixel values via resampling, which results in slight inaccuracies and potential loss of information. There are several methods for resampling depending on they type of data stored in the raster pixels (e.g., categorical vs. continuous), see descriptions <a href="https://geocompr.robinlovelace.net/geometry-operations.html#resampling">here</a>.</p>
+</div>
+</div>
+<div id="vector-area-calculations-and-the-new-ish-s2-geometry-library" class="section level3">
+<h3>Vector area calculations and the new-ish s2 geometry library</h3>
+<p>Since 2021, {sf} (versions &gt;1) uses Google’s s2 spherical geometry engine by default when representing vector polygons that are in a lat-long GCS. Previously {sf} would use a planar geometry engine called GEOS, meaning that if you were in a 3-D lat-long GCS, {sf} was assuming flat, planar coordinates. This would result in warning messages like:</p>
+<p><code>although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></p>
+<p>Now, when the s2 spherical geometry is on and your data is in a 3-D lat-long GCS, {sf} performs processes and computations on a sphere, rather than in 2-D. The advantages of using the s2 geometry library instead of GEOS are outlined in detail here: r-spatial.github.io/sf/articles/sf7.html. If your data is in a 2-D PCS, {sf} reverts to the planar GEOS geometry engine, assuming flat coordinates (so make sure you’re using a projection that preserves area).</p>
+<div id="should-i-have-s2-turned-on-when-calculating-area-in-a-geographic-crs" class="section level4">
+<h4>Should I have s2 turned on when calculating area in a geographic CRS?</h4>
+<p>While the s2 geometry library offers many advantages, when it comes to area there is a speed vs. accuracy trade-off. When s2 is on, {sf} calculates area assuming a spherical approximation of the Earth. But the Earth isn’t a perfect sphere, it’s a <strong>spheroid</strong>. It bulges at the equator.</p>
+<p>When s2 is off, {sf} performs geodesic (i.e., ellipsoidal) area calculations using the high precision <a href="https://geographiclib.sourceforge.io/">GeographicLib</a> that uses a spheroid to represent the Earth’s size and shape. Geodesic calculations will be more accurate than those performed with s2 on, as s2 assumes a spherical representation of the Earth. But geodesic computations more complex, and time costly.</p>
+<p>Let’s examine the speed vs. accuracy trade-off. We’ll start by loading some vector polygons representing countries of the world and check if the geometries are valid.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+## ✔ dplyr     1.1.2     ✔ readr     2.1.4
+## ✔ forcats   1.0.0     ✔ stringr   1.5.0
+## ✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+## ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+## ✔ purrr     1.0.1     
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>library(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.9.3, GDAL 3.5.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
+<pre class="r"><code>library(tmap)
+options(scipen=999)
+tmap_mode(&#39;view&#39;)</code></pre>
+<pre><code>## tmap mode set to interactive viewing</code></pre>
+<pre class="r"><code>sf_use_s2() # check if s2 is on (it should be as default when sf is loaded)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>dat &lt;- rnaturalearthdata::countries50 %&gt;% # load country polygons for the world
+  st_as_sf() %&gt;% # turn into a simple features dataframe
+  filter(admin == &#39;Sudan&#39;) # filter for a single country
+st_is_valid(dat) # check if geometry is valid</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>The geometry is invalid. Compared to GEOS, s2 has strict polygon conformance that if violated will render invalid geometries. For vector data created in older versions of <code>sf</code>, this can be a bit of a headache. First thing is to try fixing the geometry.</p>
+<pre class="r"><code>dat_v &lt;- dat %&gt;% st_make_valid()
+st_is_valid(dat_v) # check if geometry is valid</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>qtm(dat_v)</code></pre>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"createMapPane","args":["tmap402",402]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[31.4861328,31.4642578,31.400293,31.3584961,31.2606445,31.2091797,31.09267579999999,30.7106445,30.32861329999999,29.9466797,29.5645508,29.1825195,28.80058589999999,28.4185547,28.0364258,27.6544922,27.2724609,26.8904297,26.5083984,26.1263672,25.7443359,25.3623047,24.9802734,24.9800781,24.9798828,24.9796875,24.9794922,24.97636719999999,24.97324219999999,24.9702148,24.9669922,24.7204102,24.4736328,24.2269531,23.9802734,23.9802734,23.9802734,23.9802734,23.9802734,23.98066409999999,23.9810547,23.9814453,23.9818359,23.9822266,23.9825195,23.9829102,23.9833008,23.9833984,23.9708008,23.9652344,23.9459961,23.7082031,23.6040039,23.45800779999999,23.243457,23.1051758,23.0091797,22.9338867,22.9695313,22.9613281,22.9323242,22.8671875,22.8021484,22.7632813,22.7149414,22.6791992,22.6824219,22.6708984,22.6318359,22.5320313,22.4677734,22.4162109,22.381543,22.399707,22.425,22.4393555,22.4493164,22.4983398,22.5282227,22.5385742,22.5099609,22.3881836,22.3393555,22.2834961,22.2621094,22.1731445,22.1282227,22.1064453,22.1076172,22.1529297,22.20234379999999,22.2213867,22.2326172,22.228125,22.2026367,22.1580078,21.9902344,21.9077148,21.8417969,21.82529299999999,21.8433594,21.878125,21.928125,22.0006836,22.1211914,22.2333984,22.3523438,22.4144531,22.3902344,22.4352539,22.4754883,22.4724609,22.4898438,22.5643555,22.58095699999999,22.5563477,22.5911133,22.6410156,22.6973633,22.7540039,22.7833984,22.8490234,22.9226563,22.9427734,22.9376953,22.8948242,22.8600586,22.9307617,22.9643555,23.2558594,23.3123047,23.4566406,23.5450195,23.6462891,23.65625,23.6427734,23.6226563,23.5960938,23.4682617,23.462793,23.4890625,23.5280273,23.5518555,23.5373047,23.5832031,23.6792969,23.9219727,24.0481445,24.14736329999999,24.1604492,24.2135742,24.3001953,24.5319336,24.5448242,24.5494141,24.5682617,24.6480469,24.659375,24.6628906,24.6736328,24.6966797,24.7603516,24.7826172,24.7921875,24.7852539,24.8176758,24.9638672,25.0029297,25.0162109,25.0148438,25.0236328,25.0669922,25.1040039,25.2117188,25.2851562,25.7980469,25.8582031,25.8852539,25.8828125,25.8915039,25.9191406,26.0005859,26.05703129999999,26.0870117,26.1695313,26.5513672,26.6586914,26.7631836,26.9705078,27.0742188,27.7998047,27.8808594,27.8858398,27.9962891,28.0489258,28.8445313,28.8293945,28.8394531,28.9323242,28.9795898,28.9795898,28.9996094,29.1223633,29.2423828,29.4731445,29.5574219,29.60390629999999,29.6054688,29.6359375,29.6910156,29.95791019999999,30.0030273,30.47460940000001,30.7393555,30.7553711,30.7691406,30.78310549999999,30.7949219,30.8141602,30.8270508,30.940332,31.1544922,31.2249023,31.6548828,31.7642578,31.7919922,31.8542969,31.91992190000001,31.9330078,32.4041016,32.4208008,32.4253906,32.3541992,32.3388672,32.33574220000001,32.3499023,32.3449219,32.3430664,32.33847660000001,32.3353516,32.0722656,32.7367188,32.73828119999999,32.7376953,32.7356445,32.7230469,32.7158203,32.715332,32.7163086,32.7201172,32.7205078,32.7198242,32.7185547,32.7189453,32.721875,33.1993164,33.1930664,33.13505859999999,33.1361328,33.12246089999999,33.11914059999999,33.1060547,33.0946289,33.081543,33.077832,33.0733398,33.0730469,33.17216800000001,33.168457,33.1647461,33.13828129999999,33.1314453,33.1300781,33.1408203,33.3607422,33.3713867,33.3798828,33.45908199999999,33.8921875,33.9070313,33.95185549999999,33.9568359,33.9583984,33.95732419999999,33.9461914,33.9499023,33.9573242,33.96328130000001,33.96328130000001,33.96249999999999,33.9591797,33.8949219,33.8740234,33.8677734,33.8714844,33.87880860000001,33.8821289,33.88486329999999,33.8878906,33.890918,34.0767578,34.07812499999999,34.0792969,34.1203125,34.159082,34.1852539,34.2915039,34.3112305,34.3148438,34.2756836,34.3439453,34.4314453,34.5080078,34.57187500000001,34.6017578,34.675,34.7712891,34.81621090000001,34.8823242,34.9314453,34.9249023,34.9691406,34.9607422,35.0079102,35.059668,35.08271480000001,35.1123047,35.2524414,35.3727539,35.4496094,35.5960938,35.6702148,35.7305664,35.8206055,35.98759769999999,36.1075195,36.12519529999999,36.1353516,36.1371094,36.1601562,36.21220699999999,36.2735352,36.3068359,36.3462891,36.390625,36.4470703,36.4439453,36.5243164,36.4922852,36.4708008,36.4481445,36.4267578,36.5217773,36.5660156,36.67919920000001,36.7245117,36.8134766,36.8258789,36.91376950000001,36.9054688,36.88779299999999,36.9357422,36.9787109,36.97578129999999,36.9952148,37.0089844,37.0615234,37.1695313,37.24882809999999,37.34042970000001,37.4110352,37.4529297,37.5101563,37.5474609,37.5759766,37.6567383,37.7259766,37.7824219,37.8033203,37.8629883,37.92255859999999,37.95009769999999,38.025293,38.0989258,38.14853519999999,38.181543,38.219043,38.25351560000001,38.2672852,38.2898438,38.34736329999999,38.3737305,38.3855469,38.39716799999999,38.4224609,38.5228516,38.6094727,38.5740234,38.33291020000001,38.2831055,38.2521484,38.2017578,38.128125,38.07402339999999,37.921875,37.72978519999999,37.5994141,37.5316406,37.4712891,37.3615234,37.2484375,37.2625977,37.1931641,37.1878906,37.2275391,37.1726563,37.15683589999999,37.1411133,37.1505859,37.2174805,37.2572266,37.2631836,37.2585938,37.2117188,37.0811523,36.9269531,36.8826172,36.87138669999999,36.5432617,36.2152344,35.8870117,35.5589844,35.2308594,34.9027344,34.5746094,34.2464844,33.918457,33.590332,33.262207,32.934082,32.6060547,32.27783199999999,31.9498047,31.62167969999999,31.4344727,31.4664062,31.4861328],"lat":[22.1478027,22.1915039,22.2024414,22.188623,22.0022949,21.994873,21.994873,21.9949219,21.9950195,21.9951172,21.9951172,21.9952148,21.9952637,21.9953125,21.9953613,21.995459,21.9955078,21.9955566,21.9956055,21.9956543,21.995752,21.9958008,21.9958496,21.4975586,20.9992187,20.5009277,20.0025879,20.0007812,19.9990234,19.9972656,19.995459,19.9955566,19.9957031,19.9958496,19.9959473,19.8710938,19.7462891,19.6214844,19.4966309,19.0505859,18.604541,18.1584961,17.7124023,17.2663574,16.8202637,16.3742187,15.928125,15.7801758,15.7215332,15.7134277,15.7035156,15.7449707,15.7459961,15.7139648,15.6972168,15.7025391,15.6258301,15.5331055,15.3113281,15.2381348,15.1621094,15.0966309,15.0444336,14.9986816,14.8983887,14.8514648,14.788623,14.7224609,14.6880859,14.6627441,14.6333496,14.5852051,14.5504883,14.5041992,14.4412109,14.3421387,14.2842285,14.2370605,14.2032227,14.1618652,14.1274414,14.0555176,14.0288574,13.992334,13.9787109,13.9105957,13.8501465,13.7998047,13.7303223,13.626416,13.5380859,13.4716309,13.3987793,13.3295898,13.2693359,13.2150391,13.1130859,13.0009766,12.8647461,12.7905273,12.7412109,12.6993652,12.678125,12.671875,12.6945801,12.7094727,12.6604492,12.5463867,12.4629883,12.3119141,12.129248,12.0677734,12.0447266,12.032959,11.9901367,11.6695312,11.5798828,11.515918,11.482666,11.4398437,11.4099609,11.4032715,11.344873,11.2671875,11.192041,11.0290039,10.9196777,10.7953125,10.7518066,10.4578125,10.3879395,10.1742676,10.0300781,9.8229004,9.710351599999999,9.613915999999998,9.340624999999999,9.261914099999998,9.1147461,9.0484863,8.9933105,8.9706055,8.943212900000001,8.815820300000002,8.765820300000001,8.732470700000002,8.709716799999999,8.691308599999999,8.665625,8.6962891,8.767822300000001,8.8142578,8.8869141,8.9148437,9.0067871,9.051708999999999,9.179101599999999,9.2299316,9.338134799999999,9.389306599999999,9.425683599999999,9.488916000000001,9.527343699999999,9.6103027,9.774658199999999,9.8395996,9.988867200000001,10.0552734,10.1152344,10.1758789,10.235791,10.2937988,10.3118164,10.3299316,10.3185059,10.4205078,10.4064941,10.3460937,10.2496094,10.2027344,10.1693359,10.1234375,10.0467773,10.018457,9.965918,9.525830100000002,9.4841309,9.4992187,9.590624999999999,9.6138184,9.5878906,9.601611300000002,9.599658200000002,9.378808599999999,9.328613299999999,9.326074199999999,9.3888184,9.459082,9.5494629,9.594189499999999,9.5939941,9.610156199999999,9.6746582,9.7180664,9.768603499999999,9.848291,9.921386699999999,10.0650879,10.088623,10.1219238,10.2502441,10.2773926,9.9789551,9.742675799999999,9.731201199999997,9.726806599999998,9.734960899999999,9.7458496,9.753125000000001,9.7562988,9.759375,9.7709473,9.799267600000002,10.2211426,10.3557129,10.3831543,10.4790527,10.6438477,10.6625,11.0577637,11.0891113,11.1139648,11.2469238,11.314502,11.4185547,11.5804199,11.6827148,11.6942871,11.7101074,11.7160156,12.0067383,12.009668,12.0337402,12.0464355,12.0580566,12.0929199,12.1392578,12.1521973,12.1648437,12.1888184,12.2018066,12.2080078,12.2137695,12.2188477,12.2230957,12.2172852,12.1350098,11.9416016,11.8255859,11.6931641,11.6824219,11.6538574,11.6375,11.6217285,11.6157715,11.6061035,11.5915039,10.8501465,10.8314453,10.8191895,10.7729492,10.7577148,10.7459473,10.7378906,10.6578125,10.6527344,10.6461914,10.5508301,10.1989746,10.1814453,10.0709473,10.0541992,10.0277344,10.0071777,9.940917999999998,9.911132799999999,9.8914551,9.8687012,9.861767599999999,9.8558105,9.8452637,9.717627,9.6267578,9.5503418,9.5061523,9.477734399999999,9.4711914,9.4664062,9.463525400000002,9.462206999999999,9.461523399999999,9.461523399999999,9.513476599999999,9.729687499999999,9.853418,9.9185547,10.1247559,10.1908691,10.2515625,10.528125,10.6586426,10.7878418,10.8428711,10.8801758,10.8645508,10.8049316,10.7461914,10.7591797,10.8105469,10.8647949,10.9621094,11.1617676,11.2767578,11.419873,11.6210449,11.748291,11.8165527,11.9570313,12.1555664,12.3005859,12.5373047,12.6237305,12.6610352,12.6848633,12.7062988,12.7264648,12.7570312,12.8053223,12.9111328,13.0933105,13.2710937,13.4057617,13.4668457,13.5262695,13.6260742,13.842041,13.9884277,14.2568359,14.5443359,14.7364746,14.9400879,15.1320801,15.2501465,15.3621094,15.7263672,15.798877,15.9939453,16.050293,16.2961914,16.4595215,16.6246582,16.72236329999999,16.80058589999999,16.8665527,17.0205566,17.0588867,17.0612793,17.0414062,17.0568848,17.0570801,17.0617188,17.1086914,17.2881348,17.3241211,17.33500979999999,17.3682617,17.4205078,17.4580078,17.4655273,17.4702637,17.492334,17.5176758,17.537793,17.5264648,17.5485352,17.5628418,17.5639648,17.5847656,17.6166992,17.6370117,17.6835938,17.717334,17.7512695,17.7783691,17.82392579999999,17.9385254,18.0050781,18.0729492,18.219043,18.2867187,18.2644043,18.2494141,18.3333008,18.4097656,18.5559082,18.6943359,18.7174316,18.753125,18.8201172,19.0919922,19.5818848,19.7918945,20.1207031,20.3949219,20.5567383,20.7319824,20.8949219,20.9817871,21.1037598,21.0776367,21.0394043,21.0726562,21.1085449,21.1858398,21.3260254,21.5865234,21.7687988,21.9967285,21.9966309,21.996582,21.9965332,21.9964844,21.9964355,21.9963867,21.9963379,21.9962891,21.9962402,21.9961914,21.9961426,21.9960938,21.9959961,21.9959961,21.9958984,21.9958496,21.9958496,22.084668,22.1478027]}]]],"X1","dat_v",{"interactive":true,"className":"","pane":"tmap401","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillColor":"#D9D9D9","fillOpacity":1,"dashArray":"none","smoothFactor":1,"noClip":false},"<style> div.leaflet-popup-content {width:auto !important;overflow-y:auto; overflow-x:hidden;}<\/style><div style=\"max-height:25em;padding-right:15px;\"><table>\n\t\t\t   <thead><tr><th colspan=\"2\"><b>1<\/b><\/th><\/thead><\/tr><tr><td style=\"color: #888888;\"><nobr>scalerank<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>featurecla<\/nobr><\/td><td align=\"right\"><nobr>Admin-0 country<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>labelrank<\/nobr><\/td><td align=\"right\"><nobr>3<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>sovereignt<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>sov_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>adm0_dif<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>level<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>type<\/nobr><\/td><td align=\"right\"><nobr>Sovereign country<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>admin<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>adm0_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>geou_dif<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>geounit<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>gu_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>su_dif<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>subunit<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>su_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>brk_diff<\/nobr><\/td><td align=\"right\"><nobr>0<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>name<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>name_long<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>brk_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>brk_name<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>brk_group<\/nobr><\/td><td align=\"right\"><nobr>NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>abbrev<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>postal<\/nobr><\/td><td align=\"right\"><nobr>SD<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>formal_en<\/nobr><\/td><td align=\"right\"><nobr>Republic of the Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>formal_fr<\/nobr><\/td><td align=\"right\"><nobr>NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>note_adm0<\/nobr><\/td><td align=\"right\"><nobr>NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>note_brk<\/nobr><\/td><td align=\"right\"><nobr>NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>name_sort<\/nobr><\/td><td align=\"right\"><nobr>Sudan<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>name_alt<\/nobr><\/td><td align=\"right\"><nobr>NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>mapcolor7<\/nobr><\/td><td align=\"right\"><nobr>2<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>mapcolor8<\/nobr><\/td><td align=\"right\"><nobr>6<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>mapcolor9<\/nobr><\/td><td align=\"right\"><nobr>4<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>mapcolor13<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>pop_est<\/nobr><\/td><td align=\"right\"><nobr>25,946,220<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>gdp_md_est<\/nobr><\/td><td align=\"right\"><nobr>88,080<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>pop_year<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>lastcensus<\/nobr><\/td><td align=\"right\"><nobr>2,008<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>gdp_year<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>economy<\/nobr><\/td><td align=\"right\"><nobr>6. Developing region<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>income_grp<\/nobr><\/td><td align=\"right\"><nobr>4. Lower middle income<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>wikipedia<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>fips_10<\/nobr><\/td><td align=\"right\"><nobr>NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>iso_a2<\/nobr><\/td><td align=\"right\"><nobr>SD<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>iso_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>iso_n3<\/nobr><\/td><td align=\"right\"><nobr>729<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>un_a3<\/nobr><\/td><td align=\"right\"><nobr>729<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>wb_a2<\/nobr><\/td><td align=\"right\"><nobr>SD<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>wb_a3<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>woe_id<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>adm0_a3_is<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>adm0_a3_us<\/nobr><\/td><td align=\"right\"><nobr>SDN<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>adm0_a3_un<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>adm0_a3_wb<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>continent<\/nobr><\/td><td align=\"right\"><nobr>Africa<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>region_un<\/nobr><\/td><td align=\"right\"><nobr>Africa<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>subregion<\/nobr><\/td><td align=\"right\"><nobr>Northern Africa<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>region_wb<\/nobr><\/td><td align=\"right\"><nobr>Sub-Saharan Africa<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>name_len<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>long_len<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>abbrev_len<\/nobr><\/td><td align=\"right\"><nobr>5<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>tiny<\/nobr><\/td><td align=\"right\"><nobr>         NA<\/nobr><\/td><\/tr><tr><td style=\"color: #888888;\"><nobr>homepart<\/nobr><\/td><td align=\"right\"><nobr>1<\/nobr><\/td><\/tr><\/table><\/div>",null,"1",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"dat_v",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":false,"updateWhenIdle":true,"position":"bottomright"}]}],"limits":{"lat":[8.665625,22.2024414],"lng":[21.82529299999999,38.6094727]},"fitBounds":[8.665625,21.82529299999999,22.2024414,38.6094727,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<p>It works in this case - the geometry is valid. Now, let’s compare area estimates with s2 on and off.</p>
+<pre class="r"><code>area_s2 &lt;- st_area(dat_v)/1e6 # area in km2, s2 on by default
+sf_use_s2(FALSE) # turn off s2</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre class="r"><code>area_GeoLib &lt;- st_area(dat_v)/1e6 # area in km2, s2 off, sf calculates geodesic area using GeographicLib
+area_s2 - area_GeoLib # subtract to get the difference in area estimates </code></pre>
+<pre><code>## 6381.861 [m^2]</code></pre>
+<p>There is an ~6000 km2 difference in area (note the m2 indicated in the output is incorrect, because we divided by 1e6 to convert m2 to km2). The geodesic calculation using the GeographicLib (i.e, s2 turned off) will be the most accurate estimate because it doesn’t assume the Earth is a perfect sphere. But which is faster? Let’s use {microbenchmark} to find out.</p>
+<pre class="r"><code>library(microbenchmark)
+
+microbenchmark(
+  {sf_use_s2(TRUE); area_s2 &lt;- st_area(dat_v)},
+  {sf_use_s2(FALSE); area_GeoLib &lt;- st_area(dat_v)})</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre><code>## Spherical geometry (s2) switched on</code></pre>
+<pre><code>## Unit: milliseconds
+##                                                        expr     min       lq
+##       {     sf_use_s2(TRUE)     area_s2 &lt;- st_area(dat_v) } 12.8596 13.24080
+##  {     sf_use_s2(FALSE)     area_GeoLib &lt;- st_area(dat_v) } 17.3265 17.73175
+##      mean   median       uq     max neval
+##  13.84735 13.50065 14.05335 23.7928   100
+##  18.29006 17.97235 18.58365 21.4251   100</code></pre>
+<p>So computing geodesic area takes more time. In this case it’s only a few milliseconds, so we would turn s2 off and opt for the most accurate, albeit slower, area calculation.</p>
+<p>How do geodesic area computations using a lat-long GCS compare to an equal-area PCS, like mollweide?</p>
+<pre class="r"><code>dat_p &lt;- dat_v %&gt;% st_transform(&#39;ESRI:54009&#39;)
+area_mollweide &lt;- st_area(dat_p)/1e6 # sf uses planar geometry library GEOS
+area_mollweide - (area_GeoLib/1e6)</code></pre>
+<pre><code>## 10556.15 [m^2]</code></pre>
+<p>There is an ~ 10000 km2 difference in area estimates, much larger than the difference between area on a sphere (s2 on) and on a spheroid (s2 off, geodesic estimates using GeographicLib).</p>
+</div>
+<div id="in-summary" class="section level4">
+<h4>In summary…</h4>
+<p>When calculating area of vector polygons in a lat-long GCS using {sf}, it’s best to turn-off s2 and let {sf} calculate area on an ellipsoid (instead of a spherical approximation of the Earth). However, if speed is an issue and you’re not as worried about accuracy, leave s2 on and calculate area using on a sphere.</p>
+<p>If you’re calculating area in an equal-area PCS using {sf}, it doesn’t matter if s2 is on or off, area will be calculated using GEOS planar geometry engine.</p>
+</div>
+</div>
+<div id="raster-area-calculations" class="section level3">
+<h3>Raster area calculations</h3>
+<p>Like {sf}, if your raster data is in a lat-long GCS, {terra} will compute area in meters squared using geodesic computations based on your spatial data’s ellipsoid with GeographicLib.</p>
+<p>Note that {terra} also has a class for vector data, called ‘SpatVectors’ (raster objects are called ‘SpatRasters’). So we can also calculate area of vector data with {terra}. {sf} should provide the same estimate of area if s2 is turned off, meaning it is using GeographicLib for lat-long GCS computations. Let’s see if this is the case.</p>
+<p><em>Note</em>: The workflows below are borrowed from <a href="https://stackoverflow.com/questions/68322863/is-this-flow-to-extract-the-area-of-all-pixels-2-within-a-polygon-layer-corre">here</a>.</p>
+<p>First, we’ll create a polygon and a raster.</p>
+<pre class="r"><code>library(terra)</code></pre>
+<pre><code>## terra 1.6.47</code></pre>
+<pre><code>## 
+## Attaching package: &#39;terra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     extract</code></pre>
+<pre class="r"><code>#| warning: false
+sf_use_s2(TRUE) # make sure s2 is on (we already have sf loaded)
+r &lt;- rast(nrows=10, ncols=10, xmin=0, ymin=0, xmax=10, ymax=10) # make a raster
+r &lt;- init(r, 8) # initialise a spatraster with values
+p &lt;- vect(&#39;POLYGON ((2 2, 7 6, 4 9, 2 2))&#39;, crs = crs(r)) # make a vector polygon
+r_mask &lt;- mask(r, p) # mask the raster to the polygon
+qtm(r) + qtm(r_mask) + qtm(st_as_sf(p))</code></pre>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-2" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"createMapPane","args":["tmap402",402]},{"method":"createMapPane","args":["tmap403",403]},{"method":"createMapPane","args":["tmap404",404]},{"method":"createMapPane","args":["tmap405",405]},{"method":"createMapPane","args":["tmap406",406]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABGbhwYAAAAGklEQVQYlWP893rRfwYiABMxikYVUk8h0QAASJQDnsxlVzQAAAAASUVORK5CYII=",[[10.03742304591071,0],[-0.9527706594018107,10.03816070673308]],1,null,"tmap401","r"]},{"method":"addLegend","args":[{"colors":["#FEEBA2"],"labels":["8"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"unknown","title":"lyr.1","extra":null,"layerId":"legend401","className":"info legend r","group":"r"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABGbhwYAAAAN0lEQVQYlWNgIAf8e73o/7/Xi/5jk2PCpYEohdgUM+GSINpEJtE4RoIK0RVhVYhNEQog5EbqAwBDzRarVwPpQwAAAABJRU5ErkJggg==",[[10.03742304591071,0],[-0.9527706594018107,10.03816070673308]],1,null,"tmap403","r_mask"]},{"method":"addLegend","args":[{"colors":["#FEEBA2"],"labels":["8"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"unknown","title":"lyr.1","extra":null,"layerId":"legend403","className":"info legend r_mask","group":"r_mask"}]},{"method":"addPolygons","args":[[[[{"lng":[2,7,4,2],"lat":[2,6,9,2]}]]],"X1","st_as_sf(p)",{"interactive":true,"className":"","pane":"tmap405","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillColor":"#D9D9D9","fillOpacity":1,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],["r","r_mask","st_as_sf(p)"],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[-0.9527706594018107,10.03742304591071],"lng":[0,10.03816070673308]},"fitBounds":[0,0,10,10,[]]},"evals":[],"jsHooks":[]}</script>
+<p>Try toggling the different layers on and off in the interactive map to see what the mask does.</p>
+<p><em>Note</em> that the raster pixels cover a larger area than the polygon. By default ‘mask’ includes all raster pixels that the polygon touches. We could use the <code>disagg</code> function to reduce the resolution and better match the area of the raster to the area of the polygon (but we won’t do that here).</p>
+<p>Now let’s compare area estimates with {terra} and {sf}.</p>
+<pre class="r"><code>area_t &lt;- expanse(p, unit = &#39;km&#39;) # here &#39;terra&#39; is computing geodesic area (i.e., based on a spheroid, not planar)
+sf_use_s2(FALSE) # turn off s2 to uses the GeographicLig</code></pre>
+<pre><code>## Spherical geometry (s2) switched off</code></pre>
+<pre class="r"><code>area_sf &lt;- st_area(st_as_sf(p))/1e6 # here &#39;sf&#39; using GEOS to calculate area
+round(area_t - as.numeric(area_sf))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>Great, so as we expect, no difference in area estimates between {terra} and {sf} when s2 geometry library is turned off.</p>
+<div id="compute-area-of-raster-data-using-terra" class="section level4">
+<h4>Compute area of raster data using {terra}</h4>
+<p>Let’s use {terra} to compute the area of a raster that intersects with a vector polygon. We’ll use the functions <code>cellSize</code> and <code>mask</code> from {terra}.</p>
+<pre class="r"><code>r_area &lt;- cellSize(r_mask, unit=&quot;km&quot;) # create a raster where pixel values are area in km2
+qtm(r_area) + qtm(st_as_sf(p)) # have a quick look</code></pre>
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"createMapPane","args":["tmap402",402]},{"method":"createMapPane","args":["tmap403",403]},{"method":"createMapPane","args":["tmap404",404]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAALCAYAAABGbhwYAAAAZklEQVQYlWNgIAf8/3v7//+/t/9jk2NE5vy7WQ1XxKTeyohb4RZHFNOYfPbD5VlgjG8dCv9/XLmP01lwhU+vvkKRUF38jRGrwisPf8IFAw/9RVHEwMDAwIQugE0RCqjSYsUaLLQDADmRIeB6BPV+AAAAAElFTkSuQmCC",[[10.03742304591071,0],[-0.9527706594018107,10.03816070673308]],1,null,"tmap401","r_area"]},{"method":"addLegend","args":[{"colors":["#FFFDDB","#FEF1AF","#FED97B","#FEB441","#F68820","#DB5D0A","#AF3E03","#7A2A05"],"labels":["12,160 to 12,180","12,180 to 12,200","12,200 to 12,220","12,220 to 12,240","12,240 to 12,260","12,260 to 12,280","12,280 to 12,300","12,300 to 12,320"],"na_color":null,"na_label":"NA","opacity":1,"position":"topright","type":"unknown","title":"area","extra":null,"layerId":"legend401","className":"info legend r_area","group":"r_area"}]},{"method":"addPolygons","args":[[[[{"lng":[2,7,4,2],"lat":[2,6,9,2]}]]],"X1","st_as_sf(p)",{"interactive":true,"className":"","pane":"tmap403","stroke":true,"color":"#666666","weight":1,"opacity":1,"fill":true,"fillColor":"#D9D9D9","fillOpacity":1,"dashArray":"none","smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],["r_area","st_as_sf(p)"],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]}],"limits":{"lat":[-0.9527706594018107,10.03742304591071],"lng":[0,10.03816070673308]},"fitBounds":[0,0,10,10,[]]},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>e &lt;- extract(r_area, p, exact=TRUE) # extract pixel values that intersect with vector polygon, and get fraction of each cell that is covered
+area_t - sum(e$area * e$fraction) # calculate difference between area of the vector polygon, and the estimate of area of the &#39;raster&#39;</code></pre>
+<pre><code>## [1] 165.0552</code></pre>
+<p>There is a 165 km2 difference in area calculated using a raster vs. vector polygon.</p>
+</div>
+<div id="compute-area-of-raster-data-using-exactextractr" class="section level4">
+<h4>Compute area of raster data using {exactextractr}</h4>
+<p>{exactextractr} can be used to perform raster computations within vector polygon areas very quickly, and it can do similar things as {terra}’s <code>extract</code> function that we used above. However, it uses a spherical approximation of the Earth, rather than a spheroid. Let’s compare estimates of area between {terra} and {exactextractr}.</p>
+<pre class="r"><code>library(exactextractr)</code></pre>
+<pre><code>## Warning: package &#39;exactextractr&#39; was built under R version 4.2.3</code></pre>
+<pre class="r"><code>e2 &lt;- exact_extract(r_area, st_as_sf(p))[[1]]
+sum(e$area * e$fraction) - sum(e2$value * e2$coverage_fraction)</code></pre>
+<pre><code>## [1] 18.47752</code></pre>
+<p>The difference in area is very minor, ~18 km2. Which is faster?</p>
+<pre class="r"><code>microbenchmark(extract(r_area, p, exact=TRUE), 
+               exact_extract(r_area, st_as_sf(p)))</code></pre>
+<pre><code>## Unit: milliseconds
+##                                expr     min       lq      mean   median
+##    extract(r_area, p, exact = TRUE)  4.0041  4.18675  5.471501  4.31095
+##  exact_extract(r_area, st_as_sf(p)) 22.4722 23.13360 26.062966 23.83005
+##        uq      max neval
+##   4.48535  97.8236   100
+##  24.71620 185.9781   100</code></pre>
+<p>{terra} wins! So in this case there is no speed vs. accuracy trade-off. {terra} is faster and more accurate, because it is not assuming that the Earth is a sphere to make area calculations.</p>
+</div>
+<div id="comparing-pcs-area-computations-between-terra-and-sf" class="section level4">
+<h4>Comparing PCS area computations between {terra} and {sf}</h4>
+<p>Do estimates of vector polygon area differ between {terra} and {sf} when in an equal-area PCS, like mollweide?</p>
+<pre class="r"><code>area_t_mollweide &lt;- expanse(vect(dat_p), &#39;km&#39;, transform = F)
+round(as.numeric(area_mollweide) - area_t_mollweide)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>No difference.</p>
+</div>
+<div id="in-summary-1" class="section level4">
+<h4>In summary…</h4>
+<p>If using a lat-long GCS to calculate area in R, {terra} and {sf} will provide the same estimates for vector polygons, as long as s2 is turned off. For raster areas in polygons, {terra} is faster and more accurate than {exactextractr}.</p>
+</div>
+</div>
